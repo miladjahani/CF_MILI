@@ -18,6 +18,7 @@
     "deploy:worker:bundle": "npm run build && wrangler deploy _worker.js --no-bundle",
     "deploy:pages": "npm run build && wrangler pages deploy dist",
     "cf:setup": "node scripts/cloudflare-setup.js",
+    "cf:status": "node scripts/cf-status.js",
     "verify": "npm run build && npm test"
   },
   "keywords": [

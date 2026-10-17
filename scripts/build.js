@@ -153,6 +153,12 @@ async function buildAll() {
   fs.writeFileSync(path.join(distDir, '.nojekyll'), '', 'utf8');
   fs.writeFileSync(path.join(publicDir, '.nojekyll'), '', 'utf8');
 
+  // همه درخواست‌ها از خود Worker عبور کنند؛ در غیر این صورت فایل‌های خامی مانند
+  // worker.readable.js روی دامنه Pages قابل دانلود می‌شدند و سورس لو می‌رفت.
+  const routesJson = `${JSON.stringify({ version: 1, include: ['/*'], exclude: [] }, null, 0)}\n`;
+  fs.writeFileSync(path.join(distDir, '_routes.json'), routesJson, 'utf8');
+  fs.writeFileSync(path.join(publicDir, '_routes.json'), routesJson, 'utf8');
+
   // سازگاری خودکار با محیط بیلد Cloudflare Pages (تشخیص متغیر CF_PAGES=1)
   if (process.env.CF_PAGES === '1' || process.env.CF_PAGES === 'true') {
     console.log('☁️ [miliconfig] محیط Cloudflare Pages تشخیص داده شد؛ تنظیم خودکار wrangler.toml برای Pages...');

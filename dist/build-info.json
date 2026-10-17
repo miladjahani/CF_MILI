@@ -1,7 +1,7 @@
 {
   "brand": "miliconfig",
   "version": "3.3.0",
-  "builtAt": "2026-10-17T22:08:01.700Z",
+  "builtAt": "2026-10-17T22:12:33.905Z",
   "targets": [
     "cloudflare-pages-advanced-mode",
     "cloudflare-worker"
