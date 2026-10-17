@@ -14,9 +14,8 @@
     "health": "python3 scripts/proxy-health.py",
     "pool:embed": "node scripts/build-proxy-pool.js",
     "proxy:pipeline": "npm run fetch:proxies && python3 scripts/proxy-health.py && npm run pool:embed",
-    "deploy:worker": "wrangler deploy",
-    "deploy:worker:bundle": "npm run build && wrangler deploy _worker.js --no-bundle",
-    "deploy:pages": "npm run build && wrangler pages deploy dist",
+    "deploy:worker": "npm run build && npx --yes wrangler@4 deploy _worker.js --no-bundle",
+    "deploy:pages": "npm run build && npx --yes wrangler@4 pages deploy dist --project-name mili-cfg --branch main",
     "cf:setup": "node scripts/cloudflare-setup.js",
     "cf:status": "node scripts/cf-status.js",
     "verify": "npm run build && npm test"
