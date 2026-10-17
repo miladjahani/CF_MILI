@@ -174,6 +174,16 @@ async function runTests() {
     assert.ok(noDbAdminHtml.includes('مرکز کنترل زیرساخت پروکسی miliconfig'), 'پنل باید با کلید پیش‌فرض کامل رندر شود');
     const noDbApiResp = await worker.fetch(new Request(`https://mili.example.com/${DEFAULT_ADMIN_UUID}/api/config`), {}, {});
     assert.strictEqual(noDbApiResp.status, 200, 'API مدیریتی باید با کلید پیش‌فرض بدون دیتابیس پاسخ دهد');
+
+    // مسیر ناشناس: صفحه HTML راهنما برای مرورگر و JSON برای درخواست‌های غیرصفحه‌ای
+    const unknownPage = await worker.fetch(new Request('https://mili.example.com/mili-unknown-path', { headers: { Accept: 'text/html' } }), {}, {});
+    assert.strictEqual(unknownPage.status, 404, 'مسیر ناشناس باید ۴۰۴ باشد');
+    const unknownHtml = await unknownPage.text();
+    assert.ok(unknownHtml.includes('بازگشت به صفحه ورود'), 'مسیر ناشناس باید صفحه راهنمای خوانا برگرداند نه JSON خام');
+    assert.ok(unknownHtml.includes('کلید ادمین'), 'صفحه راهنما باید توضیح دهد کلید ادمین لازم است');
+    const unknownJson = await worker.fetch(new Request('https://mili.example.com/mili-unknown-path', { headers: { Accept: 'application/json' } }), {}, {});
+    assert.strictEqual(unknownJson.status, 404, 'درخواست غیرصفحه‌ای مسیر ناشناس باید ۴۰۴ بماند');
+    assert.ok((await unknownJson.text()).includes('Not Found'), 'پاسخ غیرصفحه‌ای باید JSON بماند');
     console.log('  ✓ تست ۱ (استقرار دستی بدون D1 و بدون خطای 1101): موفق');
 
     // تست ۲: اتصال دیتابیس D1 و ساخت خودکار جداول + پنل مدیریت
