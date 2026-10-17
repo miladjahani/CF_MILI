@@ -28,6 +28,13 @@ npm run deploy:pages # بیلد + آپلود روی Pages
 متغیرها را در `.env.local` بگذارید (این فایل در `.gitignore` است و هرگز کامیت نمی‌شود):
 
 ```bash
+# در ترمینال معمولی:
+printf 'CLOUDFLARE_API_TOKEN=%s\nCLOUDFLARE_ACCOUNT_ID=%s\n' 'YOUR_TOKEN' 'YOUR_ACCOUNT_ID' >> .env.local
+```
+
+اگر داخل Freebuff هستید، به‌جای آن (مقدار را در فایل نمی‌نویسد و امن‌تر است):
+
+```bash
 freebuff-env set --file .env.local '{"CLOUDFLARE_API_TOKEN":"...","CLOUDFLARE_ACCOUNT_ID":"..."}'
 ```
 
