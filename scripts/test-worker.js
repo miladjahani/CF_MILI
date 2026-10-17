@@ -164,6 +164,7 @@ async function runTests() {
     assert.strictEqual(rootResp.status, 200, 'صفحه اصلی بدون D1 باید با کد 200 باز شود');
     const rootHtml = await rootResp.text();
     assert.ok(rootHtml.includes('MILICONFIG'), 'برند MILICONFIG باید در صفحه ورود وجود داشته باشد');
+    assert.ok(rootHtml.includes('login-hint') && rootHtml.includes('مسیر ادمین'), 'صفحه ورود باید راهنمای «کلید ادمین یا UUID کاربر» را نشان دهد');
     console.log('  ✓ تست ۱ (استقرار دستی بدون D1 و بدون خطای 1101): موفق');
 
     // تست ۲: اتصال دیتابیس D1 و ساخت خودکار جداول + پنل مدیریت

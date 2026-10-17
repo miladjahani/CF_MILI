@@ -518,6 +518,10 @@ ${BASE_UI_CSS}
             <span class="input-icon">🔑</span>
             <input type="text" id="uuidInput" class="token-input" placeholder="351c9981-04b6-4103-aa4b-864aa9c91469" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus aria-describedby="msgBox">
           </div>
+          <p class="field-hint login-hint">
+            مدیریت: کلید/مسیر ادمین را وارد کنید (متغیر <code>u</code> در Cloudflare — با <code>npm run cf:bind</code> چاپ می‌شود).
+            کاربر: UUID یا توکن کاربر را وارد کنید. اگر دیتابیس وصل نباشد، کلید پیش‌فرض همان UUID نمونهٔ بالا است.
+          </p>
         </div>
 
         <div class="btn-row">

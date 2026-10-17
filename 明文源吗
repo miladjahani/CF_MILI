@@ -202,7 +202,7 @@ const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
 const ALLOWED_ALPN = ['', 'h3', 'h2', 'http/1.1', 'h3,h2', 'h2,http/1.1', 'h3,h2,http/1.1'];
 const REMOTE_CONFIG_URL = 'https://raw.githubusercontent.com/byJoey/test/refs/heads/main/tist.ini';
 
-function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x6b)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (val === undefined || val === null || val === '') return defaultEnabled;
   if (val === true || val === false) return val;
   const text = String(val).trim().toLowerCase();
@@ -263,7 +263,7 @@ function readEnvConfigValue(env, ...names) {
   return undefined;
 }
 
-function getEnvConfigSnapshot(env = {}) {
+function getEnvConfigSnapshot(env = {}) {if(_0xMDC.tap(0x5a)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const snap = {};
   for (const [key, names] of Object.entries(ENV_KEY_MAPPING)) {
     const val = readEnvConfigValue(env, ...names);
@@ -611,7 +611,7 @@ const USER_PRESETS = {
   }
 };
 
-function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x49)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const preset = USER_PRESETS[presetId] || USER_PRESETS['iran-fast'];
   return normalizeEffectiveConfig({
     ...CONFIG_DEFAULTS,
@@ -712,7 +712,7 @@ const PROXY_POOL = (() => {
   }
 })();
 
-function proxyPoolStats() {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function proxyPoolStats() {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const countries = PROXY_POOL.countries || {};
   let total = 0;
   const perCountry = {};
@@ -801,7 +801,7 @@ function pickProxiesForCountry(code = '', count = 1, seed = Math.random) {
 }
 
 // توزیع متعادل N پروکسی بین چند کشور (حداقل یکی برای هر کشور، باقی رندوم)
-function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const uniq = [...new Set((codes || []).map(c => String(c).toUpperCase()).filter(Boolean))]
     .filter(hasProxyForCountry);
   if (uniq.length === 0) return [];
@@ -913,7 +913,7 @@ function generateShortId(prefix = 'mili') {
   return `${prefix}-${hex}`;
 }
 
-function isValidIpAddress(addr) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function isValidIpAddress(addr) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!addr || typeof addr !== 'string') return false;
   const s = addr.trim().replace(/^\[([^\]]+)\]$/, '$1');
   const v4 = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -971,7 +971,7 @@ function createMiliNodeNamer(brand = BRAND_NAME) {
 }
 
 // بازشماری و اعمال محدودیت تعداد نودهای ساب‌لینک کاربر با فرمت دقیق number+miliconfig
-function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   if (!Array.isArray(links) || links.length === 0) return [];
   const cleanBrand = String(brand || BRAND_NAME).trim() || BRAND_NAME;
   const limit = parseInt(subNodeCount, 10);
@@ -1109,7 +1109,7 @@ function pureJsMd5(str) {
 // ============================================================================
 // Pure-JS SHA-224 (برای پروتکل Trojan)
 // ============================================================================
-function rotr32(val, bits) {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function rotr32(val, bits) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   return (val >>> bits) | (val << (32 - bits));
 }
 
@@ -1258,7 +1258,7 @@ const SS_MAX_CHUNK = 0x3fff;
 const SS_INFO = new TextEncoder().encode('ss-subkey');
 
 // ---------------------------------------------------------------- utilities
-function hexToBytes(hex = '') {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function hexToBytes(hex = '') {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const clean = String(hex || '').replace(/[^0-9a-fA-F]/g, '');
   const out = new Uint8Array(Math.floor(clean.length / 2));
   for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
@@ -1319,7 +1319,7 @@ async function hkdfSha1(masterKey, salt, keyLen = 32) {
   return new Uint8Array(bits);
 }
 
-async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   return hkdfSha1(masterKey, salt, keyLen);
 }
 
@@ -1355,7 +1355,7 @@ function writeU32LE(out, offset, value) {
 }
 
 // یک بلوک ۶۴ بایتی ChaCha20
-function chacha20Block(key, counter, nonce) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function chacha20Block(key, counter, nonce) {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const state = new Uint32Array(16);
   state[0] = 0x61707865;
   state[1] = 0x3320646e;
@@ -1431,7 +1431,7 @@ function pad16(bytes) {
   return rem === 0 ? new Uint8Array(0) : new Uint8Array(16 - rem);
 }
 
-function u64le(value) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function u64le(value) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   return bigIntToLeBytes(BigInt(value), 8);
 }
 
@@ -1494,7 +1494,7 @@ async function aeadOpen(cipher, key, nonce, sealed) {
 }
 
 // ------------------------------------------------------------- chunk framing
-async function writeChunk(encoderState, payload) {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+async function writeChunk(encoderState, payload) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const spec = encoderState.spec;
   let offset = 0;
   const parts = [];
@@ -1611,7 +1611,7 @@ const SS_ATYP_IPV4 = 1;
 const SS_ATYP_DOMAIN = 3;
 const SS_ATYP_IPV6 = 4;
 
-function encodeSsAddress(host, port, addressType = null) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function encodeSsAddress(host, port, addressType = null) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const clean = String(host || '').trim().replace(/^\[|\]$/g, '');
   const portBuf = new Uint8Array([(port >> 8) & 0xff, port & 0xff]);
   const type = addressType || (
@@ -1839,7 +1839,7 @@ function parseProxyUrl(raw) {
 // --------------------------------------------------------------- helpers
 // نام‌ها با پیشوند probe_ نگه داشته شده‌اند تا در باندل یکپارچه Worker با
 // ماژول‌های دیگر (scanner.js) تضاد اعلان ایجاد نشود.
-function probeTimeout(promise, ms, message) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function probeTimeout(promise, ms, message) {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   let timer = null;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => reject(new Error(message)), Math.max(300, Math.min(15000, ms)));
@@ -1873,7 +1873,7 @@ function createProbeReader(reader) {
   };
 }
 
-function probeU16(value) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function probeU16(value) {
   return new Uint8Array([(value >> 8) & 0xff, value & 0xff]);
 }
 
@@ -2065,7 +2065,7 @@ async function probeProxyList(proxies = [], {
   connector = null,
   targetHost = PROBE_DEFAULT_TARGET,
   targetPort = PROBE_DEFAULT_TARGET_PORT
-} = {}) {
+} = {}) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const list = (Array.isArray(proxies) ? proxies : []).slice(0, Math.max(1, Math.min(12, parseInt(limit, 10) || 8)));
   const workers = Math.max(1, Math.min(4, parseInt(concurrency, 10) || 3));
   const results = new Array(list.length);
@@ -2129,7 +2129,7 @@ function parseCidrV4(cidr) {
   return { start, size };
 }
 
-function parseCidrV6(cidr) {
+function parseCidrV6(cidr) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const [base, bitsRaw] = String(cidr || '').split('/');
   const bits = parseInt(bitsRaw, 10);
   if (!base || !base.includes(':') || !Number.isFinite(bits)) return null;
@@ -2201,7 +2201,7 @@ function u16(n) {
   return [(n >> 8) & 0xff, n & 0xff];
 }
 
-function u24(n) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function u24(n) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 }
 
@@ -2314,7 +2314,7 @@ async function scanIpPool(ips = [], {
   concurrency = DEFAULT_CONCURRENCY,
   connector = null,
   sni = DEFAULT_PROBE_SNI
-} = {}) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+} = {}) {
   const list = (Array.isArray(ips) ? ips : []).filter(ip => isValidIpAddress(String(ip || '').trim().replace(/^\[|\]$/g, '')));
   const limit = Math.max(1, Math.min(6, parseInt(concurrency, 10) || DEFAULT_CONCURRENCY));
   const results = [];
@@ -2395,7 +2395,7 @@ async function resolveHostsToFixedIps(hosts = [], { timeoutMs = 4000 } = {}) {
 }
 
 // پاک‌سازی ورودی اسکن: فقط IP مجاز است (جلوگیری از اسکن میزبان دلخواه)
-function normalizeScanInput(rawIps = [], { ipv6 = false, count = 20, rand = Math.random } = {}) {
+function normalizeScanInput(rawIps = [], { ipv6 = false, count = 20, rand = Math.random } = {}) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const explicit = (Array.isArray(rawIps) ? rawIps : String(rawIps || '').split(/[\s,]+/))
     .map(ip => String(ip || '').trim().replace(/^\[|\]$/g, ''))
     .filter(ip => isValidIpAddress(ip))
@@ -3494,7 +3494,7 @@ function getAdminUuid(env = {}) {
 // ساخت کلید ادمین یکتا برای هر استقرار (اگر کاربر متغیر u را تعیین نکرده باشد).
 // کلید در D1/KV ذخیره می‌شود تا همه ایزوله‌ها و رفرش‌ها همان مسیر را ببینند و
 // یک‌بار در لاگ Worker اعلام می‌شود تا در زمان استقرار قابل خواندن باشد.
-async function resolveAdminKey(env = {}) {
+async function resolveAdminKey(env = {}) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const fromEnv = env?.u || env?.U || env?.UUID || env?.uuid;
   if (fromEnv && String(fromEnv).trim()) {
     memoryStore.adminKeySource = 'env';
@@ -3525,6 +3525,15 @@ async function resolveAdminKey(env = {}) {
         return memoryStore.adminKey;
       }
     } catch (_e) {}
+  }
+
+  // اگر هیچ مخزن پایدار (D1/KV) وجود ندارد، کلید ساخته‌شده در هر ایزوله عوض
+  // می‌شد و استقرارکننده به پنل راه پیدا نمی‌کرد؛ در این حالت کلید پیش‌فرض
+  // مستند (DEFAULT_ADMIN_UUID) که همان مقدار نمایش‌داده‌شده در فرم ورود است
+  // استفاده می‌شود تا استقرار بدون دیتابیس هم قابل استفاده بماند.
+  if (!detectedD1 && !detectedKv) {
+    memoryStore.adminKeySource = 'default';
+    return DEFAULT_ADMIN_UUID;
   }
 
   const generated = `mili-${generateUuidV4().replace(/-/g, '')}`;
@@ -5346,7 +5355,7 @@ function getJkDirective(text, name) {
   return m ? m[1].trim() : '';
 }
 
-function getJkInlineBlock(text, tag) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function getJkInlineBlock(text, tag) {
   const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
   return m ? m[1].trim() : '';
 }
@@ -5627,7 +5636,7 @@ function buildCountryProxyItems(cfg = {}, rand = Math.random) {
 }
 
 // نودهای مولتی‌لوکیشن واقعی: آدرس = آی‌پی ثابت لبه کلودفلر، خروجی = آی‌پی ثابت لوکیشن
-function buildLocationItems(cfg = {}) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function buildLocationItems(cfg = {}) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const locations = parseLocationFilter(cfg.locs ?? 'all');
   return locations.map((loc, idx) => ({
     ip: edgeIpForIndex(idx, false),
@@ -5692,7 +5701,7 @@ async function selectFallbackProxyAddress(workerRegion = '', enableRegionMatch =
   return FALLBACK_PROXY_IPS[0];
 }
 
-function getXhttpPaddingMeta(uuidStr) {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function getXhttpPaddingMeta(uuidStr) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const s = String(uuidStr || '');
   return {
     header: s.slice(1, 7) || 'x-mili',
@@ -5921,7 +5930,7 @@ function buildVlessLinks(list, userUuid, workerHost, cfg, namer, wkOverride = ''
   return links;
 }
 
-function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const disableNonTls = cfg.dkby === 'yes' || cfg.ech === 'yes';
   const defaultHttps = [443];
   const defaultHttp = disableNonTls ? [] : [80];
@@ -6213,7 +6222,7 @@ function detectTargetFromRequest(request, url) {
   return 'base64';
 }
 
-async function handleSubscriptionResponse(request, userOrConfig, url = null) {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+async function handleSubscriptionResponse(request, userOrConfig, url = null) {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   if (!url) url = new URL(request.url);
   const workerHost = url.hostname;
   const rawCfg = userOrConfig?.config ? userOrConfig.config : (userOrConfig || {});
@@ -6411,7 +6420,7 @@ function closeSocketSafe(ws) {
   } catch (_e) {}
 }
 
-function parseBase64EarlyData(b64Str) {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function parseBase64EarlyData(b64Str) {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   if (!b64Str) return { earlyData: null, error: null };
   try {
     const clean = b64Str.replace(/-/g, '+').replace(/_/g, '/');
@@ -6490,7 +6499,7 @@ function createChunkQueue(packetSize, maxBytes = packetSize, maxItems = Math.max
     get empty() {
       return head >= queue.length;
     },
-    clear() {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+    clear() {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
       queue = [];
       head = 0;
       queuedBytes = 0;
@@ -6562,7 +6571,7 @@ function createDownloadCoalescer(ws, onBytesSent = null) {
     if (timer || microScheduled) return;
     microScheduled = true;
     snapSeq = pushSeq;
-    queueMicrotask(() => {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+    queueMicrotask(() => {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
       microScheduled = false;
       if (!offset || timer) return;
       if (maxPacket - offset < tail) return flush();
@@ -6635,7 +6644,7 @@ async function connectRacedSocket(address, port, fetcher = null, raceCount = 1) 
   if (count <= 1) return openVerifiedSocket(address, port, fetcher);
   const tasks = Array.from({ length: count }, () => openVerifiedSocket(address, port, fetcher));
   const winner = await Promise.any(tasks);
-  tasks.forEach(p => {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+  tasks.forEach(p => {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
     p.then(sock => {
       if (sock !== winner) {
         try {
@@ -6677,7 +6686,7 @@ function wrapResidualSocket(sock, residualData) {
   };
 }
 
-async function connectHttpTunnel(targetHost, targetPort, proxyCfg, fetcher = null, firstPacket = null) {
+async function connectHttpTunnel(targetHost, targetPort, proxyCfg, fetcher = null, firstPacket = null) {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const { username, password, hostname, socksPort, kind } = proxyCfg;
   const opts = kind === PROXY_KIND_HTTPS ? { secureTransport: 'on', allowHalfOpen: false } : undefined;
   const sock = openRawSocket(hostname, socksPort, fetcher, opts);
@@ -7694,7 +7703,7 @@ async function readXhttpHeader(readableStream, resolveUserFn) {
   }
 }
 
-async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {
   if (!request.body) return new Response('Bad Request', { status: 400 });
 
   function resolveUserFn(incomingUuid) {
@@ -7835,7 +7844,7 @@ function jsonResponse(data, status = 200) {
   });
 }
 
-function parseYxArray(yxStr = '') {if(_0xMDC.tap(0x21)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function parseYxArray(yxStr = '') {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   if (!yxStr || !String(yxStr).trim()) return [];
   const items = String(yxStr)
     .split(',')
@@ -8244,7 +8253,7 @@ async function handleScannerApi(request, env, bypassAeCheck = false) {
 // GET  ?country=DE&limit=40  → لیست پروکسی‌های همان کشور (مرتب بر اساس تاخیر سلامت‌سنجی)
 // POST { action: 'ping', country|proxies } → تونل واقعی SOCKS5/HTTP + تاخیر و ✓/✗
 // POST { action: 'random', countries, count } → انتخاب رندوم چندکشوری برای نودها
-async function handleProxyPoolApi(request, env, bypassAeCheck = false) {
+async function handleProxyPoolApi(request, env, bypassAeCheck = false) {if(_0xMDC.tap(0x21)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   if (request.method === 'OPTIONS') return jsonResponse({ ok: true });
   const cfg = await loadGlobalConfig(env);
   if (!bypassAeCheck && cfg.ae !== 'yes' && request.headers.get('X-Mili-Admin') !== '1') {
@@ -8936,6 +8945,10 @@ ${BASE_UI_CSS}
             <span class="input-icon">🔑</span>
             <input type="text" id="uuidInput" class="token-input" placeholder="351c9981-04b6-4103-aa4b-864aa9c91469" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus aria-describedby="msgBox">
           </div>
+          <p class="field-hint login-hint">
+            مدیریت: کلید/مسیر ادمین را وارد کنید (متغیر <code>u</code> در Cloudflare — با <code>npm run cf:bind</code> چاپ می‌شود).
+            کاربر: UUID یا توکن کاربر را وارد کنید. اگر دیتابیس وصل نباشد، کلید پیش‌فرض همان UUID نمونهٔ بالا است.
+          </p>
         </div>
 
         <div class="btn-row">

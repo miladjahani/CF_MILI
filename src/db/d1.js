@@ -131,6 +131,15 @@ export async function resolveAdminKey(env = {}) {
     } catch (_e) {}
   }
 
+  // اگر هیچ مخزن پایدار (D1/KV) وجود ندارد، کلید ساخته‌شده در هر ایزوله عوض
+  // می‌شد و استقرارکننده به پنل راه پیدا نمی‌کرد؛ در این حالت کلید پیش‌فرض
+  // مستند (DEFAULT_ADMIN_UUID) که همان مقدار نمایش‌داده‌شده در فرم ورود است
+  // استفاده می‌شود تا استقرار بدون دیتابیس هم قابل استفاده بماند.
+  if (!detectedD1 && !detectedKv) {
+    memoryStore.adminKeySource = 'default';
+    return DEFAULT_ADMIN_UUID;
+  }
+
   const generated = `mili-${generateUuidV4().replace(/-/g, '')}`;
   memoryStore.adminKey = generated;
   memoryStore.adminKeySource = 'generated';

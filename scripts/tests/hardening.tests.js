@@ -8,6 +8,7 @@
 // ============================================================================
 import { generateUserNodesList, handleSubscriptionResponse } from '../../src/subscription/generator.js';
 import { checkUserIpLimit, releaseUserIps, resolveAdminKey } from '../../src/db/d1.js';
+import { DEFAULT_ADMIN_UUID } from '../../src/config/defaults.js';
 import { INFO_NODE_LABELS, prependInfoNodes } from '../../src/core/utils.js';
 import { FX_MARKUP } from '../../src/ui/fx.js';
 
@@ -89,13 +90,17 @@ export async function runHardeningTests({ assert, adminHtml }) {
   // ========================================================================
   const key1 = await resolveAdminKey({});
   const key2 = await resolveAdminKey({});
-  assert.ok(key1.startsWith('mili-'), `کلید ادمین باید با mili- شروع شود: ${key1}`);
-  assert.ok(key1.length > 20, 'کلید ادمین باید به اندازه کافی بلند باشد');
+  // بدون D1/KV، کلید پیش‌فرض مستند استفاده می‌شود تا پنل در دسترس بماند
+  assert.strictEqual(key1, DEFAULT_ADMIN_UUID, `بدون دیتابیس باید کلید پیش‌فرض باشد ولی ${key1} بود`);
   assert.strictEqual(key1, key2, 'کلید ادمین باید بین درخواست‌ها پایدار بماند');
   const envKey = await resolveAdminKey({ u: 'Custom-Path-123' });
   assert.strictEqual(envKey, 'custom-path-123', 'اگر u در محیط تعیین شود، همان مسیر ادمین است');
-  assert.strictEqual((await resolveAdminKey({})), key1, 'بازگشت به کلید ذخیره‌شده پس از کلید محیطی');
-  console.log('  ✓ تست ۲۶ (کلید ادمین یکتا و پایدار برای هر استقرار): موفق');
+  assert.strictEqual(await resolveAdminKey({ u: 'Other-Key-9' }), 'other-key-9', 'هر مقدار محیطی جدید باید جایگزین شود');
+  // با D1 (که کلید یکتا را ذخیره می‌کند) کلید تولیدی mili-* باید برنده شود،
+  // ولی تا وقتی کلید در D1 ذخیره نشده باشد باید همان کلید پیش‌فرض برگردد.
+  const withD1 = await resolveAdminKey({ u: 'Custom-Path-123', DB: { prepare() { return { bind() { return this; }, async first() { return null; }, async run() { return {}; } }; } } });
+  assert.strictEqual(withD1, 'custom-path-123', 'وقتی u ست شده باشد باید بر کلید دیتابیس مقدم باشد');
+  console.log('  ✓ تست ۲۶ (کلید ادمین یکتا، پیش‌فرض پایدار و جایگزینی محیطی): موفق');
 
   // ========================================================================
   // تست ۲۷: UI موبایل (drawer راست + پرده محو) و دکمه روشن/خاموش FX
