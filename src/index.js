@@ -25,6 +25,7 @@ import {
   handleScannerApi,
   handleUsersApi
 } from './api/handlers.js';
+import { VIEWPORT_META } from './ui/baseCss.js';
 import { renderLoginGatewayHtml } from './ui/loginHtml.js';
 import { renderUserStatusPageHtml } from './ui/statusHtml.js';
 import { renderAdminDashboardHtml } from './ui/adminHtml.js';
@@ -325,6 +326,28 @@ export default {
             }
           });
         }
+      }
+
+      // مسیر ناشناس: برای درخواست‌های صفحه یک راهنمای خوانا برگردانده می‌شود تا
+      // کاربر بداند باید کلید ادمین (مسیر u) را وارد کند یا UUID یک کاربر.
+      const wantsHtml = !url.pathname.includes('/api/') &&
+        String(request.headers.get('Accept') || '').includes('text/html');
+      if (wantsHtml) {
+        const helpHtml = `<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">${VIEWPORT_META}<title>مسیر ناشناس — ${BRAND_NAME}</title></head>
+<body style="margin:0;background:#060b06;color:#e6f2e6;font-family:system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100dvh;padding:20px">
+<div style="max-width:520px;width:100%;background:rgba(12,20,12,.9);border:1px solid rgba(163,230,53,.25);border-radius:20px;padding:22px">
+  <h1 style="margin:0 0 10px;font-size:1.15rem">این آدرس به پنل یا کاربری تعلق ندارد</h1>
+  <p style="margin:0 0 14px;line-height:1.9;font-size:.9rem;color:#b8ceb8">
+    «${BRAND_NAME}» را با <b>کلید ادمین</b> باز کنید: <code>/${BRAND_NAME}/&lt;u&gt;</code>؛ مقدار <code>u</code> را در
+    Cloudflare (Pages → Settings → Variables) یا با <code>npm run cf:bind</code> ببینید.
+    اگر قصد داشتید صفحه وضعیت یک کاربر را ببینید، UUID همان کاربر را وارد کنید.
+  </p>
+  <a href="/" style="display:inline-block;padding:12px 16px;border-radius:12px;background:rgba(163,230,53,.16);border:1px solid rgba(163,230,53,.4);color:#d9f99d;text-decoration:none;font-weight:700">↩ بازگشت به صفحه ورود</a>
+</div></body></html>`;
+        return new Response(helpHtml, {
+          status: 404,
+          headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }
+        });
       }
 
       return new Response(JSON.stringify({ error: 'Not Found' }), {

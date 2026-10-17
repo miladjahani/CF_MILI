@@ -95,6 +95,16 @@ export function getAdminUuid(env = {}) {
   return String(raw).trim().toLowerCase();
 }
 
+// شناسه‌ای که کاربر «سیستمی» اولیه با آن ساخته می‌شود. اگر مدیر متغیر u را
+// تعیین کرده باشد همان مقدار استفاده می‌شود؛ در غیر این‌صورت کلید پیش‌فرض
+// مستند. بدون این کار، وقتی u ست می‌شد ردیف سیستمی با UUID پیش‌فرض ساخته
+// می‌شد و باز کردن /<UUID پیش‌فرض> به‌جای پنل، صفحه وضعیت همان ردیف را نشان می‌داد.
+export function getSeedAdminUuid(env = {}) {
+  const explicit = env?.u || env?.U || env?.UUID || env?.uuid;
+  const value = explicit && String(explicit).trim() ? explicit : DEFAULT_ADMIN_UUID;
+  return String(value).trim().toLowerCase();
+}
+
 // ساخت کلید ادمین یکتا برای هر استقرار (اگر کاربر متغیر u را تعیین نکرده باشد).
 // کلید در D1/KV ذخیره می‌شود تا همه ایزوله‌ها و رفرش‌ها همان مسیر را ببینند و
 // یک‌بار در لاگ Worker اعلام می‌شود تا در زمان استقرار قابل خواندن باشد.
@@ -256,7 +266,7 @@ export async function ensureD1Schema(env = {}, force = false) {
     const countRow = await db.prepare(`SELECT COUNT(*) as cnt FROM users`).first();
     const totalUsers = Number(countRow?.cnt || 0);
     if (totalUsers === 0) {
-      const adminUuid = getAdminUuid(env);
+      const adminUuid = getSeedAdminUuid(env);
       const envSnap = getEnvConfigSnapshot(env);
       const defaultUserConfig = buildUserDefaultConfig(envSnap, 'iran-fast', {
         subNodeCount: 50
@@ -298,6 +308,19 @@ export async function ensureD1Schema(env = {}, force = false) {
       await addAuditLog(env, 'ساخت خودکار دیتابیس D1', `${firstId} · iran-fast`, 'system');
     }
 
+    // ترمیم استقرارهای قبلی: ردیف سیستمی که با UUID پیش‌فرض ساخته شده بود
+    // باید با کلید فعلی ادمین هم‌خوان شود تا /<UUID پیش‌فرض> دیگر کاربر نباشد.
+    const explicitKey = String(env?.u || env?.U || env?.UUID || env?.uuid || '').trim().toLowerCase();
+    if (explicitKey && explicitKey !== DEFAULT_ADMIN_UUID) {
+      try {
+        await safeBind(
+          db.prepare(`DELETE FROM users WHERE uuid = ? AND note LIKE ?`),
+          DEFAULT_ADMIN_UUID,
+          '%پیش‌فرض اولیه سیستم%'
+        ).run();
+      } catch (_e) {}
+    }
+
     return { d1Enabled: true, bindingName, migrated: true };
   } catch (err) {
     ensureMemorySeeded(env);
@@ -313,7 +336,7 @@ export async function ensureD1Schema(env = {}, force = false) {
 function ensureMemorySeeded(env = {}) {
   if (memoryStore.initialized) return;
   memoryStore.initialized = true;
-  const adminUuid = getAdminUuid(env);
+  const adminUuid = getSeedAdminUuid(env);
   const envSnap = getEnvConfigSnapshot(env);
   memoryStore.globalConfig = { ...envSnap };
 

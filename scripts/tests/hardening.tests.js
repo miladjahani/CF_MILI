@@ -9,6 +9,7 @@
 import { generateUserNodesList, handleSubscriptionResponse } from '../../src/subscription/generator.js';
 import { checkUserIpLimit, releaseUserIps, resolveAdminKey } from '../../src/db/d1.js';
 import { DEFAULT_ADMIN_UUID } from '../../src/config/defaults.js';
+import { getSeedAdminUuid } from '../../src/db/d1.js';
 import { INFO_NODE_LABELS, prependInfoNodes } from '../../src/core/utils.js';
 import { FX_MARKUP } from '../../src/ui/fx.js';
 
@@ -101,6 +102,13 @@ export async function runHardeningTests({ assert, adminHtml }) {
   const withD1 = await resolveAdminKey({ u: 'Custom-Path-123', DB: { prepare() { return { bind() { return this; }, async first() { return null; }, async run() { return {}; } }; } } });
   assert.strictEqual(withD1, 'custom-path-123', 'وقتی u ست شده باشد باید بر کلید دیتابیس مقدم باشد');
   console.log('  ✓ تست ۲۶ (کلید ادمین یکتا، پیش‌فرض پایدار و جایگزینی محیطی): موفق');
+
+  // ========================================================================
+  // تست ۲۶-ب: سازندهٔ کاربر سیستمی نباید UUID پیش‌فرض را وقتی u ست شده بسازد
+  // ========================================================================
+  assert.strictEqual(getSeedAdminUuid({}), DEFAULT_ADMIN_UUID, 'بدون u، ردیف سیستمی با UUID پیش‌فرض ساخته می‌شود');
+  assert.strictEqual(getSeedAdminUuid({ u: 'Mili-Custom' }), 'mili-custom', 'با u، ردیف سیستمی باید همان کلید ادمین باشد');
+  console.log('  ✓ تست ۲۶-ب (هم‌خوانی ردیف سیستمی با کلید ادمین): موفق');
 
   // ========================================================================
   // تست ۲۷: UI موبایل (drawer راست + پرده محو) و دکمه روشن/خاموش FX
