@@ -71,7 +71,8 @@ function makeAdminKey() {
   return `mili-${crypto.randomUUID().replace(/-/g, '')}`;
 }
 
-const adminKey = makeAdminKey();
+// کلید ادمین در main() تعیین می‌شود تا در اجرای دوباره، کلید قبلیِ همان پروژه حفظ شود.
+let adminKey = '';
 
 async function ensureD1() {
   const list = await cf('GET', `/accounts/${ACCOUNT}/d1/database?per_page=100`);
@@ -119,7 +120,7 @@ async function ensureProject(d1) {
     });
     if (!created.ok) {
       fail('ساخت پروژه Pages', created);
-      return false;
+      return { ok: false, d1Bound: false };
     }
     console.log(`✅ پروژه Pages ساخته شد: ${PROJECT_NAME}`);
   }
@@ -130,7 +131,7 @@ async function ensureProject(d1) {
   });
   if (patched.ok) {
     console.log(`✅ متغیرهای پروژه Pages به‌روزرسانی شد: ${PROJECT_NAME}`);
-    return true;
+    return { ok: true, d1Bound: Boolean(d1) };
   }
   fail('به‌روزرسانی متغیرهای پروژه Pages', patched);
 
@@ -140,16 +141,32 @@ async function ensureProject(d1) {
   });
   if (envOnly.ok) {
     console.log(`✅ متغیرهای محیطی پروژه Pages ست شد (بایند D1 را دستی اضافه کنید): ${PROJECT_NAME}`);
-    return true;
+    return { ok: true, d1Bound: false };
   }
   fail('ست‌کردن متغیرهای محیطی پروژه Pages', envOnly);
-  return false;
+  return { ok: false, d1Bound: false };
+}
+
+async function readExistingAdminKey() {
+  const res = await cf('GET', `/accounts/${ACCOUNT}/pages/projects/${PROJECT_NAME}`);
+  if (!res.ok) return '';
+  const fromEnv = res.json?.result?.deployment_configs?.production?.env_vars?.u?.value;
+  return fromEnv ? String(fromEnv).trim() : '';
 }
 
 async function main() {
   console.log(`▶️  استقرار ${BRAND} روی حساب ${ACCOUNT}`);
+  // کلید ادمین هر استقرار: اگر u از قبل روی پروژه ست شده و ADMIN_KEY نداده‌اید،
+  // همان کلید حفظ می‌شود تا اجرای دوباره اسکریپت مسیر پنل را عوض نکند.
+  const existingKey = await readExistingAdminKey();
+  adminKey = process.env.ADMIN_KEY ? makeAdminKey() : (existingKey || makeAdminKey());
+  if (existingKey && !process.env.ADMIN_KEY) {
+    console.log(`🔒 کلید ادمین موجود پروژه حفظ شد: /${adminKey}`);
+  }
+
   const d1 = await ensureD1();
-  const projectReady = await ensureProject(d1);
+  const result = await ensureProject(d1);
+  const projectReady = result.ok;
 
   console.log('');
   console.log('──────────────────────────────────────────────');
@@ -158,8 +175,16 @@ async function main() {
   if (d1) console.log(`🗄️  D1: ${D1_NAME} → ${d1.uuid} (بایند: DB)`);
   console.log('──────────────────────────────────────────────');
   console.log('اگر متغیر u را بعداً در تنظیمات Pages عوض کنید، همان مسیر جدید معتبر می‌شود.');
+  if (projectReady && !result.d1Bound) {
+    console.log('');
+    console.log('📌 اتصال D1 به Pages (یک‌بار، از داشبورد):');
+    console.log(`   1) Cloudflare → Workers & Pages → ${PROJECT_NAME} → Settings → Bindings`);
+    console.log('   2) Add → D1 database → Variable name: DB');
+    if (d1) console.log(`   3) Database: ${D1_NAME} (${d1.uuid})`);
+    console.log('   4) Save — در اولین درخواست، جداول خودکار ساخته می‌شوند.');
+  }
   if (!projectReady) {
-    console.log('⚠️  اتصال D1/متغیرها کامل نشد؛ از پنل Cloudflare → Pages → Settings → Functions استفاده کنید.');
+    console.log('⚠️  اتصال D1/متغیرها کامل نشد؛ از پنل Cloudflare → Workers & Pages → دستی تنظیم کنید.');
     process.exitCode = 1;
   }
 }

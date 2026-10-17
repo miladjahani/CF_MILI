@@ -22,4 +22,4 @@ BRAND = "miliconfig"
 [[d1_databases]]
 binding = "DB"
 database_name = "miliconfig-db"
-database_id = "0bea7c3c-dcc8-4917-9ff1-b37d022f5d78"
+database_id = "7e900667-ca1d-4fd3-a127-793ca4fa08fa"

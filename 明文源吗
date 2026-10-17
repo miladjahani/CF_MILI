@@ -202,7 +202,7 @@ const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
 const ALLOWED_ALPN = ['', 'h3', 'h2', 'http/1.1', 'h3,h2', 'h2,http/1.1', 'h3,h2,http/1.1'];
 const REMOTE_CONFIG_URL = 'https://raw.githubusercontent.com/byJoey/test/refs/heads/main/tist.ini';
 
-function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x5a)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   if (val === undefined || val === null || val === '') return defaultEnabled;
   if (val === true || val === false) return val;
   const text = String(val).trim().toLowerCase();
@@ -263,7 +263,7 @@ function readEnvConfigValue(env, ...names) {
   return undefined;
 }
 
-function getEnvConfigSnapshot(env = {}) {if(_0xMDC.tap(0x49)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function getEnvConfigSnapshot(env = {}) {
   const snap = {};
   for (const [key, names] of Object.entries(ENV_KEY_MAPPING)) {
     const val = readEnvConfigValue(env, ...names);
@@ -611,7 +611,7 @@ const USER_PRESETS = {
   }
 };
 
-function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const preset = USER_PRESETS[presetId] || USER_PRESETS['iran-fast'];
   return normalizeEffectiveConfig({
     ...CONFIG_DEFAULTS,
@@ -712,7 +712,7 @@ const PROXY_POOL = (() => {
   }
 })();
 
-function proxyPoolStats() {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function proxyPoolStats() {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const countries = PROXY_POOL.countries || {};
   let total = 0;
   const perCountry = {};
@@ -801,7 +801,7 @@ function pickProxiesForCountry(code = '', count = 1, seed = Math.random) {
 }
 
 // توزیع متعادل N پروکسی بین چند کشور (حداقل یکی برای هر کشور، باقی رندوم)
-function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const uniq = [...new Set((codes || []).map(c => String(c).toUpperCase()).filter(Boolean))]
     .filter(hasProxyForCountry);
   if (uniq.length === 0) return [];
@@ -913,7 +913,7 @@ function generateShortId(prefix = 'mili') {
   return `${prefix}-${hex}`;
 }
 
-function isValidIpAddress(addr) {
+function isValidIpAddress(addr) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   if (!addr || typeof addr !== 'string') return false;
   const s = addr.trim().replace(/^\[([^\]]+)\]$/, '$1');
   const v4 = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -971,7 +971,7 @@ function createMiliNodeNamer(brand = BRAND_NAME) {
 }
 
 // بازشماری و اعمال محدودیت تعداد نودهای ساب‌لینک کاربر با فرمت دقیق number+miliconfig
-function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   if (!Array.isArray(links) || links.length === 0) return [];
   const cleanBrand = String(brand || BRAND_NAME).trim() || BRAND_NAME;
   const limit = parseInt(subNodeCount, 10);
@@ -993,6 +993,28 @@ function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRA
     const nodeName = `${idx + 1}+${cleanBrand}${suffix}`;
     return `${base}#${encodeURIComponent(nodeName)}`;
   });
+}
+
+// ============================================================================
+// نودهای اطلاعاتی هاردکد — همیشه در ابتدای «همه» ساب‌ها (بدون مصرف سهمیه کاربر)
+// هر نود اطلاعاتی، تنظیمات و میزبان یک نود واقعی را کپی می‌کند تا اتصالش هم کار کند
+// ============================================================================
+const INFO_NODE_LABELS = [
+  '🎁 میلی رایگان است',
+  '⚠️ این کانفیگ را نفروشید — حرام است',
+  '📣 کانال پشتیبانی @miliconfig'
+];
+
+function prependInfoNodes(links = [], labels = INFO_NODE_LABELS) {
+  if (!Array.isArray(links) || links.length === 0) return [];
+  const cleanLabels = (Array.isArray(labels) ? labels : [labels]).filter(Boolean);
+  const infoNodes = cleanLabels.map((label, idx) => {
+    const source = links[idx % links.length];
+    const hashIdx = source.indexOf('#');
+    const base = hashIdx > -1 ? source.substring(0, hashIdx) : source;
+    return `${base}#${encodeURIComponent(String(label))}`;
+  });
+  return [...infoNodes, ...links];
 }
 
 // ============================================================================
@@ -1087,7 +1109,7 @@ function pureJsMd5(str) {
 // ============================================================================
 // Pure-JS SHA-224 (برای پروتکل Trojan)
 // ============================================================================
-function rotr32(val, bits) {
+function rotr32(val, bits) {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   return (val >>> bits) | (val << (32 - bits));
 }
 
@@ -1161,7 +1183,7 @@ async function sha224Hex(text) {
   return out.join('');
 }
 
-function formatBytes(bytes = 0) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function formatBytes(bytes = 0) {
   const b = Number(bytes) || 0;
   if (b <= 0) return '0 B';
   const units = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -1236,7 +1258,7 @@ const SS_MAX_CHUNK = 0x3fff;
 const SS_INFO = new TextEncoder().encode('ss-subkey');
 
 // ---------------------------------------------------------------- utilities
-function hexToBytes(hex = '') {
+function hexToBytes(hex = '') {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const clean = String(hex || '').replace(/[^0-9a-fA-F]/g, '');
   const out = new Uint8Array(Math.floor(clean.length / 2));
   for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
@@ -1256,7 +1278,7 @@ function concatBytes(...arrays) {
   return out;
 }
 
-function utf8(text) {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function utf8(text) {
   return new TextEncoder().encode(String(text ?? ''));
 }
 
@@ -1297,7 +1319,7 @@ async function hkdfSha1(masterKey, salt, keyLen = 32) {
   return new Uint8Array(bits);
 }
 
-async function deriveSubkey(masterKey, salt, keyLen) {
+async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   return hkdfSha1(masterKey, salt, keyLen);
 }
 
@@ -1310,7 +1332,7 @@ function incrementNonce(nonce) {
 }
 
 // ------------------------------------------------------- ChaCha20 (RFC 8439)
-function rotl32(v, n) {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function rotl32(v, n) {
   return ((v << n) | (v >>> (32 - n))) >>> 0;
 }
 
@@ -1333,7 +1355,7 @@ function writeU32LE(out, offset, value) {
 }
 
 // یک بلوک ۶۴ بایتی ChaCha20
-function chacha20Block(key, counter, nonce) {
+function chacha20Block(key, counter, nonce) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const state = new Uint32Array(16);
   state[0] = 0x61707865;
   state[1] = 0x3320646e;
@@ -1375,7 +1397,7 @@ function chacha20Xor(key, nonce, counter, input) {
 }
 
 // ------------------------------------------------------ Poly1305 (BigInt)
-function leBytesToBigInt(bytes) {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function leBytesToBigInt(bytes) {
   let value = 0n;
   for (let i = bytes.byteLength - 1; i >= 0; i--) value = (value << 8n) | BigInt(bytes[i]);
   return value;
@@ -1409,7 +1431,7 @@ function pad16(bytes) {
   return rem === 0 ? new Uint8Array(0) : new Uint8Array(16 - rem);
 }
 
-function u64le(value) {
+function u64le(value) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   return bigIntToLeBytes(BigInt(value), 8);
 }
 
@@ -1472,7 +1494,7 @@ async function aeadOpen(cipher, key, nonce, sealed) {
 }
 
 // ------------------------------------------------------------- chunk framing
-async function writeChunk(encoderState, payload) {
+async function writeChunk(encoderState, payload) {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const spec = encoderState.spec;
   let offset = 0;
   const parts = [];
@@ -1502,7 +1524,7 @@ function createDecoder({ cipher, masterKey, salt = null }) {
     pendingLength: null,
     salt,
     ready: false,
-    async init(saltBytes) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+    async init(saltBytes) {
       this.salt = saltBytes || this.salt || randomBytes(spec.saltLen);
       this.key = await deriveSubkey(masterKey, this.salt, spec.keyLen);
       this.ready = true;
@@ -1589,7 +1611,7 @@ const SS_ATYP_IPV4 = 1;
 const SS_ATYP_DOMAIN = 3;
 const SS_ATYP_IPV6 = 4;
 
-function encodeSsAddress(host, port, addressType = null) {
+function encodeSsAddress(host, port, addressType = null) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const clean = String(host || '').trim().replace(/^\[|\]$/g, '');
   const portBuf = new Uint8Array([(port >> 8) & 0xff, port & 0xff]);
   const type = addressType || (
@@ -1616,7 +1638,7 @@ function encodeSsAddress(host, port, addressType = null) {
   return concatBytes(new Uint8Array([SS_ATYP_DOMAIN, name.byteLength]), name, portBuf);
 }
 
-function expandIpv6(ip) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function expandIpv6(ip) {
   const clean = String(ip || '').trim();
   const halves = clean.split('::');
   const left = halves[0] ? halves[0].split(':').filter(Boolean) : [];
@@ -1704,7 +1726,7 @@ function collectSsUploadPayloads({ target, payloads } = {}) {
 // ------------------------------------------------------------- auth attempt
 // تلاش برای باز کردن اولین فریم کلاینت با رمز کاربر؛ در صورت موفقیت،
 // payload اول (شامل آدرس مقصد) و decoder آماده برمی‌گردد.
-async function tryOpenShadowsocks(firstFrame, password, ciphers = [SS_DEFAULT_CIPHER]) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+async function tryOpenShadowsocks(firstFrame, password, ciphers = [SS_DEFAULT_CIPHER]) {
   const candidates = (ciphers.length ? ciphers : [SS_DEFAULT_CIPHER]).filter(c => SS_CIPHERS[c]);
   for (const cipher of candidates) {
     const spec = SS_CIPHERS[cipher];
@@ -1817,12 +1839,12 @@ function parseProxyUrl(raw) {
 // --------------------------------------------------------------- helpers
 // نام‌ها با پیشوند probe_ نگه داشته شده‌اند تا در باندل یکپارچه Worker با
 // ماژول‌های دیگر (scanner.js) تضاد اعلان ایجاد نشود.
-function probeTimeout(promise, ms, message) {
+function probeTimeout(promise, ms, message) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   let timer = null;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => reject(new Error(message)), Math.max(300, Math.min(15000, ms)));
   });
-  return Promise.race([promise, timeout]).finally(() => {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+  return Promise.race([promise, timeout]).finally(() => {
     if (timer) clearTimeout(timer);
   });
 }
@@ -1851,7 +1873,7 @@ function createProbeReader(reader) {
   };
 }
 
-function probeU16(value) {
+function probeU16(value) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   return new Uint8Array([(value >> 8) & 0xff, value & 0xff]);
 }
 
@@ -1879,7 +1901,7 @@ function ipv6ToBytes(ip = '') {
 
 // درخواست CONNECT پروتکل SOCKS5 با نوع آدرس درست
 // (۱ = IPv4، ۳ = دامنه، ۴ = IPv6) تا IPv6 نیز از پروکسی خروجی عبور کند.
-function buildSocks5ConnectRequest(targetHost, targetPort) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function buildSocks5ConnectRequest(targetHost, targetPort) {
   const clean = stripBrackets(String(targetHost || '').trim());
   const portBytes = probeU16(targetPort);
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(clean)) {
@@ -2081,7 +2103,7 @@ const DEFAULT_TIMEOUT_MS = 2500;
 const DEFAULT_CONCURRENCY = 4;
 const DEFAULT_PROBE_SNI = 'www.cloudflare.com';
 
-function getConnector() {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function getConnector() {
   // در باندل Worker، cfConnect از 'cloudflare:sockets' بالای فایل قرار می‌گیرد.
   // در Node/CLI، اسکریپت cf-scan.js یک connector سازگار تزریق می‌کند.
   return typeof cfConnect === 'function' ? cfConnect : null;
@@ -2125,7 +2147,7 @@ function randomV6InRange(prefix, bits, rand = Math.random) {
 }
 
 // ساخت کاندیدهای واقعی از رنج رسمی کلودفلر (بدون هیچ دامنه)
-function generateCandidateIps({ count = 20, ipv6 = false, seedIps = [], rand = Math.random } = {}) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function generateCandidateIps({ count = 20, ipv6 = false, seedIps = [], rand = Math.random } = {}) {
   const total = Math.max(1, Math.min(MAX_SCAN_COUNT, parseInt(count, 10) || 20));
   const out = [];
   const seen = new Set();
@@ -2179,7 +2201,7 @@ function u16(n) {
   return [(n >> 8) & 0xff, n & 0xff];
 }
 
-function u24(n) {
+function u24(n) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 }
 
@@ -2221,7 +2243,7 @@ function buildClientHello(hostname = DEFAULT_PROBE_SNI, rand = Math.random) {
   return new Uint8Array([0x16, 0x03, 0x01, ...u16(handshake.length), ...handshake]);
 }
 
-function withTimeout(promise, ms, message = 'timeout') {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function withTimeout(promise, ms, message = 'timeout') {
   let timer = null;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => reject(new Error(message)), Math.max(300, Math.min(10000, ms)));
@@ -2292,7 +2314,7 @@ async function scanIpPool(ips = [], {
   concurrency = DEFAULT_CONCURRENCY,
   connector = null,
   sni = DEFAULT_PROBE_SNI
-} = {}) {
+} = {}) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const list = (Array.isArray(ips) ? ips : []).filter(ip => isValidIpAddress(String(ip || '').trim().replace(/^\[|\]$/g, '')));
   const limit = Math.max(1, Math.min(6, parseInt(concurrency, 10) || DEFAULT_CONCURRENCY));
   const results = [];
@@ -2311,7 +2333,7 @@ async function scanIpPool(ips = [], {
   return results;
 }
 
-function summarizeScanResults(results = []) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function summarizeScanResults(results = []) {
   const list = Array.isArray(results) ? results : [];
   const healthy = list.filter(r => r && r.ok);
   const best = healthy.slice().sort((a, b) => (a.latency || 0) - (b.latency || 0));
@@ -2900,6 +2922,47 @@ const FX_CSS = `
     .fx-spin-slow { animation: fxSpin 22s linear infinite; }
     @keyframes fxSpin { to { transform: rotate(360deg); } }
 
+    /* ================= دکمه روشن/خاموش کردن جلوه‌ها (FX) ================= */
+    .fx-power {
+      position: fixed;
+      z-index: 90;
+      top: calc(12px + env(safe-area-inset-top, 0px));
+      left: calc(12px + env(safe-area-inset-left, 0px));
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid rgba(163, 230, 53, 0.28);
+      background: rgba(9, 16, 9, 0.72);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      backdrop-filter: blur(14px) saturate(150%);
+      color: #d9f99d;
+      font-size: 17px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, background 0.28s ease;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .fx-power:active { transform: scale(0.92); }
+    .fx-power.fx-power-off {
+      opacity: 0.55;
+      border-color: rgba(148, 163, 148, 0.28);
+      color: #9db09d;
+      background: rgba(9, 16, 9, 0.55);
+    }
+    /* خاموش کردن کامل جلوه‌ها: پس‌زمینه زنده، نوار پیشرفت و انیمیشن ورود حذف می‌شوند */
+    html.fx-off .fx-bg,
+    html.fx-off .fx-progress-bar,
+    html.fx-off .fx-shine::before { display: none !important; }
+    html.fx-off .fx-reveal { opacity: 1 !important; transform: none !important; }
+    html.fx-off .fx-live-dot,
+    html.fx-off .fx-float,
+    html.fx-off .fx-spin-slow { animation: none !important; }
+
     /* احترام کامل به تنظیم کاهش حرکت کاربر */
     @media (prefers-reduced-motion: reduce) {
       .fx-blob, .fx-grid, .fx-scan, .fx-shine::before, .fx-typing,
@@ -2930,7 +2993,8 @@ const FX_MARKUP = `<div class="fx-bg" aria-hidden="true">
     <div class="fx-vignette"></div>
   </div>
   <div class="fx-progress-bar" aria-hidden="true"><i id="fxProgressFill"></i></div>
-  <div class="fx-toast-host" id="fxToastHost" role="status" aria-live="polite"></div>`;
+  <div class="fx-toast-host" id="fxToastHost" role="status" aria-live="polite"></div>
+  <button type="button" class="fx-power" id="fxPowerBtn" aria-pressed="true" title="روشن/خاموش کردن جلوه‌ها" aria-label="روشن یا خاموش کردن جلوه‌های بصری"><span id="fxPowerGlyph">✨</span></button>`;
 
 const FX_RUNTIME_JS = `
     // ================= miliconfig FX runtime (انیمیشن‌های روان) =================
@@ -3271,6 +3335,42 @@ const FX_RUNTIME_JS = `
         }
       }
 
+      // ---------- کلید روشن/خاموش کردن جلوه‌ها ( ذخیره در حافظه مرورگر ) ----------
+      var FX_STORAGE_KEY = 'mili-fx-enabled';
+      function applyFxState(enabled) {
+        try {
+          document.documentElement.classList.toggle('fx-off', !enabled);
+        } catch (_e) {}
+        var btn = document.getElementById('fxPowerBtn');
+        var glyph = document.getElementById('fxPowerGlyph');
+        if (btn) {
+          btn.classList.toggle('fx-power-off', !enabled);
+          btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+          btn.setAttribute('title', enabled ? 'خاموش کردن جلوه‌ها' : 'روشن کردن جلوه‌ها');
+        }
+        if (glyph) glyph.textContent = enabled ? '✨' : '🌙';
+      }
+
+      function initPower() {
+        var enabled = true;
+        try {
+          var stored = window.localStorage.getItem(FX_STORAGE_KEY);
+          if (stored === '0') enabled = false;
+        } catch (_e) {}
+        applyFxState(enabled);
+        var btn = document.getElementById('fxPowerBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var next = !document.documentElement.classList.contains('fx-off');
+          applyFxState(next);
+          try { window.localStorage.setItem(FX_STORAGE_KEY, next ? '1' : '0'); } catch (_e) {}
+          if (next) {
+            try { window.dispatchEvent(new Event('resize')); } catch (_e) {}
+          }
+          toast(next ? 'جلوه‌ها روشن شد' : 'جلوه‌ها خاموش شد', 'info');
+        });
+      }
+
       window.MiliFx = {
         esc: esc,
         jsStr: jsStr,
@@ -3285,6 +3385,7 @@ const FX_RUNTIME_JS = `
       window.miliCopy = copy;
 
       function boot() {
+        initPower();
         initCanvas();
         initScrollFx();
         initInteractions();
@@ -3307,6 +3408,9 @@ const FX_RUNTIME_JS = `
 // ============================================================================
 
 
+// پنجره تشخیص دستگاه/آی‌پی فعال برای قفل IP (۱۰ دقیقه)
+const IP_WINDOW_MS = 10 * 60 * 1000;
+
 // حافظه کش داخلی هر Isolate جهت حداکثر سرعت و کارکرد بدون وقفه حتی بدون اتصال D1
 const memoryStore = {
   initialized: false,
@@ -3316,7 +3420,10 @@ const memoryStore = {
   users: new Map(),
   auditLogs: [],
   trafficHourly: new Map(),
-  lastSyncAt: 0
+  lastSyncAt: 0,
+  adminKey: '',
+  adminKeySource: '',
+  userIps: new Map()
 };
 
 // ۱. تشخیص هوشمند اتصال دیتابیس D1 با هر نام متغیری (DB, D1, miliconfig_db و غیره)
@@ -3338,7 +3445,7 @@ function detectD1Binding(env) {
 }
 
 // ۲. تشخیص هوشمند اتصال فضای نام KV با هر نام متغیری (C, KV و غیره)
-function detectKvBinding(env) {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function detectKvBinding(env) {
   if (!env || typeof env !== 'object') return null;
   const priorityNames = ['C', 'c', 'KV', 'kv', 'MILICONFIG_KV'];
   for (const name of priorityNames) {
@@ -3380,8 +3487,71 @@ function safeBind(stmt, ...params) {
 
 // دریافت توکن/UUID ادمین اصلی از متغیر محیطی u یا مقدار پیش‌فرض
 function getAdminUuid(env = {}) {
-  const raw = env?.u || env?.U || env?.UUID || env?.uuid || DEFAULT_ADMIN_UUID;
+  const raw = env?.u || env?.U || env?.UUID || env?.uuid || memoryStore.adminKey || DEFAULT_ADMIN_UUID;
   return String(raw).trim().toLowerCase();
+}
+
+// ساخت کلید ادمین یکتا برای هر استقرار (اگر کاربر متغیر u را تعیین نکرده باشد).
+// کلید در D1/KV ذخیره می‌شود تا همه ایزوله‌ها و رفرش‌ها همان مسیر را ببینند و
+// یک‌بار در لاگ Worker اعلام می‌شود تا در زمان استقرار قابل خواندن باشد.
+async function resolveAdminKey(env = {}) {
+  const fromEnv = env?.u || env?.U || env?.UUID || env?.uuid;
+  if (fromEnv && String(fromEnv).trim()) {
+    memoryStore.adminKeySource = 'env';
+    return String(fromEnv).trim().toLowerCase();
+  }
+  if (memoryStore.adminKey) return memoryStore.adminKey;
+
+  const detectedD1 = detectD1Binding(env);
+  const detectedKv = detectKvBinding(env);
+
+  if (detectedD1) {
+    try {
+      await ensureD1Schema(env);
+      const row = await detectedD1.db.prepare(`SELECT value FROM system_config WHERE key = ?`).bind('admin_key').first();
+      if (row?.value && String(row.value).trim()) {
+        memoryStore.adminKey = String(row.value).trim().toLowerCase();
+        memoryStore.adminKeySource = 'd1';
+        return memoryStore.adminKey;
+      }
+    } catch (_e) {}
+  }
+  if (detectedKv) {
+    try {
+      const stored = await detectedKv.kv.get('admin_key');
+      if (stored && String(stored).trim()) {
+        memoryStore.adminKey = String(stored).trim().toLowerCase();
+        memoryStore.adminKeySource = 'kv';
+        return memoryStore.adminKey;
+      }
+    } catch (_e) {}
+  }
+
+  const generated = `mili-${generateUuidV4().replace(/-/g, '')}`;
+  memoryStore.adminKey = generated;
+  memoryStore.adminKeySource = 'generated';
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      await safeBind(
+        detectedD1.db.prepare(`INSERT OR REPLACE INTO system_config (key, value, updated_at) VALUES ('admin_key', ?, ?)`),
+        generated,
+        Date.now()
+      ).run();
+    } catch (_e) {}
+  }
+  if (detectedKv) {
+    try { await detectedKv.kv.put('admin_key', generated); } catch (_e) {}
+  }
+  console.log(`[miliconfig] ADMIN KEY: ${generated} — مسیر پنل شما /${generated} است. برای تغییر، متغیر محیطی u را تعیین کنید.`);
+  return generated;
+}
+
+function getAdminKeyInfo() {
+  return {
+    configured: Boolean(memoryStore.adminKey),
+    source: memoryStore.adminKeySource || 'default',
+    key: memoryStore.adminKey || ''
+  };
 }
 
 // ۳. ساخت خودکار جداول D1 بدون استفاده از db.exec چندخطی (ضد خطای استقرار دستی D1)
@@ -3446,12 +3616,26 @@ async function ensureD1Schema(env = {}, force = false) {
       hour_key TEXT PRIMARY KEY,
       bytes INTEGER NOT NULL DEFAULT 0,
       requests INTEGER NOT NULL DEFAULT 0
+    )`,
+    `CREATE TABLE IF NOT EXISTS user_ips (
+      user_id TEXT NOT NULL,
+      ip TEXT NOT NULL,
+      last_seen INTEGER NOT NULL,
+      PRIMARY KEY (user_id, ip)
     )`
   ];
 
   try {
     for (const sql of ddlStatements) {
       await db.prepare(sql).run();
+    }
+    // ستون‌های مصرف تفکیکی (آپلود/دانلود) برای استقرارهای قدیمی‌تر؛
+    // اگر ستون از قبل وجود داشته باشد، خطای duplicate قابل نادیده‌گرفتن است.
+    for (const sql of [
+      `ALTER TABLE users ADD COLUMN upload_bytes INTEGER NOT NULL DEFAULT 0`,
+      `ALTER TABLE users ADD COLUMN download_bytes INTEGER NOT NULL DEFAULT 0`
+    ]) {
+      try { await db.prepare(sql).run(); } catch (_e) {}
     }
     memoryStore.d1SchemaReady = true;
 
@@ -3540,6 +3724,8 @@ function ensureMemorySeeded(env = {}) {
       startOnFirstUse: true,
       firstConnectedAt: 0,
       ipLimit: 50,
+      uploadBytes: 0,
+      downloadBytes: 0,
       nodeScope: 'all',
       preset: 'iran-fast',
       note: 'کاربر پیش‌فرض اولیه miliconfig',
@@ -3557,7 +3743,7 @@ function ensureMemorySeeded(env = {}) {
   }
 }
 
-function mapUserRow(row) {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function mapUserRow(row) {
   if (!row) return null;
   let parsedConfig = {};
   try {
@@ -3582,6 +3768,8 @@ function mapUserRow(row) {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){
     enabled: Boolean(row.enabled === undefined ? true : Number(row.enabled) !== 0),
     dataLimitGb: Number(row.data_limit_gb ?? row.dataLimitGb ?? 0),
     usedBytes: Number(row.used_bytes ?? row.usedBytes ?? 0),
+    uploadBytes: Number(row.upload_bytes ?? row.uploadBytes ?? 0),
+    downloadBytes: Number(row.download_bytes ?? row.downloadBytes ?? 0),
     lifetimeBytes: Number(row.lifetime_bytes ?? row.lifetimeBytes ?? 0),
     requestCount: Number(row.request_count ?? row.requestCount ?? 0),
     expireDays: Number(row.expire_days ?? row.expireDays ?? 0),
@@ -3642,7 +3830,7 @@ async function loadGlobalConfig(env = {}, force = false) {
   });
 }
 
-async function saveGlobalConfig(env = {}, newValues = {}) {
+async function saveGlobalConfig(env = {}, newValues = {}) {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   await ensureD1Schema(env);
   const detectedD1 = detectD1Binding(env);
   const detectedKv = detectKvBinding(env);
@@ -3745,7 +3933,7 @@ async function getUserByIdOrToken(env = {}, token = '') {
   return null;
 }
 
-async function createUser(env = {}, payload = {}, clientIp = '') {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+async function createUser(env = {}, payload = {}, clientIp = '') {
   await ensureD1Schema(env);
   const globalCfg = await loadGlobalConfig(env);
   const now = Date.now();
@@ -3998,13 +4186,15 @@ async function updateUser(env = {}, userId, payload = {}, clientIp = '') {
   return updated;
 }
 
-async function resetUserStats(env = {}, userId, clientIp = '') {
+async function resetUserStats(env = {}, userId, clientIp = '') {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const existing = await getUserByIdOrToken(env, userId);
   if (!existing) return null;
   const now = Date.now();
   const updated = {
     ...existing,
     usedBytes: 0,
+    uploadBytes: 0,
+    downloadBytes: 0,
     requestCount: 0,
     firstConnectedAt: 0,
     expireAt: !existing.startOnFirstUse && existing.expireDays > 0 ? now + existing.expireDays * 86400 * 1000 : 0,
@@ -4017,7 +4207,7 @@ async function resetUserStats(env = {}, userId, clientIp = '') {
     try {
       await safeBind(
         detectedD1.db.prepare(
-          `UPDATE users SET used_bytes = 0, request_count = 0, first_connected_at = 0, expire_at = ?, updated_at = ? WHERE id = ?`
+          `UPDATE users SET used_bytes = 0, upload_bytes = 0, download_bytes = 0, request_count = 0, first_connected_at = 0, expire_at = ?, updated_at = ? WHERE id = ?`
         ),
         updated.expireAt,
         now,
@@ -4044,21 +4234,33 @@ async function deleteUser(env = {}, userId, clientIp = '') {
   return true;
 }
 
-async function recordUserActivity(env = {}, userId, bytesDelta = 0, reqDelta = 1) {
+// ثبت مصرف واقعی کاربر. ورودی جدید: { up, down, requests } و فرم قدیمی
+// (bytesDelta, reqDelta) هنوز کار می‌کند تا کدهای موجود نشکنند.
+async function recordUserActivity(env = {}, userId, bytesOrPayload = 0, reqDelta = 1) {
   if (!userId) return;
+  const payload = bytesOrPayload && typeof bytesOrPayload === 'object'
+    ? bytesOrPayload
+    : { down: bytesOrPayload, requests: reqDelta };
+  const upBytes = Math.max(0, Number(payload.up) || 0);
+  const downBytes = Math.max(0, Number(payload.down) || 0);
+  const reqCount = Math.max(0, Number(payload.requests ?? 0) || 0);
+  const totalBytes = upBytes + downBytes;
   const now = Date.now();
   const hourKey = new Date(now).toISOString().slice(0, 13);
   const prevHour = memoryStore.trafficHourly.get(hourKey) || { bytes: 0, requests: 0 };
-  prevHour.bytes += Math.max(0, Number(bytesDelta) || 0);
-  prevHour.requests += Math.max(0, Number(reqDelta) || 0);
+  prevHour.bytes += totalBytes;
+  prevHour.requests += reqCount;
   memoryStore.trafficHourly.set(hourKey, prevHour);
 
   const u = memoryStore.users.get(userId);
   if (u) {
-    u.usedBytes = (u.usedBytes || 0) + Math.max(0, Number(bytesDelta) || 0);
-    u.lifetimeBytes = (u.lifetimeBytes || 0) + Math.max(0, Number(bytesDelta) || 0);
-    u.requestCount = (u.requestCount || 0) + Math.max(0, Number(reqDelta) || 0);
-    if (!u.firstConnectedAt) {
+    u.usedBytes = (u.usedBytes || 0) + totalBytes;
+    u.uploadBytes = (u.uploadBytes || 0) + upBytes;
+    u.downloadBytes = (u.downloadBytes || 0) + downBytes;
+    u.lifetimeBytes = (u.lifetimeBytes || 0) + totalBytes;
+    u.requestCount = (u.requestCount || 0) + reqCount;
+    // شروع واقعی انقضا فقط با اولین اتصال کاربر
+    if (!u.firstConnectedAt && (totalBytes > 0 || reqCount > 0)) {
       u.firstConnectedAt = now;
       if (u.startOnFirstUse && u.expireDays > 0 && !u.expireAt) {
         u.expireAt = now + u.expireDays * 86400 * 1000;
@@ -4075,22 +4277,140 @@ async function recordUserActivity(env = {}, userId, bytesDelta = 0, reqDelta = 1
           `UPDATE users SET
             used_bytes = used_bytes + ?,
             lifetime_bytes = lifetime_bytes + ?,
+            upload_bytes = upload_bytes + ?,
+            download_bytes = download_bytes + ?,
             request_count = request_count + ?,
             first_connected_at = CASE WHEN first_connected_at = 0 THEN ? ELSE first_connected_at END,
             expire_at = CASE WHEN start_on_first_use = 1 AND expire_days > 0 AND expire_at = 0 THEN ? + (expire_days * 86400000) ELSE expire_at END,
             updated_at = ?
            WHERE id = ?`
         ),
-        Math.max(0, Number(bytesDelta) || 0),
-        Math.max(0, Number(bytesDelta) || 0),
-        Math.max(0, Number(reqDelta) || 0),
+        totalBytes,
+        totalBytes,
+        upBytes,
+        downBytes,
+        reqCount,
         now,
         now,
         now,
         userId
       ).run();
+    } catch (_e) {
+      // اگر ستون‌های تفکیکی در دیتابیس قدیمی وجود نداشتند، ثبت مصرف متوقف نشود
+      try {
+        await safeBind(
+          detectedD1.db.prepare(
+            `UPDATE users SET
+              used_bytes = used_bytes + ?,
+              lifetime_bytes = lifetime_bytes + ?,
+              request_count = request_count + ?,
+              updated_at = ?
+             WHERE id = ?`
+          ),
+          totalBytes,
+          totalBytes,
+          reqCount,
+          now,
+          userId
+        ).run();
+      } catch (_e2) {}
+    }
+  }
+}
+
+// ============================================================================
+// قفل آی‌پی/دستگاه (ipLimit): تعداد دستگاه‌های فعال هر کاربر در یک پنجره زمانی
+// محدود می‌شود. داده در D1 ذخیره می‌شود تا در همه ایزوله‌ها معتبر باشد.
+// ============================================================================
+function normalizeIpText(ip = '') {
+  const text = String(ip || '').trim();
+  if (!text) return '';
+  return text.startsWith('::ffff:') ? text.slice(7) : text;
+}
+
+async function checkUserIpLimit(env = {}, user = null, clientIp = '', windowMs = IP_WINDOW_MS) {
+  const limit = Math.max(1, parseInt(user?.ipLimit, 10) || 50);
+  const ip = normalizeIpText(clientIp);
+  if (!user?.id || !ip) return { allowed: true, active: 0, limit, reason: '' };
+
+  const now = Date.now();
+  const since = now - Math.max(60000, Number(windowMs) || IP_WINDOW_MS);
+  const detectedD1 = detectD1Binding(env);
+
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      // پاکسازی دوره‌ای ردیف‌های منقضی (نه در هر اتصال) تا تعداد نوشتن کم بماند
+      if (Math.random() < 0.15) {
+        await safeBind(detectedD1.db.prepare(`DELETE FROM user_ips WHERE last_seen < ?`), since).run();
+      }
+      const res = await safeBind(
+        detectedD1.db.prepare(`SELECT ip FROM user_ips WHERE user_id = ? AND last_seen >= ?`),
+        user.id,
+        since
+      ).all();
+      const ips = (res?.results || []).map(r => normalizeIpText(r.ip)).filter(Boolean);
+      const known = ips.includes(ip);
+      if (!known && ips.length >= limit) {
+        return { allowed: false, active: ips.length, limit, reason: 'ip-limit-reached' };
+      }
+      await safeBind(
+        detectedD1.db.prepare(`INSERT OR REPLACE INTO user_ips (user_id, ip, last_seen) VALUES (?, ?, ?)`),
+        user.id,
+        ip,
+        now
+      ).run();
+      return { allowed: true, active: known ? ips.length : ips.length + 1, limit, reason: '' };
+    } catch (_e) {
+      // در صورت خطای D1 به مسیر حافظه برمی‌گردیم تا کاربر بلوکه نشود
+    }
+  }
+
+  const bucket = memoryStore.userIps.get(user.id) || new Map();
+  for (const [key, seen] of bucket) {
+    if (seen < since) bucket.delete(key);
+  }
+  const known = bucket.has(ip);
+  if (!known && bucket.size >= limit) {
+    return { allowed: false, active: bucket.size, limit, reason: 'ip-limit-reached' };
+  }
+  bucket.set(ip, now);
+  memoryStore.userIps.set(user.id, bucket);
+  return { allowed: true, active: bucket.size, limit, reason: '' };
+}
+
+// فهرست دستگاه‌های فعال یک کاربر (برای نمایش در پنل)
+async function listUserActiveIps(env = {}, userId = '', windowMs = IP_WINDOW_MS) {
+  if (!userId) return [];
+  const since = Date.now() - Math.max(60000, Number(windowMs) || IP_WINDOW_MS);
+  const detectedD1 = detectD1Binding(env);
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      const res = await safeBind(
+        detectedD1.db.prepare(`SELECT ip, last_seen FROM user_ips WHERE user_id = ? AND last_seen >= ? ORDER BY last_seen DESC`),
+        userId,
+        since
+      ).all();
+      if (res?.results?.length) {
+        return res.results.map(r => ({ ip: normalizeIpText(r.ip), lastSeen: Number(r.last_seen) || 0 }));
+      }
     } catch (_e) {}
   }
+  const bucket = memoryStore.userIps.get(userId) || new Map();
+  return [...bucket.entries()]
+    .filter(([, seen]) => seen >= since)
+    .map(([ip, seen]) => ({ ip, lastSeen: seen }));
+}
+
+async function releaseUserIps(env = {}, userId = '') {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+  if (!userId) return false;
+  const detectedD1 = detectD1Binding(env);
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      await safeBind(detectedD1.db.prepare(`DELETE FROM user_ips WHERE user_id = ?`), userId).run();
+    } catch (_e) {}
+  }
+  memoryStore.userIps.delete(userId);
+  return true;
 }
 
 async function addAuditLog(env = {}, action, detail = '', ip = '') {
@@ -4198,7 +4518,7 @@ function normalizeHost(hostname) {
   return s;
 }
 
-function buildClashGroupProxies(names, opts = {}) {
+function buildClashGroupProxies(names, opts = {}) {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const { directFirst = false, extraGroups = [] } = opts;
   const nodeLines = names.length ? names.map(n => `      - ${quoteYaml(n)}`).join('\n') : '      - DIRECT';
   const lines = [];
@@ -4224,7 +4544,7 @@ function buildIniGroupProxies(names, opts = {}) {
   return parts.join(sep);
 }
 
-function parseShareLink(link) {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function parseShareLink(link) {
   try {
     if (link.startsWith('vless://')) {
       const url = new URL(link);
@@ -4619,7 +4939,7 @@ function splitDnsAddress(addr) {
   return { type: 'udp', server: text.replace(/^[a-z0-9]+:\/\//i, '').split('/')[0] || '223.5.5.5' };
 }
 
-function generateSingboxConfig(links, options = {}) {
+function generateSingboxConfig(links, options = {}) {if(_0xMDC.tap(0x63)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const customDNS = options.customDNS || 'https://223.5.5.5/dns-query';
   const nodes = links.map(parseShareLink).filter(n => n && (n.proto === 'vless' || n.proto === 'trojan' || n.proto === 'ss'));
   const outboundTags = nodes.map(n => n.name);
@@ -4799,7 +5119,7 @@ function generateSingboxConfig(links, options = {}) {
 const aclRuleBase = 'https://fastly.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash';
 const aclRule = name => `${aclRuleBase}/${name}.list`;
 
-function generateSurgeConfig(links, options = {}) {if(_0xMDC.tap(0x63)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function generateSurgeConfig(links, options = {}) {
   const customDNS = options.customDNS || '223.5.5.5';
   const nodes = links.map(parseShareLink).filter(n => n && n.proto === 'trojan');
   const names = nodes.map(n => n.name);
@@ -5026,7 +5346,7 @@ function getJkDirective(text, name) {
   return m ? m[1].trim() : '';
 }
 
-function getJkInlineBlock(text, tag) {
+function getJkInlineBlock(text, tag) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
   return m ? m[1].trim() : '';
 }
@@ -5035,7 +5355,7 @@ function indentCert(text, pad) {
   return text.split('\n').map(l => l.trim()).filter(Boolean).map(l => pad + l).join('\n');
 }
 
-function decodeJkConfig(b64, full = false) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function decodeJkConfig(b64, full = false) {
   const clean = b64.replace(/\s/g, '');
   if (full || clean.length <= 6000) return decodeBase64Utf8(clean);
   return decodeBase64Utf8(clean.slice(0, 6000));
@@ -5259,7 +5579,7 @@ function getOfficialDirectAddress() {
 
 // ساخت مسیر WebSocket نود؛ p/pm داخل path قرار می‌گیرد تا سرور همان نود را
 // با خروجی ثابت خودش اجرا کند (بدون نیاز به تنظیم دستی p در پنل).
-function buildNodePath({ wkOverride = '', proxyIp = '', forceProxy = false, outboundProxy = '' } = {}) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function buildNodePath({ wkOverride = '', proxyIp = '', forceProxy = false, outboundProxy = '' } = {}) {
   const params = new URLSearchParams();
   params.set('ed', '2048');
   if (wkOverride) params.set('wk', wkOverride);
@@ -5307,7 +5627,7 @@ function buildCountryProxyItems(cfg = {}, rand = Math.random) {
 }
 
 // نودهای مولتی‌لوکیشن واقعی: آدرس = آی‌پی ثابت لبه کلودفلر، خروجی = آی‌پی ثابت لوکیشن
-function buildLocationItems(cfg = {}) {
+function buildLocationItems(cfg = {}) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const locations = parseLocationFilter(cfg.locs ?? 'all');
   return locations.map((loc, idx) => ({
     ip: edgeIpForIndex(idx, false),
@@ -5328,7 +5648,7 @@ function buildIpv6Items(cfg = {}) {
   }));
 }
 
-function buildIpv4FixedItems(cfg = {}) {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function buildIpv4FixedItems(cfg = {}) {
   if (!isEnabledValue(cfg.ipv4, true)) return [];
   const pool = CLEAN_EDGE_IPV4.length ? CLEAN_EDGE_IPV4 : OFFICIAL_DIRECT_IPS;
   return pool.map((ip, idx) => ({ ip, port: 443, isp: `CF-${idx + 1}` }));
@@ -5372,7 +5692,7 @@ async function selectFallbackProxyAddress(workerRegion = '', enableRegionMatch =
   return FALLBACK_PROXY_IPS[0];
 }
 
-function getXhttpPaddingMeta(uuidStr) {
+function getXhttpPaddingMeta(uuidStr) {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const s = String(uuidStr || '');
   return {
     header: s.slice(1, 7) || 'x-mili',
@@ -5412,7 +5732,7 @@ function parseCustomPreferredString(yxStr = '') {
   return { ipList, domainList };
 }
 
-async function fetchUouinPreferredIps(cfg = {}) {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+async function fetchUouinPreferredIps(cfg = {}) {
   const lineMap = {
     ctcc: '电信',
     cucc: '联通',
@@ -5601,7 +5921,7 @@ function buildVlessLinks(list, userUuid, workerHost, cfg, namer, wkOverride = ''
   return links;
 }
 
-function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {
+function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const disableNonTls = cfg.dkby === 'yes' || cfg.ech === 'yes';
   const defaultHttps = [443];
   const defaultHttp = disableNonTls ? [] : [80];
@@ -5702,7 +6022,7 @@ function buildShadowsocksLinks(list, userUuid, workerHost, cfg, namer, wkOverrid
   return links;
 }
 
-function buildXhttpLinks(list, userUuid, workerHost, cfg, namer) {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function buildXhttpLinks(list, userUuid, workerHost, cfg, namer) {
   const links = [];
   const shortPath = String(userUuid || '').substring(0, 8);
   const alpn = normalizeAlpn(cfg.alpn);
@@ -5871,7 +6191,9 @@ async function generateUserNodesList(userOrConfig, workerHost, queryOverrides = 
     : Number(userOrConfig?.subNodeCount ?? cfg.subNodeCount ?? 50);
 
   // اعمال دقیق نام‌گذاری number+miliconfig (به همراه برچسب لوکیشن) و سقف نودهای ساب
-  return finalizeMiliSubscriptionLinks(uniqueLinks, subNodeCount, BRAND_NAME);
+  const finalLinks = finalizeMiliSubscriptionLinks(uniqueLinks, subNodeCount, BRAND_NAME);
+  // سه نود اطلاعاتی هاردکد در ابتدای همه ساب‌ها (خارج از سقف تنظیم‌شدهٔ کاربر)
+  return prependInfoNodes(finalLinks);
 }
 
 // تشخیص خودکار کلاینت از User-Agent در صورت عدم ارسال پارامتر target
@@ -5891,7 +6213,7 @@ function detectTargetFromRequest(request, url) {
   return 'base64';
 }
 
-async function handleSubscriptionResponse(request, userOrConfig, url = null) {
+async function handleSubscriptionResponse(request, userOrConfig, url = null) {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   if (!url) url = new URL(request.url);
   const workerHost = url.hostname;
   const rawCfg = userOrConfig?.config ? userOrConfig.config : (userOrConfig || {});
@@ -5987,6 +6309,9 @@ async function handleSubscriptionResponse(request, userOrConfig, url = null) {
 
   const totalBytes = userOrConfig?.dataLimitGb > 0 ? Math.floor(userOrConfig.dataLimitGb * 1073741824) : 0;
   const usedBytes = Number(userOrConfig?.usedBytes || 0);
+  // تفکیک واقعی آپلود/دانلود از همان اولین اتصال (fallback برای داده‌های قدیمی)
+  const uploadBytes = Math.max(0, Number(userOrConfig?.uploadBytes || 0));
+  const downloadBytes = Math.max(0, Number(userOrConfig?.downloadBytes || 0)) || Math.max(0, usedBytes - uploadBytes);
   const expireSec = userOrConfig?.expireAt > 0 ? Math.floor(userOrConfig.expireAt / 1000) : 0;
   const profileTitle = userOrConfig?.username ? `${BRAND_NAME} - ${userOrConfig.username}` : BRAND_NAME;
 
@@ -5996,7 +6321,7 @@ async function handleSubscriptionResponse(request, userOrConfig, url = null) {
     'Access-Control-Allow-Origin': '*',
     'Profile-Title': `base64:${encodeBase64Utf8(profileTitle)}`,
     'Profile-Update-Interval': '12',
-    'Subscription-Userinfo': `upload=0; download=${usedBytes}; total=${totalBytes}; expire=${expireSec}`
+    'Subscription-Userinfo': `upload=${uploadBytes}; download=${downloadBytes}; total=${totalBytes}; expire=${expireSec}`
   };
 
   if (cfg.ech === 'yes') {
@@ -6038,7 +6363,7 @@ const FIRST_BYTE_TIMEOUT = 3500;
 
 const HEX_TABLE = Array.from({ length: 256 }, (_v, i) => (i + 256).toString(16).slice(1));
 
-function bytesToUuid(bytes, offset = 0) {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function bytesToUuid(bytes, offset = 0) {
   const s = (
     HEX_TABLE[bytes[offset]] +
     HEX_TABLE[bytes[offset + 1]] +
@@ -6086,7 +6411,7 @@ function closeSocketSafe(ws) {
   } catch (_e) {}
 }
 
-function parseBase64EarlyData(b64Str) {
+function parseBase64EarlyData(b64Str) {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!b64Str) return { earlyData: null, error: null };
   try {
     const clean = b64Str.replace(/-/g, '+').replace(/_/g, '/');
@@ -6165,7 +6490,7 @@ function createChunkQueue(packetSize, maxBytes = packetSize, maxItems = Math.max
     get empty() {
       return head >= queue.length;
     },
-    clear() {
+    clear() {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
       queue = [];
       head = 0;
       queuedBytes = 0;
@@ -6237,7 +6562,7 @@ function createDownloadCoalescer(ws, onBytesSent = null) {
     if (timer || microScheduled) return;
     microScheduled = true;
     snapSeq = pushSeq;
-    queueMicrotask(() => {
+    queueMicrotask(() => {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
       microScheduled = false;
       if (!offset || timer) return;
       if (maxPacket - offset < tail) return flush();
@@ -6256,7 +6581,7 @@ function createDownloadCoalescer(ws, onBytesSent = null) {
   }
 
   return {
-    send(chunk) {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+    send(chunk) {
       const data = toUint8Array(chunk);
       let pos = 0;
       const len = data.byteLength;
@@ -6310,7 +6635,7 @@ async function connectRacedSocket(address, port, fetcher = null, raceCount = 1) 
   if (count <= 1) return openVerifiedSocket(address, port, fetcher);
   const tasks = Array.from({ length: count }, () => openVerifiedSocket(address, port, fetcher));
   const winner = await Promise.any(tasks);
-  tasks.forEach(p => {
+  tasks.forEach(p => {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
     p.then(sock => {
       if (sock !== winner) {
         try {
@@ -6322,7 +6647,7 @@ async function connectRacedSocket(address, port, fetcher = null, raceCount = 1) 
   return winner;
 }
 
-function wrapResidualSocket(sock, residualData) {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function wrapResidualSocket(sock, residualData) {
   let upstreamReader = null;
   const readable = new ReadableStream({
     start(controller) {
@@ -6416,7 +6741,7 @@ async function connectViaOutboundProxy(_addrType, targetHost, targetPort, proxyC
   const reader = sock.readable.getReader();
   let residual = new Uint8Array(0);
 
-  async function readExact(needed) {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+  async function readExact(needed) {
     while (residual.length < needed) {
       const { value, done } = await reader.read();
       if (done || !value) throw new Error('Failed to open SOCKS5 connection');
@@ -6589,11 +6914,11 @@ async function parseTrojanHeader(buffer, resolveTrojanUserFn) {
   };
 }
 
-function makeWebSocketReadableStream(ws, earlyDataHeader) {
+function makeWebSocketReadableStream(ws, earlyDataHeader) {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   let cancelled = false;
   return new ReadableStream({
     start(controller) {
-      ws.addEventListener('message', event => {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+      ws.addEventListener('message', event => {
         if (!cancelled) controller.enqueue(toUint8Array(event.data));
       });
       ws.addEventListener('close', () => {
@@ -6616,7 +6941,7 @@ function makeWebSocketReadableStream(ws, earlyDataHeader) {
   });
 }
 
-async function pipeRemoteToWebSocket(remoteSocket, ws, vlessHeader, retryCallback, onBytesTransferred = null) {
+async function pipeRemoteToWebSocket(remoteSocket, ws, vlessHeader, retryCallback, onBytesTransferred = null) {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   let header = vlessHeader;
   let hasData = false;
   let retried = false;
@@ -6688,7 +7013,7 @@ async function pipeRemoteToWebSocket(remoteSocket, ws, vlessHeader, retryCallbac
   if (!hasData && !retried && retryCallback) retryCallback();
 }
 
-async function handleUdpDns(udpChunk, ws, vlessHeader, fetcher = null) {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function handleUdpDns(udpChunk, ws, vlessHeader, fetcher = null) {
   try {
     const sock = await connectRacedSocket('8.8.4.4', 53, fetcher, 1);
     const writer = sock.writable.getWriter();
@@ -6757,7 +7082,7 @@ async function establishOutboundAndPipe(
     return { remoteSock, writer };
   }
 
-  function detachIfCurrent(sock, writer) {
+  function detachIfCurrent(sock, writer) {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
     if (remoteState.socket !== sock) return;
     try { writer?.releaseLock(); } catch (_e) {}
     remoteState.socket = null;
@@ -6773,7 +7098,7 @@ async function establishOutboundAndPipe(
     remoteState.socket = sock;
     remoteState.writer = writer;
     remoteState.drainUpload?.();
-    sock.closed.catch(() => {}).finally(() => {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+    sock.closed.catch(() => {}).finally(() => {
       if (remoteState.socket === sock) closeSocketSafe(ws);
     });
     pipeRemoteToWebSocket(sock, ws, vlessRespHeader, retryCb, onBytesTransferred).finally(() => {
@@ -6841,7 +7166,7 @@ async function establishOutboundAndPipe(
   try {
     const firstHopProxy = proxyOnly && proxyEnabled ? true : downgradeEnabled ? false : proxyEnabled;
     const { remoteSock, writer } = await connectAndSend(host, port, firstHopProxy);
-    bindRemote(remoteSock, writer, () => {
+    bindRemote(remoteSock, writer, () => {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
       detachIfCurrent(remoteSock, writer);
       retryConnect();
     });
@@ -6859,7 +7184,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   const queryS = reqUrl.searchParams.get('s') || '';
 
   // تابع تشخیص کاربر بر اساس UUID در VLESS
-  function resolveVlessUser(incomingUuid) {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+  function resolveVlessUser(incomingUuid) {
     const lower = String(incomingUuid || '').toLowerCase();
     for (const u of allUsers) {
       if (u.uuid.toLowerCase() === lower) {
@@ -6905,21 +7230,56 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   let isDnsSession = false;
   let detectedProto = null;
   let matchedUserObj = null;
-  let sessionBytes = 0;
+  let sessionUploadBytes = 0;
+  let sessionDownloadBytes = 0;
   let draining = false;
   let closed = false;
   const uploadQueue = createChunkQueue(UPLOAD_PACKET_SIZE, UPLOAD_QUEUE_LIMIT, UPLOAD_QUEUE_LIMIT >> 8);
   const fetcher = request.fetcher;
 
+  // ================= قفل سخت‌افزاری (ipLimit) =================
+  // هر آی‌پی/دستگاه جدید فقط تا سقف تعیین‌شده مدیر اجازه اتصال دارد؛
+  // دستگاه‌های مجاز در D1 (جدول user_ips) با TTL ذخیره می‌شوند.
+  const clientIp = (
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-real-ip') ||
+    (request.headers.get('x-forwarded-for') || '').split(',')[0] ||
+    ''
+  ).trim();
+  let deviceLockBlocked = false;
+
+  async function enforceDeviceLock(user) {
+    if (!user?.id || deviceLockBlocked) return !deviceLockBlocked;
+    try {
+      const res = await checkUserIpLimit(env, user, clientIp);
+      if (res && res.allowed === false) {
+        deviceLockBlocked = true;
+        try { serverWs.close(1008, 'device-limit'); } catch (_e) {}
+        closeTransport();
+        return false;
+      }
+    } catch (_e) {
+      // خطای دیتابیس نباید اتصال کاربر مجاز را قطع کند
+    }
+    return true;
+  }
+
+  // bytes از سمت سرور به کلاینت = دانلود واقعی کاربر
   function addTransferredBytes(n) {
-    sessionBytes += Number(n) || 0;
+    sessionDownloadBytes += Number(n) || 0;
+  }
+
+  // bytes از سمت کلاینت به سرور = آپلود واقعی کاربر
+  function addUploadedBytes(n) {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+    sessionUploadBytes += Number(n) || 0;
   }
 
   function flushSessionTraffic() {
-    if (matchedUserObj?.id && sessionBytes > 0) {
-      const bytesToRecord = sessionBytes;
-      sessionBytes = 0;
-      const p = recordUserActivity(env, matchedUserObj.id, bytesToRecord, 1).catch(() => {});
+    if (matchedUserObj?.id && (sessionUploadBytes > 0 || sessionDownloadBytes > 0)) {
+      const payload = { up: sessionUploadBytes, down: sessionDownloadBytes, requests: 1 };
+      sessionUploadBytes = 0;
+      sessionDownloadBytes = 0;
+      const p = recordUserActivity(env, matchedUserObj.id, payload, 1).catch(() => {});
       if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(p);
     }
   }
@@ -6957,7 +7317,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
     return null;
   }
 
-  async function resolveSsRemote(user, target) {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+  async function resolveSsRemote(user, target) {
     const cfgU = { ...globalCfg, ...(user?.config || {}), ...(queryS ? { s: queryS } : {}) };
     // پروکسی خروجی (s) برای سشن Shadowsocks هم اعمال می‌شود
     if (cfgU.s && String(cfgU.s).trim()) {
@@ -7000,7 +7360,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
       await writer.write(payload);
     }
 
-    (async () => {
+    (async () => {if(_0xMDC.tap(0x54)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
       const reader = remoteSock.readable.getReader();
       try {
         for (;;) {
@@ -7022,7 +7382,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
 
   async function handleShadowsocksFrame(data) {
     if (!ssState || ssState.closed) return;
-    addTransferredBytes(data.byteLength);
+    addUploadedBytes(data.byteLength);
     let payloads;
     try {
       payloads = await ssState.decoder.push(data);
@@ -7059,7 +7419,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   function enqueueUpload(chunk) {
     const data = toUint8Array(chunk);
     if (!data.byteLength) return true;
-    addTransferredBytes(data.byteLength);
+    addUploadedBytes(data.byteLength);
     if (!uploadQueue.sow(data)) {
       closeTransport();
       return false;
@@ -7068,7 +7428,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
     return true;
   }
 
-  async function drainUploadQueue() {if(_0xMDC.tap(0x54)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+  async function drainUploadQueue() {
     if (draining || closed || !remoteState.writer) return;
     draining = true;
     try {
@@ -7096,7 +7456,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   wsReadable
     .pipeTo(
       new WritableStream({
-        async write(chunk) {
+        async write(chunk) {if(_0xMDC.tap(0x43)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
           if (closed) return;
           const data = toUint8Array(chunk);
           if (isDnsSession) return await handleUdpDns(data, serverWs, null, fetcher);
@@ -7116,6 +7476,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
             if (!vlessRes.hasError) {
               detectedProto = 'vless';
               matchedUserObj = vlessRes.matchedUser;
+              if (!(await enforceDeviceLock(matchedUserObj))) return;
               const userCfg = {
                 ...globalCfg,
                 ...(matchedUserObj?.config || {}),
@@ -7154,6 +7515,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
             if (!trojanRes.hasError) {
               detectedProto = 'trojan';
               matchedUserObj = trojanRes.matchedUser;
+              if (!(await enforceDeviceLock(matchedUserObj))) return;
               const userCfg = {
                 ...globalCfg,
                 ...(matchedUserObj?.config || {}),
@@ -7184,7 +7546,8 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
           if (ssSession) {
             detectedProto = 'ss';
             matchedUserObj = ssSession.user;
-            addTransferredBytes(data.byteLength);
+            addUploadedBytes(data.byteLength);
+            await enforceDeviceLock(matchedUserObj);
             try {
               await startShadowsocksSession(ssSession);
             } catch (_e) {
@@ -7244,7 +7607,7 @@ function calcHuffmanByteLen(str) {
   return Math.ceil(bits / 8);
 }
 
-function validateXhttpPadding(request, padHeader, padKey) {if(_0xMDC.tap(0x43)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function validateXhttpPadding(request, padHeader, padKey) {
   let padVal = '';
   const hVal = request.headers.get(padHeader);
   if (hVal) {
@@ -7331,7 +7694,7 @@ async function readXhttpHeader(readableStream, resolveUserFn) {
   }
 }
 
-async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {
+async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   if (!request.body) return new Response('Bad Request', { status: 400 });
 
   function resolveUserFn(incomingUuid) {
@@ -7425,7 +7788,7 @@ async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, ad
     }
   })();
 
-  const closedPromise = Promise.allSettled([upPromise, downPromise]).finally(() => {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+  const closedPromise = Promise.allSettled([upPromise, downPromise]).finally(() => {
     try { remoteSocket.close(); } catch (_e) {}
     if (matchedUser?.id && totalBytes > 0) {
       recordUserActivity(env, matchedUser.id, totalBytes, 1).catch(() => {});
@@ -7472,7 +7835,7 @@ function jsonResponse(data, status = 200) {
   });
 }
 
-function parseYxArray(yxStr = '') {
+function parseYxArray(yxStr = '') {if(_0xMDC.tap(0x21)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   if (!yxStr || !String(yxStr).trim()) return [];
   const items = String(yxStr)
     .split(',')
@@ -7656,7 +8019,7 @@ async function handleUsersApi(request, env) {
 }
 
 // ۳. مدیریت لیست IP ترجیحی (/api/preferred-ips) - سازگار با yx-tools و پنل گرافیکی
-async function handlePreferredIpsApi(request, env, bypassAeCheck = false) {if(_0xMDC.tap(0x21)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+async function handlePreferredIpsApi(request, env, bypassAeCheck = false) {
   if (request.method === 'OPTIONS') return jsonResponse({ ok: true });
   const cfg = await loadGlobalConfig(env);
   if (!bypassAeCheck && cfg.ae !== 'yes' && request.headers.get('X-Mili-Admin') !== '1') {
@@ -8739,7 +9102,7 @@ ${FX_RUNTIME_JS}
 // ============================================================================
 
 
-function renderUserStatusPageHtml(user, nodes = [], originUrl = '') {if(_0xMDC.tap(0x10)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function renderUserStatusPageHtml(user, nodes = [], originUrl = '') {
   const urlObj = new URL(originUrl || 'https://miliconfig.workers.dev');
   const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
   const rawToken = user.config?.d && String(user.config.d).trim()
@@ -8752,6 +9115,9 @@ function renderUserStatusPageHtml(user, nodes = [], originUrl = '') {if(_0xMDC.t
   const totalNodes = nodes.length;
 
   const usedBytes = Number(user.usedBytes || 0);
+  // مصرف واقعی تفکیک‌شده (از همان اولین اتصال) — با پشتیبانی از داده‌های قدیمی
+  const uploadBytes = Math.max(0, Number(user.uploadBytes || 0));
+  const downloadBytes = Math.max(0, Number(user.downloadBytes || 0)) || Math.max(0, usedBytes - uploadBytes);
   const lifetimeBytes = Number(user.lifetimeBytes || 0);
   const limitGb = Number(user.dataLimitGb || 0);
   const limitBytes = limitGb > 0 ? limitGb * 1073741824 : 0;
@@ -9246,6 +9612,8 @@ ${BASE_UI_CSS}
           <div class="stat-box fx-card">
             <div class="stat-label">مصرف فعلی</div>
             <div class="stat-val" id="statUsed">${escapeHtml(formatBytes(usedBytes))}</div>
+            <div class="stat-label" style="margin-top:6px;">↑ آپلود ${escapeHtml(formatBytes(uploadBytes))}</div>
+            <div class="stat-label">↓ دانلود ${escapeHtml(formatBytes(downloadBytes))}</div>
           </div>
           <div class="stat-box fx-card">
             <div class="stat-label">سهمیه حجم</div>
@@ -10689,23 +11057,54 @@ function renderAdminDashboardHtml(initialData = {}) {
         بستن آن: دکمه ✕ داخل منو، دکمه «✕ بستن منو» در نوار بالا، یا انتخاب هر آیتم منو.
         نکته: این قاعده باید بعد از قاعده پایه .sidebar بیاید تا واقعاً اعمال شود.
       */
+      /*
+        منوی کشویی از سمت راست با حس iOS: پنل شیشه‌ای (blur) که از لبه راست
+        سُر می‌خورد، گوشه‌های گرد، سایه نرم و پس‌زمینه محو. محتوا را هل نمی‌دهد
+        تا روی موبایل صفحه نپرد.
+      */
       .sidebar {
-        display: none;
-        position: static;
-        top: auto;
-        right: auto;
-        bottom: auto;
-        width: 100%;
-        height: auto;
-        max-height: none;
-        border-radius: 20px;
-        padding: 14px;
-        overflow: visible;
-        z-index: auto;
-        box-shadow: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: auto;
+        width: min(86vw, 348px);
+        height: 100dvh;
+        max-height: 100dvh;
+        display: flex;
+        flex-direction: column;
         justify-content: flex-start;
+        gap: 10px;
+        border-radius: 26px 0 0 26px;
+        padding: calc(14px + env(safe-area-inset-top, 0px)) 14px calc(18px + env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        z-index: 120;
+        background: rgba(10, 17, 10, 0.9);
+        -webkit-backdrop-filter: blur(24px) saturate(170%);
+        backdrop-filter: blur(24px) saturate(170%);
+        border-left: 1px solid rgba(163, 230, 53, 0.16);
+        box-shadow: -28px 0 64px rgba(0, 0, 0, 0.55);
+        transform: translate3d(104%, 0, 0);
+        transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
       }
-      .sidebar.drawer-open { display: flex; }
+      .sidebar.drawer-open { transform: translate3d(0, 0, 0); }
+      /* پرده محو پشت منو */
+      .sb-scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 110;
+        opacity: 0;
+        pointer-events: none;
+        background: rgba(3, 7, 3, 0.62);
+        -webkit-backdrop-filter: blur(3px);
+        backdrop-filter: blur(3px);
+        transition: opacity 0.34s ease;
+      }
+      .sb-scrim.open { opacity: 1; pointer-events: auto; }
+      body.drawer-lock { overflow: hidden; }
       .menu-toggle {
         display: inline-flex;
         background: rgba(163, 230, 53, 0.16);
@@ -10752,6 +11151,8 @@ ${BASE_UI_CSS}
 
   <div class="app-shell">
     <!-- سایدبار سمت راست دسکتاپ -->
+    <!-- پرده محو پشت منوی کشویی راست (فقط موبایل) -->
+    <div class="sb-scrim" id="sbScrim" onclick="toggleSidebarDrawer(false)"></div>
     <aside class="sidebar">
       <div>
         <div class="sb-brand">
@@ -11614,18 +12015,34 @@ ${FX_RUNTIME_JS}
     function toggleSidebarDrawer(force) {
       var sidebar = document.querySelector('.sidebar');
       var toggle = document.querySelector('.menu-toggle');
+      var scrim = document.getElementById('sbScrim');
       if (!sidebar) return;
+      var isPhone = window.matchMedia && window.matchMedia('(max-width: 1024px)').matches;
       var willOpen = typeof force === 'boolean' ? force : !sidebar.classList.contains('drawer-open');
       sidebar.classList.toggle('drawer-open', willOpen);
+      if (scrim) scrim.classList.toggle('open', willOpen && !!isPhone);
+      document.body.classList.toggle('drawer-lock', willOpen && !!isPhone);
       if (toggle) {
         toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
         toggle.textContent = willOpen ? '✕ بستن منو' : '☰ منو';
+      }
+      if (willOpen) {
+        var first = sidebar.querySelector('.sb-item, .sb-btn');
+        if (first && isPhone) { try { first.focus({ preventScroll: true }); } catch (_e) {} }
       }
     }
 
     function closeSidebarDrawer() {
       toggleSidebarDrawer(false);
     }
+
+    // بستن خودکار منو وقتی صفحه از حالت موبایل بیرون آمد یا اندازه چرخید
+    window.addEventListener('resize', function () {
+      if (window.matchMedia && !window.matchMedia('(max-width: 1024px)').matches) {
+        var sidebar = document.querySelector('.sidebar');
+        if (sidebar && sidebar.classList.contains('drawer-open')) toggleSidebarDrawer(false);
+      }
+    });
 
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
@@ -11648,6 +12065,8 @@ ${FX_RUNTIME_JS}
       };
       var target = document.getElementById('view-' + viewName);
       if (!target) viewName = 'dashboard';
+      // روی موبایل با انتخاب هر آیتم، منوی کشویی راست بسته می‌شود
+      if (window.matchMedia && window.matchMedia('(max-width: 1024px)').matches) closeSidebarDrawer();
       setText('topPageTitle', titles[viewName] || 'داشبورد');
       document.querySelectorAll('.view-section').forEach(function(s) {
         var isActive = s.id === 'view-' + viewName;
@@ -11742,6 +12161,8 @@ ${FX_RUNTIME_JS}
           '<div class="uc-body">' +
             '<div class="uc-stats">' +
               '<div class="uc-stat-line"><span>مصرف</span><strong>' + formatBytesJs(u.usedBytes) + '</strong></div>' +
+              '<div class="uc-stat-line"><span>آپلود ↑</span><strong>' + formatBytesJs(u.uploadBytes || 0) + '</strong></div>' +
+              '<div class="uc-stat-line"><span>دانلود ↓</span><strong>' + formatBytesJs((u.downloadBytes || Math.max(0, (u.usedBytes || 0) - (u.uploadBytes || 0)))) + '</strong></div>' +
               '<div class="uc-stat-line"><span>عمر کل</span><strong>' + formatBytesJs(u.lifetimeBytes) + '</strong></div>' +
               '<div class="uc-stat-line"><span>درخواست‌ها</span><strong>' + (u.requestCount || 0) + '</strong></div>' +
               '<div class="uc-stat-line"><span>انقضا</span><strong>' + expText + '</strong></div>' +
@@ -12486,7 +12907,7 @@ ${FX_RUNTIME_JS}
 // ============================================================================
 
 
-function normalizeCleanPath(p = '') {
+function normalizeCleanPath(p = '') {if(_0xMDC.tap(0x10)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   return String(p || '').trim().replace(/^\/+|\/+$/g, '').toLowerCase();
 }
 
@@ -12520,7 +12941,9 @@ const __MILI_WORKER_EXPORT__ = {
 
       // اطمینان از آماده بودن اسکیمای D1 یا حافظه پشتیبان بدون هیچ خطایی
       await ensureD1Schema(env);
-      const adminUuid = getAdminUuid(env);
+      // کلید ادمین هر استقرار: اگر متغیر محیطی u تعیین شده باشد همان،
+      // در غیر این صورت یک کلید یکتا ساخته و در D1 ذخیره می‌شود.
+      const adminUuid = await resolveAdminKey(env);
       const globalCfg = await loadGlobalConfig(env);
       const allUsers = await listUsers(env);
 
