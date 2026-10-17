@@ -105,6 +105,7 @@ export async function runHardeningTests({ assert, adminHtml }) {
   assert.ok(adminHtml.includes('drawer-lock'), 'قفل اسکرول بدنه هنگام باز بودن منو لازم است');
   assert.ok(/\.sidebar[\s\S]{0,2000}translate3d\(104%/.test(adminHtml), 'منوی موبایل باید از سمت راست سُر بخورد');
   assert.ok(adminHtml.includes('backdrop-filter: blur(24px)'), 'منوی موبایل باید حس شیشه‌ای iOS داشته باشد');
+  assert.ok(adminHtml.includes('آپلود ↑') && adminHtml.includes('دانلود ↓'), 'پنل باید مصرف واقعی آپلود/دانلود را جداگانه نشان دهد');
   assert.ok(FX_MARKUP.includes('fxPowerBtn'), 'دکمه روشن/خاموش جلوه‌ها باید در همه صفحات باشد');
   assert.ok(FX_MARKUP.includes('aria-pressed'), 'دکمه FX باید وضعیت دسترس‌پذیری داشته باشد');
   console.log('  ✓ تست ۲۷ (منوی کشویی راست + حس iOS + دکمه روشن/خاموش FX): موفق');

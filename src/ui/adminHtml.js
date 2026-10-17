@@ -2083,6 +2083,8 @@ ${FX_RUNTIME_JS}
           '<div class="uc-body">' +
             '<div class="uc-stats">' +
               '<div class="uc-stat-line"><span>مصرف</span><strong>' + formatBytesJs(u.usedBytes) + '</strong></div>' +
+              '<div class="uc-stat-line"><span>آپلود ↑</span><strong>' + formatBytesJs(u.uploadBytes || 0) + '</strong></div>' +
+              '<div class="uc-stat-line"><span>دانلود ↓</span><strong>' + formatBytesJs((u.downloadBytes || Math.max(0, (u.usedBytes || 0) - (u.uploadBytes || 0)))) + '</strong></div>' +
               '<div class="uc-stat-line"><span>عمر کل</span><strong>' + formatBytesJs(u.lifetimeBytes) + '</strong></div>' +
               '<div class="uc-stat-line"><span>درخواست‌ها</span><strong>' + (u.requestCount || 0) + '</strong></div>' +
               '<div class="uc-stat-line"><span>انقضا</span><strong>' + expText + '</strong></div>' +

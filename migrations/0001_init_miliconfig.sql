@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS users (
   data_limit_gb REAL NOT NULL DEFAULT 0,
   used_bytes INTEGER NOT NULL DEFAULT 0,
   lifetime_bytes INTEGER NOT NULL DEFAULT 0,
+  upload_bytes INTEGER NOT NULL DEFAULT 0,
+  download_bytes INTEGER NOT NULL DEFAULT 0,
   request_count INTEGER NOT NULL DEFAULT 0,
   expire_days INTEGER NOT NULL DEFAULT 0,
   expire_at INTEGER NOT NULL DEFAULT 0,

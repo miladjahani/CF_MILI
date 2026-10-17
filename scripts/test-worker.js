@@ -319,6 +319,7 @@ async function runTests() {
     }
     assert.ok(rootHtml.includes('btn-support') && rootHtml.includes('modeAdmin'), 'صفحه ورود باید دکمه پشتیبانی و انتخاب حالت داشته باشد');
     assert.ok(statusHtml.includes('usage-ring') && statusHtml.includes('nodeSearch'), 'صفحه وضعیت باید حلقه مصرف و جستجوی نود داشته باشد');
+    assert.ok(statusHtml.includes('↑ آپلود') && statusHtml.includes('↓ دانلود'), 'صفحه وضعیت باید مصرف واقعی آپلود و دانلود را جداگانه نشان دهد');
     assert.ok(adminHtml.includes('donutRing') && adminHtml.includes('fx-ring'), 'داشبورد باید حلقه گرافیکی متحرک داشته باشد');
     assert.ok(adminHtml.includes('id="fxProgressFill"'), 'داشبورد باید نوار پیشرفت اسکرول داشته باشد');
     console.log('  ✓ تست ۷ (پس‌زمینه زنده و انیمیشن‌های روان در هر سه صفحه UI): موفق');

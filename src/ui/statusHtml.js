@@ -24,6 +24,9 @@ export function renderUserStatusPageHtml(user, nodes = [], originUrl = '') {
   const totalNodes = nodes.length;
 
   const usedBytes = Number(user.usedBytes || 0);
+  // مصرف واقعی تفکیک‌شده (از همان اولین اتصال) — با پشتیبانی از داده‌های قدیمی
+  const uploadBytes = Math.max(0, Number(user.uploadBytes || 0));
+  const downloadBytes = Math.max(0, Number(user.downloadBytes || 0)) || Math.max(0, usedBytes - uploadBytes);
   const lifetimeBytes = Number(user.lifetimeBytes || 0);
   const limitGb = Number(user.dataLimitGb || 0);
   const limitBytes = limitGb > 0 ? limitGb * 1073741824 : 0;
@@ -518,6 +521,8 @@ ${BASE_UI_CSS}
           <div class="stat-box fx-card">
             <div class="stat-label">مصرف فعلی</div>
             <div class="stat-val" id="statUsed">${escapeHtml(formatBytes(usedBytes))}</div>
+            <div class="stat-label" style="margin-top:6px;">↑ آپلود ${escapeHtml(formatBytes(uploadBytes))}</div>
+            <div class="stat-label">↓ دانلود ${escapeHtml(formatBytes(downloadBytes))}</div>
           </div>
           <div class="stat-box fx-card">
             <div class="stat-label">سهمیه حجم</div>
