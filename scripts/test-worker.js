@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FX_RUNTIME_JS } from '../src/ui/fx.js';
+import { DEFAULT_ADMIN_UUID } from '../src/config/defaults.js';
 import { runProxyPoolTests } from './tests/proxyPool.tests.js';
 import { runHardeningTests } from './tests/hardening.tests.js';
 import {
@@ -165,6 +166,14 @@ async function runTests() {
     const rootHtml = await rootResp.text();
     assert.ok(rootHtml.includes('MILICONFIG'), 'برند MILICONFIG باید در صفحه ورود وجود داشته باشد');
     assert.ok(rootHtml.includes('login-hint') && rootHtml.includes('مسیر ادمین'), 'صفحه ورود باید راهنمای «کلید ادمین یا UUID کاربر» را نشان دهد');
+
+    // بدون u و بدون D1، کلید پیش‌فرض مستند باید پنل را باز کند (ضد قفل‌شدن استقرار بدون دیتابیس)
+    const noDbAdminResp = await worker.fetch(new Request(`https://mili.example.com/${DEFAULT_ADMIN_UUID}`), {}, {});
+    assert.strictEqual(noDbAdminResp.status, 200, 'مسیر کلید پیش‌فرض بدون u و بدون D1 باید پنل را باز کند');
+    const noDbAdminHtml = await noDbAdminResp.text();
+    assert.ok(noDbAdminHtml.includes('مرکز کنترل زیرساخت پروکسی miliconfig'), 'پنل باید با کلید پیش‌فرض کامل رندر شود');
+    const noDbApiResp = await worker.fetch(new Request(`https://mili.example.com/${DEFAULT_ADMIN_UUID}/api/config`), {}, {});
+    assert.strictEqual(noDbApiResp.status, 200, 'API مدیریتی باید با کلید پیش‌فرض بدون دیتابیس پاسخ دهد');
     console.log('  ✓ تست ۱ (استقرار دستی بدون D1 و بدون خطای 1101): موفق');
 
     // تست ۲: اتصال دیتابیس D1 و ساخت خودکار جداول + پنل مدیریت
