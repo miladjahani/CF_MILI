@@ -8,6 +8,7 @@ import {
   ensureD1Schema,
   getAdminUuid,
   getStorageDiagnostics,
+  resolveAdminKey,
   getUserByIdOrToken,
   listUsers,
   loadGlobalConfig,
@@ -62,7 +63,9 @@ export default {
 
       // اطمینان از آماده بودن اسکیمای D1 یا حافظه پشتیبان بدون هیچ خطایی
       await ensureD1Schema(env);
-      const adminUuid = getAdminUuid(env);
+      // کلید ادمین هر استقرار: اگر متغیر محیطی u تعیین شده باشد همان،
+      // در غیر این صورت یک کلید یکتا ساخته و در D1 ذخیره می‌شود.
+      const adminUuid = await resolveAdminKey(env);
       const globalCfg = await loadGlobalConfig(env);
       const allUsers = await listUsers(env);
 

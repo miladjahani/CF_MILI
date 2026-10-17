@@ -146,6 +146,28 @@ export function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, bran
 }
 
 // ============================================================================
+// نودهای اطلاعاتی هاردکد — همیشه در ابتدای «همه» ساب‌ها (بدون مصرف سهمیه کاربر)
+// هر نود اطلاعاتی، تنظیمات و میزبان یک نود واقعی را کپی می‌کند تا اتصالش هم کار کند
+// ============================================================================
+export const INFO_NODE_LABELS = [
+  '🎁 میلی رایگان است',
+  '⚠️ این کانفیگ را نفروشید — حرام است',
+  '📣 کانال پشتیبانی @miliconfig'
+];
+
+export function prependInfoNodes(links = [], labels = INFO_NODE_LABELS) {
+  if (!Array.isArray(links) || links.length === 0) return [];
+  const cleanLabels = (Array.isArray(labels) ? labels : [labels]).filter(Boolean);
+  const infoNodes = cleanLabels.map((label, idx) => {
+    const source = links[idx % links.length];
+    const hashIdx = source.indexOf('#');
+    const base = hashIdx > -1 ? source.substring(0, hashIdx) : source;
+    return `${base}#${encodeURIComponent(String(label))}`;
+  });
+  return [...infoNodes, ...links];
+}
+
+// ============================================================================
 // Pure-JS MD5 (بدون وابستگی به WebCrypto MD5 جهت جلوگیری از خطای ۱۱۰۱ در تمام نسخه‌های کلودفلر)
 // ============================================================================
 export async function md5Hex(text) {

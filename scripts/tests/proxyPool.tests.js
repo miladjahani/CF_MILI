@@ -192,7 +192,9 @@ export async function runProxyPoolTests({ assert, worker, d1Env, adminUuid, admi
     d1Env,
     {}
   )).text();
-  const poolLines = poolSub.trim().split('\n').filter(Boolean);
+  // سه خط اول نودهای اطلاعاتی هاردکد هستند و در شمارش نودهای کشوری حساب نمی‌شوند
+  const INFO_NODES_COUNT = 3;
+  const poolLines = poolSub.trim().split('\n').filter(Boolean).slice(INFO_NODES_COUNT);
   assert.strictEqual(poolLines.length, 6, `ساب کاربر کشوری باید ۶ نود داشته باشد (${poolLines.length})`);
   const countryOf = (link) => decodeURIComponent(link.split('#')[1] || '').replace(/^\d+\+miliconfig ?/, '').trim();
   const codes = poolLines.map(countryOf);
@@ -215,7 +217,7 @@ export async function runProxyPoolTests({ assert, worker, d1Env, adminUuid, admi
     d1Env,
     {}
   )).text();
-  assert.strictEqual(cleanSub.trim().split('\n').length, 6, 'با locs=no نباید نود لوکیشن اضافه شود');
+  assert.strictEqual(cleanSub.trim().split('\n').length, 6 + INFO_NODES_COUNT, 'با locs=no نباید نود لوکیشن اضافه شود');
   console.log('  ✓ تست ۲۱ (API استخر + نودهای مولتی‌لوکیشن کشوری با s اختصاصی در ساب‌لینک): موفق');
 
   // ========================================================================

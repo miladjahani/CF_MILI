@@ -8,6 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FX_RUNTIME_JS } from '../src/ui/fx.js';
 import { runProxyPoolTests } from './tests/proxyPool.tests.js';
+import { runHardeningTests } from './tests/hardening.tests.js';
 import {
   chacha20Poly1305Open,
   chacha20Poly1305Seal,
@@ -212,7 +213,24 @@ async function runTests() {
     );
     assert.strictEqual(subRawResp.status, 200);
     const rawLinksText = await subRawResp.text();
-    const rawLines = rawLinksText.trim().split('\n').filter(Boolean);
+    const allLines = rawLinksText.trim().split('\n').filter(Boolean);
+    // سه خط اول، نودهای اطلاعاتی هاردکد هستند و از سهمیه subNodeCount کم نمی‌شوند
+    const INFO_COUNT = 3;
+    const infoLines = allLines.slice(0, INFO_COUNT);
+    const rawLines = allLines.slice(INFO_COUNT);
+    assert.strictEqual(infoLines.length, INFO_COUNT, 'ساب باید سه نود اطلاعاتی داشته باشد');
+    assert.ok(
+      decodeURIComponent(infoLines[0].split('#')[1] || '').includes('میلی رایگان است'),
+      'نود اطلاعاتی اول باید «میلی رایگان است» باشد'
+    );
+    assert.ok(
+      decodeURIComponent(infoLines[1].split('#')[1] || '').includes('نفروشید'),
+      'نود اطلاعاتی دوم باید هشدار نفروشید باشد'
+    );
+    assert.ok(
+      decodeURIComponent(infoLines[2].split('#')[1] || '').includes('@miliconfig'),
+      'نود اطلاعاتی سوم باید کانال پشتیبانی باشد'
+    );
     assert.strictEqual(rawLines.length, 8, `تعداد نودهای ساب‌لینک باید دقیقاً برابر با subNodeCount (8) باشد ولی ${rawLines.length} بود`);
 
     rawLines.forEach((line, idx) => {
@@ -507,8 +525,10 @@ async function runTests() {
       d1Env,
       {}
     )).text();
-    const sanctionLines = sanctionRaw.trim().split('\n').filter(Boolean);
-    assert.ok(sanctionLines.length > 0, 'ساب تحریم‌شکن نباید خالی باشد');
+    // سه خط اول نودهای اطلاعاتی هاردکد هستند و در بررسی ساختار نودها لحاظ نمی‌شوند
+    const sanctionAllLines = sanctionRaw.trim().split('\n').filter(Boolean);
+    const sanctionLines = sanctionAllLines.slice(3);
+    assert.ok(sanctionAllLines.length >= 3 && sanctionLines.length > 0, 'ساب تحریم‌شکن نباید خالی باشد');
     const locTags = new Set();
     let proxyNodes = 0;
     for (const line of sanctionLines) {
@@ -714,6 +734,11 @@ async function runTests() {
     // تست‌های ۱۹ تا ۲۲: استخر پروکسی کشوری، پینگ واقعی، نودهای مولتی‌لوکیشن و پنل
     // ========================================================================
     await runProxyPoolTests({ assert, worker, d1Env, adminUuid, adminHtml });
+
+    // ========================================================================
+    // تست‌های ۲۳ تا ۲۷: نود اطلاعاتی، مصرف واقعی، قفل دستگاه، کلید ادمین، UI موبایل
+    // ========================================================================
+    await runHardeningTests({ assert, adminHtml });
   } finally {
     if (fs.existsSync(tmpTestFile)) fs.unlinkSync(tmpTestFile);
   }

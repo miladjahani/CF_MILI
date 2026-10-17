@@ -12,6 +12,9 @@ import {
 import { USER_PRESETS, buildUserDefaultConfig } from '../config/presets.js';
 import { generateShortId, generateUuidV4, isValidUuid } from '../core/utils.js';
 
+// پنجره تشخیص دستگاه/آی‌پی فعال برای قفل IP (۱۰ دقیقه)
+export const IP_WINDOW_MS = 10 * 60 * 1000;
+
 // حافظه کش داخلی هر Isolate جهت حداکثر سرعت و کارکرد بدون وقفه حتی بدون اتصال D1
 const memoryStore = {
   initialized: false,
@@ -21,7 +24,10 @@ const memoryStore = {
   users: new Map(),
   auditLogs: [],
   trafficHourly: new Map(),
-  lastSyncAt: 0
+  lastSyncAt: 0,
+  adminKey: '',
+  adminKeySource: '',
+  userIps: new Map()
 };
 
 // ۱. تشخیص هوشمند اتصال دیتابیس D1 با هر نام متغیری (DB, D1, miliconfig_db و غیره)
@@ -85,8 +91,71 @@ function safeBind(stmt, ...params) {
 
 // دریافت توکن/UUID ادمین اصلی از متغیر محیطی u یا مقدار پیش‌فرض
 export function getAdminUuid(env = {}) {
-  const raw = env?.u || env?.U || env?.UUID || env?.uuid || DEFAULT_ADMIN_UUID;
+  const raw = env?.u || env?.U || env?.UUID || env?.uuid || memoryStore.adminKey || DEFAULT_ADMIN_UUID;
   return String(raw).trim().toLowerCase();
+}
+
+// ساخت کلید ادمین یکتا برای هر استقرار (اگر کاربر متغیر u را تعیین نکرده باشد).
+// کلید در D1/KV ذخیره می‌شود تا همه ایزوله‌ها و رفرش‌ها همان مسیر را ببینند و
+// یک‌بار در لاگ Worker اعلام می‌شود تا در زمان استقرار قابل خواندن باشد.
+export async function resolveAdminKey(env = {}) {
+  const fromEnv = env?.u || env?.U || env?.UUID || env?.uuid;
+  if (fromEnv && String(fromEnv).trim()) {
+    memoryStore.adminKeySource = 'env';
+    return String(fromEnv).trim().toLowerCase();
+  }
+  if (memoryStore.adminKey) return memoryStore.adminKey;
+
+  const detectedD1 = detectD1Binding(env);
+  const detectedKv = detectKvBinding(env);
+
+  if (detectedD1) {
+    try {
+      await ensureD1Schema(env);
+      const row = await detectedD1.db.prepare(`SELECT value FROM system_config WHERE key = ?`).bind('admin_key').first();
+      if (row?.value && String(row.value).trim()) {
+        memoryStore.adminKey = String(row.value).trim().toLowerCase();
+        memoryStore.adminKeySource = 'd1';
+        return memoryStore.adminKey;
+      }
+    } catch (_e) {}
+  }
+  if (detectedKv) {
+    try {
+      const stored = await detectedKv.kv.get('admin_key');
+      if (stored && String(stored).trim()) {
+        memoryStore.adminKey = String(stored).trim().toLowerCase();
+        memoryStore.adminKeySource = 'kv';
+        return memoryStore.adminKey;
+      }
+    } catch (_e) {}
+  }
+
+  const generated = `mili-${generateUuidV4().replace(/-/g, '')}`;
+  memoryStore.adminKey = generated;
+  memoryStore.adminKeySource = 'generated';
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      await safeBind(
+        detectedD1.db.prepare(`INSERT OR REPLACE INTO system_config (key, value, updated_at) VALUES ('admin_key', ?, ?)`),
+        generated,
+        Date.now()
+      ).run();
+    } catch (_e) {}
+  }
+  if (detectedKv) {
+    try { await detectedKv.kv.put('admin_key', generated); } catch (_e) {}
+  }
+  console.log(`[miliconfig] ADMIN KEY: ${generated} — مسیر پنل شما /${generated} است. برای تغییر، متغیر محیطی u را تعیین کنید.`);
+  return generated;
+}
+
+export function getAdminKeyInfo() {
+  return {
+    configured: Boolean(memoryStore.adminKey),
+    source: memoryStore.adminKeySource || 'default',
+    key: memoryStore.adminKey || ''
+  };
 }
 
 // ۳. ساخت خودکار جداول D1 بدون استفاده از db.exec چندخطی (ضد خطای استقرار دستی D1)
@@ -151,12 +220,26 @@ export async function ensureD1Schema(env = {}, force = false) {
       hour_key TEXT PRIMARY KEY,
       bytes INTEGER NOT NULL DEFAULT 0,
       requests INTEGER NOT NULL DEFAULT 0
+    )`,
+    `CREATE TABLE IF NOT EXISTS user_ips (
+      user_id TEXT NOT NULL,
+      ip TEXT NOT NULL,
+      last_seen INTEGER NOT NULL,
+      PRIMARY KEY (user_id, ip)
     )`
   ];
 
   try {
     for (const sql of ddlStatements) {
       await db.prepare(sql).run();
+    }
+    // ستون‌های مصرف تفکیکی (آپلود/دانلود) برای استقرارهای قدیمی‌تر؛
+    // اگر ستون از قبل وجود داشته باشد، خطای duplicate قابل نادیده‌گرفتن است.
+    for (const sql of [
+      `ALTER TABLE users ADD COLUMN upload_bytes INTEGER NOT NULL DEFAULT 0`,
+      `ALTER TABLE users ADD COLUMN download_bytes INTEGER NOT NULL DEFAULT 0`
+    ]) {
+      try { await db.prepare(sql).run(); } catch (_e) {}
     }
     memoryStore.d1SchemaReady = true;
 
@@ -245,6 +328,8 @@ function ensureMemorySeeded(env = {}) {
       startOnFirstUse: true,
       firstConnectedAt: 0,
       ipLimit: 50,
+      uploadBytes: 0,
+      downloadBytes: 0,
       nodeScope: 'all',
       preset: 'iran-fast',
       note: 'کاربر پیش‌فرض اولیه miliconfig',
@@ -287,6 +372,8 @@ function mapUserRow(row) {
     enabled: Boolean(row.enabled === undefined ? true : Number(row.enabled) !== 0),
     dataLimitGb: Number(row.data_limit_gb ?? row.dataLimitGb ?? 0),
     usedBytes: Number(row.used_bytes ?? row.usedBytes ?? 0),
+    uploadBytes: Number(row.upload_bytes ?? row.uploadBytes ?? 0),
+    downloadBytes: Number(row.download_bytes ?? row.downloadBytes ?? 0),
     lifetimeBytes: Number(row.lifetime_bytes ?? row.lifetimeBytes ?? 0),
     requestCount: Number(row.request_count ?? row.requestCount ?? 0),
     expireDays: Number(row.expire_days ?? row.expireDays ?? 0),
@@ -710,6 +797,8 @@ export async function resetUserStats(env = {}, userId, clientIp = '') {
   const updated = {
     ...existing,
     usedBytes: 0,
+    uploadBytes: 0,
+    downloadBytes: 0,
     requestCount: 0,
     firstConnectedAt: 0,
     expireAt: !existing.startOnFirstUse && existing.expireDays > 0 ? now + existing.expireDays * 86400 * 1000 : 0,
@@ -722,7 +811,7 @@ export async function resetUserStats(env = {}, userId, clientIp = '') {
     try {
       await safeBind(
         detectedD1.db.prepare(
-          `UPDATE users SET used_bytes = 0, request_count = 0, first_connected_at = 0, expire_at = ?, updated_at = ? WHERE id = ?`
+          `UPDATE users SET used_bytes = 0, upload_bytes = 0, download_bytes = 0, request_count = 0, first_connected_at = 0, expire_at = ?, updated_at = ? WHERE id = ?`
         ),
         updated.expireAt,
         now,
@@ -749,21 +838,33 @@ export async function deleteUser(env = {}, userId, clientIp = '') {
   return true;
 }
 
-export async function recordUserActivity(env = {}, userId, bytesDelta = 0, reqDelta = 1) {
+// ثبت مصرف واقعی کاربر. ورودی جدید: { up, down, requests } و فرم قدیمی
+// (bytesDelta, reqDelta) هنوز کار می‌کند تا کدهای موجود نشکنند.
+export async function recordUserActivity(env = {}, userId, bytesOrPayload = 0, reqDelta = 1) {
   if (!userId) return;
+  const payload = bytesOrPayload && typeof bytesOrPayload === 'object'
+    ? bytesOrPayload
+    : { down: bytesOrPayload, requests: reqDelta };
+  const upBytes = Math.max(0, Number(payload.up) || 0);
+  const downBytes = Math.max(0, Number(payload.down) || 0);
+  const reqCount = Math.max(0, Number(payload.requests ?? 0) || 0);
+  const totalBytes = upBytes + downBytes;
   const now = Date.now();
   const hourKey = new Date(now).toISOString().slice(0, 13);
   const prevHour = memoryStore.trafficHourly.get(hourKey) || { bytes: 0, requests: 0 };
-  prevHour.bytes += Math.max(0, Number(bytesDelta) || 0);
-  prevHour.requests += Math.max(0, Number(reqDelta) || 0);
+  prevHour.bytes += totalBytes;
+  prevHour.requests += reqCount;
   memoryStore.trafficHourly.set(hourKey, prevHour);
 
   const u = memoryStore.users.get(userId);
   if (u) {
-    u.usedBytes = (u.usedBytes || 0) + Math.max(0, Number(bytesDelta) || 0);
-    u.lifetimeBytes = (u.lifetimeBytes || 0) + Math.max(0, Number(bytesDelta) || 0);
-    u.requestCount = (u.requestCount || 0) + Math.max(0, Number(reqDelta) || 0);
-    if (!u.firstConnectedAt) {
+    u.usedBytes = (u.usedBytes || 0) + totalBytes;
+    u.uploadBytes = (u.uploadBytes || 0) + upBytes;
+    u.downloadBytes = (u.downloadBytes || 0) + downBytes;
+    u.lifetimeBytes = (u.lifetimeBytes || 0) + totalBytes;
+    u.requestCount = (u.requestCount || 0) + reqCount;
+    // شروع واقعی انقضا فقط با اولین اتصال کاربر
+    if (!u.firstConnectedAt && (totalBytes > 0 || reqCount > 0)) {
       u.firstConnectedAt = now;
       if (u.startOnFirstUse && u.expireDays > 0 && !u.expireAt) {
         u.expireAt = now + u.expireDays * 86400 * 1000;
@@ -780,22 +881,140 @@ export async function recordUserActivity(env = {}, userId, bytesDelta = 0, reqDe
           `UPDATE users SET
             used_bytes = used_bytes + ?,
             lifetime_bytes = lifetime_bytes + ?,
+            upload_bytes = upload_bytes + ?,
+            download_bytes = download_bytes + ?,
             request_count = request_count + ?,
             first_connected_at = CASE WHEN first_connected_at = 0 THEN ? ELSE first_connected_at END,
             expire_at = CASE WHEN start_on_first_use = 1 AND expire_days > 0 AND expire_at = 0 THEN ? + (expire_days * 86400000) ELSE expire_at END,
             updated_at = ?
            WHERE id = ?`
         ),
-        Math.max(0, Number(bytesDelta) || 0),
-        Math.max(0, Number(bytesDelta) || 0),
-        Math.max(0, Number(reqDelta) || 0),
+        totalBytes,
+        totalBytes,
+        upBytes,
+        downBytes,
+        reqCount,
         now,
         now,
         now,
         userId
       ).run();
+    } catch (_e) {
+      // اگر ستون‌های تفکیکی در دیتابیس قدیمی وجود نداشتند، ثبت مصرف متوقف نشود
+      try {
+        await safeBind(
+          detectedD1.db.prepare(
+            `UPDATE users SET
+              used_bytes = used_bytes + ?,
+              lifetime_bytes = lifetime_bytes + ?,
+              request_count = request_count + ?,
+              updated_at = ?
+             WHERE id = ?`
+          ),
+          totalBytes,
+          totalBytes,
+          reqCount,
+          now,
+          userId
+        ).run();
+      } catch (_e2) {}
+    }
+  }
+}
+
+// ============================================================================
+// قفل آی‌پی/دستگاه (ipLimit): تعداد دستگاه‌های فعال هر کاربر در یک پنجره زمانی
+// محدود می‌شود. داده در D1 ذخیره می‌شود تا در همه ایزوله‌ها معتبر باشد.
+// ============================================================================
+function normalizeIpText(ip = '') {
+  const text = String(ip || '').trim();
+  if (!text) return '';
+  return text.startsWith('::ffff:') ? text.slice(7) : text;
+}
+
+export async function checkUserIpLimit(env = {}, user = null, clientIp = '', windowMs = IP_WINDOW_MS) {
+  const limit = Math.max(1, parseInt(user?.ipLimit, 10) || 50);
+  const ip = normalizeIpText(clientIp);
+  if (!user?.id || !ip) return { allowed: true, active: 0, limit, reason: '' };
+
+  const now = Date.now();
+  const since = now - Math.max(60000, Number(windowMs) || IP_WINDOW_MS);
+  const detectedD1 = detectD1Binding(env);
+
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      // پاکسازی دوره‌ای ردیف‌های منقضی (نه در هر اتصال) تا تعداد نوشتن کم بماند
+      if (Math.random() < 0.15) {
+        await safeBind(detectedD1.db.prepare(`DELETE FROM user_ips WHERE last_seen < ?`), since).run();
+      }
+      const res = await safeBind(
+        detectedD1.db.prepare(`SELECT ip FROM user_ips WHERE user_id = ? AND last_seen >= ?`),
+        user.id,
+        since
+      ).all();
+      const ips = (res?.results || []).map(r => normalizeIpText(r.ip)).filter(Boolean);
+      const known = ips.includes(ip);
+      if (!known && ips.length >= limit) {
+        return { allowed: false, active: ips.length, limit, reason: 'ip-limit-reached' };
+      }
+      await safeBind(
+        detectedD1.db.prepare(`INSERT OR REPLACE INTO user_ips (user_id, ip, last_seen) VALUES (?, ?, ?)`),
+        user.id,
+        ip,
+        now
+      ).run();
+      return { allowed: true, active: known ? ips.length : ips.length + 1, limit, reason: '' };
+    } catch (_e) {
+      // در صورت خطای D1 به مسیر حافظه برمی‌گردیم تا کاربر بلوکه نشود
+    }
+  }
+
+  const bucket = memoryStore.userIps.get(user.id) || new Map();
+  for (const [key, seen] of bucket) {
+    if (seen < since) bucket.delete(key);
+  }
+  const known = bucket.has(ip);
+  if (!known && bucket.size >= limit) {
+    return { allowed: false, active: bucket.size, limit, reason: 'ip-limit-reached' };
+  }
+  bucket.set(ip, now);
+  memoryStore.userIps.set(user.id, bucket);
+  return { allowed: true, active: bucket.size, limit, reason: '' };
+}
+
+// فهرست دستگاه‌های فعال یک کاربر (برای نمایش در پنل)
+export async function listUserActiveIps(env = {}, userId = '', windowMs = IP_WINDOW_MS) {
+  if (!userId) return [];
+  const since = Date.now() - Math.max(60000, Number(windowMs) || IP_WINDOW_MS);
+  const detectedD1 = detectD1Binding(env);
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      const res = await safeBind(
+        detectedD1.db.prepare(`SELECT ip, last_seen FROM user_ips WHERE user_id = ? AND last_seen >= ? ORDER BY last_seen DESC`),
+        userId,
+        since
+      ).all();
+      if (res?.results?.length) {
+        return res.results.map(r => ({ ip: normalizeIpText(r.ip), lastSeen: Number(r.last_seen) || 0 }));
+      }
     } catch (_e) {}
   }
+  const bucket = memoryStore.userIps.get(userId) || new Map();
+  return [...bucket.entries()]
+    .filter(([, seen]) => seen >= since)
+    .map(([ip, seen]) => ({ ip, lastSeen: seen }));
+}
+
+export async function releaseUserIps(env = {}, userId = '') {
+  if (!userId) return false;
+  const detectedD1 = detectD1Binding(env);
+  if (detectedD1 && memoryStore.d1SchemaReady) {
+    try {
+      await safeBind(detectedD1.db.prepare(`DELETE FROM user_ips WHERE user_id = ?`), userId).run();
+    } catch (_e) {}
+  }
+  memoryStore.userIps.delete(userId);
+  return true;
 }
 
 export async function addAuditLog(env = {}, action, detail = '', ip = '') {

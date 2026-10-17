@@ -29,7 +29,8 @@ import {
   isValidIpAddress,
   md5Hex,
   normalizeNodeHost,
-  parseAddressAndPort
+  parseAddressAndPort,
+  prependInfoNodes
 } from '../core/utils.js';
 import { resolveSsCiphers } from '../core/shadowsocks.js';
 import { PROXY_POOL, pickProxiesAcrossCountries } from '../config/proxyPool.js';
@@ -667,7 +668,9 @@ export async function generateUserNodesList(userOrConfig, workerHost, queryOverr
     : Number(userOrConfig?.subNodeCount ?? cfg.subNodeCount ?? 50);
 
   // اعمال دقیق نام‌گذاری number+miliconfig (به همراه برچسب لوکیشن) و سقف نودهای ساب
-  return finalizeMiliSubscriptionLinks(uniqueLinks, subNodeCount, BRAND_NAME);
+  const finalLinks = finalizeMiliSubscriptionLinks(uniqueLinks, subNodeCount, BRAND_NAME);
+  // سه نود اطلاعاتی هاردکد در ابتدای همه ساب‌ها (خارج از سقف تنظیم‌شدهٔ کاربر)
+  return prependInfoNodes(finalLinks);
 }
 
 // تشخیص خودکار کلاینت از User-Agent در صورت عدم ارسال پارامتر target
@@ -783,6 +786,9 @@ export async function handleSubscriptionResponse(request, userOrConfig, url = nu
 
   const totalBytes = userOrConfig?.dataLimitGb > 0 ? Math.floor(userOrConfig.dataLimitGb * 1073741824) : 0;
   const usedBytes = Number(userOrConfig?.usedBytes || 0);
+  // تفکیک واقعی آپلود/دانلود از همان اولین اتصال (fallback برای داده‌های قدیمی)
+  const uploadBytes = Math.max(0, Number(userOrConfig?.uploadBytes || 0));
+  const downloadBytes = Math.max(0, Number(userOrConfig?.downloadBytes || 0)) || Math.max(0, usedBytes - uploadBytes);
   const expireSec = userOrConfig?.expireAt > 0 ? Math.floor(userOrConfig.expireAt / 1000) : 0;
   const profileTitle = userOrConfig?.username ? `${BRAND_NAME} - ${userOrConfig.username}` : BRAND_NAME;
 
@@ -792,7 +798,7 @@ export async function handleSubscriptionResponse(request, userOrConfig, url = nu
     'Access-Control-Allow-Origin': '*',
     'Profile-Title': `base64:${encodeBase64Utf8(profileTitle)}`,
     'Profile-Update-Interval': '12',
-    'Subscription-Userinfo': `upload=0; download=${usedBytes}; total=${totalBytes}; expire=${expireSec}`
+    'Subscription-Userinfo': `upload=${uploadBytes}; download=${downloadBytes}; total=${totalBytes}; expire=${expireSec}`
   };
 
   if (cfg.ech === 'yes') {

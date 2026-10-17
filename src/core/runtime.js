@@ -9,7 +9,7 @@ import { collectSsUploadPayloads, createEncoder, resolveSsCiphers, tryOpenShadow
 import { buildSocks5ConnectRequest } from './proxyProbe.js';
 import { isValidUuid, parseAddressAndPort, sha224Hex, sharedDecoder } from './utils.js';
 import { getXhttpPaddingMeta, selectFallbackProxyAddress } from '../subscription/generator.js';
-import { recordUserActivity } from '../db/d1.js';
+import { checkUserIpLimit, recordUserActivity } from '../db/d1.js';
 
 // دسترسی به سوکت TCP پلتفرم برای اسکنر داخلی (هم در باندل و هم در ESM خالص)
 export function getSocketConnector() {
@@ -902,21 +902,56 @@ export async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUs
   let isDnsSession = false;
   let detectedProto = null;
   let matchedUserObj = null;
-  let sessionBytes = 0;
+  let sessionUploadBytes = 0;
+  let sessionDownloadBytes = 0;
   let draining = false;
   let closed = false;
   const uploadQueue = createChunkQueue(UPLOAD_PACKET_SIZE, UPLOAD_QUEUE_LIMIT, UPLOAD_QUEUE_LIMIT >> 8);
   const fetcher = request.fetcher;
 
+  // ================= قفل سخت‌افزاری (ipLimit) =================
+  // هر آی‌پی/دستگاه جدید فقط تا سقف تعیین‌شده مدیر اجازه اتصال دارد؛
+  // دستگاه‌های مجاز در D1 (جدول user_ips) با TTL ذخیره می‌شوند.
+  const clientIp = (
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-real-ip') ||
+    (request.headers.get('x-forwarded-for') || '').split(',')[0] ||
+    ''
+  ).trim();
+  let deviceLockBlocked = false;
+
+  async function enforceDeviceLock(user) {
+    if (!user?.id || deviceLockBlocked) return !deviceLockBlocked;
+    try {
+      const res = await checkUserIpLimit(env, user, clientIp);
+      if (res && res.allowed === false) {
+        deviceLockBlocked = true;
+        try { serverWs.close(1008, 'device-limit'); } catch (_e) {}
+        closeTransport();
+        return false;
+      }
+    } catch (_e) {
+      // خطای دیتابیس نباید اتصال کاربر مجاز را قطع کند
+    }
+    return true;
+  }
+
+  // bytes از سمت سرور به کلاینت = دانلود واقعی کاربر
   function addTransferredBytes(n) {
-    sessionBytes += Number(n) || 0;
+    sessionDownloadBytes += Number(n) || 0;
+  }
+
+  // bytes از سمت کلاینت به سرور = آپلود واقعی کاربر
+  function addUploadedBytes(n) {
+    sessionUploadBytes += Number(n) || 0;
   }
 
   function flushSessionTraffic() {
-    if (matchedUserObj?.id && sessionBytes > 0) {
-      const bytesToRecord = sessionBytes;
-      sessionBytes = 0;
-      const p = recordUserActivity(env, matchedUserObj.id, bytesToRecord, 1).catch(() => {});
+    if (matchedUserObj?.id && (sessionUploadBytes > 0 || sessionDownloadBytes > 0)) {
+      const payload = { up: sessionUploadBytes, down: sessionDownloadBytes, requests: 1 };
+      sessionUploadBytes = 0;
+      sessionDownloadBytes = 0;
+      const p = recordUserActivity(env, matchedUserObj.id, payload, 1).catch(() => {});
       if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(p);
     }
   }
@@ -1019,7 +1054,7 @@ export async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUs
 
   async function handleShadowsocksFrame(data) {
     if (!ssState || ssState.closed) return;
-    addTransferredBytes(data.byteLength);
+    addUploadedBytes(data.byteLength);
     let payloads;
     try {
       payloads = await ssState.decoder.push(data);
@@ -1056,7 +1091,7 @@ export async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUs
   function enqueueUpload(chunk) {
     const data = toUint8Array(chunk);
     if (!data.byteLength) return true;
-    addTransferredBytes(data.byteLength);
+    addUploadedBytes(data.byteLength);
     if (!uploadQueue.sow(data)) {
       closeTransport();
       return false;
@@ -1113,6 +1148,7 @@ export async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUs
             if (!vlessRes.hasError) {
               detectedProto = 'vless';
               matchedUserObj = vlessRes.matchedUser;
+              if (!(await enforceDeviceLock(matchedUserObj))) return;
               const userCfg = {
                 ...globalCfg,
                 ...(matchedUserObj?.config || {}),
@@ -1151,6 +1187,7 @@ export async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUs
             if (!trojanRes.hasError) {
               detectedProto = 'trojan';
               matchedUserObj = trojanRes.matchedUser;
+              if (!(await enforceDeviceLock(matchedUserObj))) return;
               const userCfg = {
                 ...globalCfg,
                 ...(matchedUserObj?.config || {}),
@@ -1181,7 +1218,8 @@ export async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUs
           if (ssSession) {
             detectedProto = 'ss';
             matchedUserObj = ssSession.user;
-            addTransferredBytes(data.byteLength);
+            addUploadedBytes(data.byteLength);
+            await enforceDeviceLock(matchedUserObj);
             try {
               await startShadowsocksSession(ssSession);
             } catch (_e) {

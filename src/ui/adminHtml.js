@@ -979,23 +979,54 @@ export function renderAdminDashboardHtml(initialData = {}) {
         بستن آن: دکمه ✕ داخل منو، دکمه «✕ بستن منو» در نوار بالا، یا انتخاب هر آیتم منو.
         نکته: این قاعده باید بعد از قاعده پایه .sidebar بیاید تا واقعاً اعمال شود.
       */
+      /*
+        منوی کشویی از سمت راست با حس iOS: پنل شیشه‌ای (blur) که از لبه راست
+        سُر می‌خورد، گوشه‌های گرد، سایه نرم و پس‌زمینه محو. محتوا را هل نمی‌دهد
+        تا روی موبایل صفحه نپرد.
+      */
       .sidebar {
-        display: none;
-        position: static;
-        top: auto;
-        right: auto;
-        bottom: auto;
-        width: 100%;
-        height: auto;
-        max-height: none;
-        border-radius: 20px;
-        padding: 14px;
-        overflow: visible;
-        z-index: auto;
-        box-shadow: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: auto;
+        width: min(86vw, 348px);
+        height: 100dvh;
+        max-height: 100dvh;
+        display: flex;
+        flex-direction: column;
         justify-content: flex-start;
+        gap: 10px;
+        border-radius: 26px 0 0 26px;
+        padding: calc(14px + env(safe-area-inset-top, 0px)) 14px calc(18px + env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        z-index: 120;
+        background: rgba(10, 17, 10, 0.9);
+        -webkit-backdrop-filter: blur(24px) saturate(170%);
+        backdrop-filter: blur(24px) saturate(170%);
+        border-left: 1px solid rgba(163, 230, 53, 0.16);
+        box-shadow: -28px 0 64px rgba(0, 0, 0, 0.55);
+        transform: translate3d(104%, 0, 0);
+        transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
       }
-      .sidebar.drawer-open { display: flex; }
+      .sidebar.drawer-open { transform: translate3d(0, 0, 0); }
+      /* پرده محو پشت منو */
+      .sb-scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 110;
+        opacity: 0;
+        pointer-events: none;
+        background: rgba(3, 7, 3, 0.62);
+        -webkit-backdrop-filter: blur(3px);
+        backdrop-filter: blur(3px);
+        transition: opacity 0.34s ease;
+      }
+      .sb-scrim.open { opacity: 1; pointer-events: auto; }
+      body.drawer-lock { overflow: hidden; }
       .menu-toggle {
         display: inline-flex;
         background: rgba(163, 230, 53, 0.16);
@@ -1042,6 +1073,8 @@ ${BASE_UI_CSS}
 
   <div class="app-shell">
     <!-- سایدبار سمت راست دسکتاپ -->
+    <!-- پرده محو پشت منوی کشویی راست (فقط موبایل) -->
+    <div class="sb-scrim" id="sbScrim" onclick="toggleSidebarDrawer(false)"></div>
     <aside class="sidebar">
       <div>
         <div class="sb-brand">
@@ -1904,18 +1937,34 @@ ${FX_RUNTIME_JS}
     function toggleSidebarDrawer(force) {
       var sidebar = document.querySelector('.sidebar');
       var toggle = document.querySelector('.menu-toggle');
+      var scrim = document.getElementById('sbScrim');
       if (!sidebar) return;
+      var isPhone = window.matchMedia && window.matchMedia('(max-width: 1024px)').matches;
       var willOpen = typeof force === 'boolean' ? force : !sidebar.classList.contains('drawer-open');
       sidebar.classList.toggle('drawer-open', willOpen);
+      if (scrim) scrim.classList.toggle('open', willOpen && !!isPhone);
+      document.body.classList.toggle('drawer-lock', willOpen && !!isPhone);
       if (toggle) {
         toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
         toggle.textContent = willOpen ? '✕ بستن منو' : '☰ منو';
+      }
+      if (willOpen) {
+        var first = sidebar.querySelector('.sb-item, .sb-btn');
+        if (first && isPhone) { try { first.focus({ preventScroll: true }); } catch (_e) {} }
       }
     }
 
     function closeSidebarDrawer() {
       toggleSidebarDrawer(false);
     }
+
+    // بستن خودکار منو وقتی صفحه از حالت موبایل بیرون آمد یا اندازه چرخید
+    window.addEventListener('resize', function () {
+      if (window.matchMedia && !window.matchMedia('(max-width: 1024px)').matches) {
+        var sidebar = document.querySelector('.sidebar');
+        if (sidebar && sidebar.classList.contains('drawer-open')) toggleSidebarDrawer(false);
+      }
+    });
 
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
@@ -1938,6 +1987,8 @@ ${FX_RUNTIME_JS}
       };
       var target = document.getElementById('view-' + viewName);
       if (!target) viewName = 'dashboard';
+      // روی موبایل با انتخاب هر آیتم، منوی کشویی راست بسته می‌شود
+      if (window.matchMedia && window.matchMedia('(max-width: 1024px)').matches) closeSidebarDrawer();
       setText('topPageTitle', titles[viewName] || 'داشبورد');
       document.querySelectorAll('.view-section').forEach(function(s) {
         var isActive = s.id === 'view-' + viewName;

@@ -391,6 +391,47 @@ export const FX_CSS = `
     .fx-spin-slow { animation: fxSpin 22s linear infinite; }
     @keyframes fxSpin { to { transform: rotate(360deg); } }
 
+    /* ================= دکمه روشن/خاموش کردن جلوه‌ها (FX) ================= */
+    .fx-power {
+      position: fixed;
+      z-index: 90;
+      top: calc(12px + env(safe-area-inset-top, 0px));
+      left: calc(12px + env(safe-area-inset-left, 0px));
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid rgba(163, 230, 53, 0.28);
+      background: rgba(9, 16, 9, 0.72);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      backdrop-filter: blur(14px) saturate(150%);
+      color: #d9f99d;
+      font-size: 17px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, background 0.28s ease;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .fx-power:active { transform: scale(0.92); }
+    .fx-power.fx-power-off {
+      opacity: 0.55;
+      border-color: rgba(148, 163, 148, 0.28);
+      color: #9db09d;
+      background: rgba(9, 16, 9, 0.55);
+    }
+    /* خاموش کردن کامل جلوه‌ها: پس‌زمینه زنده، نوار پیشرفت و انیمیشن ورود حذف می‌شوند */
+    html.fx-off .fx-bg,
+    html.fx-off .fx-progress-bar,
+    html.fx-off .fx-shine::before { display: none !important; }
+    html.fx-off .fx-reveal { opacity: 1 !important; transform: none !important; }
+    html.fx-off .fx-live-dot,
+    html.fx-off .fx-float,
+    html.fx-off .fx-spin-slow { animation: none !important; }
+
     /* احترام کامل به تنظیم کاهش حرکت کاربر */
     @media (prefers-reduced-motion: reduce) {
       .fx-blob, .fx-grid, .fx-scan, .fx-shine::before, .fx-typing,
@@ -421,7 +462,8 @@ export const FX_MARKUP = `<div class="fx-bg" aria-hidden="true">
     <div class="fx-vignette"></div>
   </div>
   <div class="fx-progress-bar" aria-hidden="true"><i id="fxProgressFill"></i></div>
-  <div class="fx-toast-host" id="fxToastHost" role="status" aria-live="polite"></div>`;
+  <div class="fx-toast-host" id="fxToastHost" role="status" aria-live="polite"></div>
+  <button type="button" class="fx-power" id="fxPowerBtn" aria-pressed="true" title="روشن/خاموش کردن جلوه‌ها" aria-label="روشن یا خاموش کردن جلوه‌های بصری"><span id="fxPowerGlyph">✨</span></button>`;
 
 export const FX_RUNTIME_JS = `
     // ================= miliconfig FX runtime (انیمیشن‌های روان) =================
@@ -762,6 +804,42 @@ export const FX_RUNTIME_JS = `
         }
       }
 
+      // ---------- کلید روشن/خاموش کردن جلوه‌ها ( ذخیره در حافظه مرورگر ) ----------
+      var FX_STORAGE_KEY = 'mili-fx-enabled';
+      function applyFxState(enabled) {
+        try {
+          document.documentElement.classList.toggle('fx-off', !enabled);
+        } catch (_e) {}
+        var btn = document.getElementById('fxPowerBtn');
+        var glyph = document.getElementById('fxPowerGlyph');
+        if (btn) {
+          btn.classList.toggle('fx-power-off', !enabled);
+          btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+          btn.setAttribute('title', enabled ? 'خاموش کردن جلوه‌ها' : 'روشن کردن جلوه‌ها');
+        }
+        if (glyph) glyph.textContent = enabled ? '✨' : '🌙';
+      }
+
+      function initPower() {
+        var enabled = true;
+        try {
+          var stored = window.localStorage.getItem(FX_STORAGE_KEY);
+          if (stored === '0') enabled = false;
+        } catch (_e) {}
+        applyFxState(enabled);
+        var btn = document.getElementById('fxPowerBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var next = !document.documentElement.classList.contains('fx-off');
+          applyFxState(next);
+          try { window.localStorage.setItem(FX_STORAGE_KEY, next ? '1' : '0'); } catch (_e) {}
+          if (next) {
+            try { window.dispatchEvent(new Event('resize')); } catch (_e) {}
+          }
+          toast(next ? 'جلوه‌ها روشن شد' : 'جلوه‌ها خاموش شد', 'info');
+        });
+      }
+
       window.MiliFx = {
         esc: esc,
         jsStr: jsStr,
@@ -776,6 +854,7 @@ export const FX_RUNTIME_JS = `
       window.miliCopy = copy;
 
       function boot() {
+        initPower();
         initCanvas();
         initScrollFx();
         initInteractions();
