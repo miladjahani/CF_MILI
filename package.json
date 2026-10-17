@@ -18,6 +18,7 @@
     "deploy:pages": "npm run build && npx --yes wrangler@4 pages deploy dist --project-name mili-cfg --branch main",
     "cf:setup": "node scripts/cloudflare-setup.js",
     "cf:status": "node scripts/cf-status.js",
+    "cf:bind": "node scripts/cf-bind.js",
     "verify": "npm run build && npm test"
   },
   "keywords": [
