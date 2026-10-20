@@ -11,6 +11,14 @@ export const VIEWPORT_META = 'width=device-width, initial-scale=1.0, viewport-fi
 export const THEME_COLOR_META = '#060b06';
 
 export const BASE_UI_CSS = `
+    /* آیکون‌های SVG اختصاصی — همیشه با اندازه ثابت تا چیدمان نشکند */
+    svg.ic {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      display: inline-block;
+      vertical-align: -3px;
+    }
     /* ================= miliconfig base: موبایل + ویندوز ================= */
     html {
       color-scheme: dark;

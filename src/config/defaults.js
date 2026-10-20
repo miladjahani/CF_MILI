@@ -57,6 +57,10 @@ export const CONFIG_DEFAULTS = {
   cpx: 'no',
   pcc: 'all',
   cpn: 24,
+  // چرخش آی‌پی خروجی نودهای کشوری: 'day' روزانه (پیش‌فرض)، 'hour' ساعتی، 'off' ثابت
+  rot: 'day',
+  // حداکثر پینگ قابل قبول موتور انتخاب پروکسی (ms) — پروکسی‌های کندتر وارد نودها نمی‌شوند
+  maxProxyPing: 1500,
   subNodeCount: 50,
   brand: BRAND_NAME
 };
@@ -106,6 +110,8 @@ export const ENV_KEY_MAPPING = {
   cpx: ['cpx', 'CPX', 'COUNTRY_PROXY'],
   pcc: ['pcc', 'PCC', 'PROXY_COUNTRIES'],
   cpn: ['cpn', 'CPN', 'COUNTRY_PROXY_NODES'],
+  rot: ['rot', 'ROT', 'IP_ROTATION'],
+  maxProxyPing: ['maxProxyPing', 'MAXPROXYPING', 'MAX_PROXY_PING'],
   subNodeCount: ['subNodeCount', 'SUB_NODE_COUNT', 'nodeCount', 'NODE_COUNT']
 };
 
@@ -243,6 +249,11 @@ export function normalizeEffectiveConfig(rawConfig = {}) {
   snap.pcc = String(snap.pcc ?? 'all').trim() || 'all';
   const countryNodeCount = parseInt(snap.cpn, 10);
   snap.cpn = Number.isFinite(countryNodeCount) && countryNodeCount > 0 ? Math.min(200, countryNodeCount) : 24;
+  // حالت چرخش آی‌پی: فقط مقادیر معتبر پذیرفته می‌شوند
+  const rawRot = String(snap.rot ?? 'day').trim().toLowerCase();
+  snap.rot = rawRot === 'hour' || rawRot === 'off' ? rawRot : 'day';
+  const rawMaxPing = parseInt(snap.maxProxyPing, 10);
+  snap.maxProxyPing = Number.isFinite(rawMaxPing) && rawMaxPing > 0 ? Math.min(30000, rawMaxPing) : 1500;
   const parsedCount = parseInt(snap.subNodeCount, 10);
   snap.subNodeCount = Number.isFinite(parsedCount) && parsedCount >= 0 ? parsedCount : 50;
   snap.brand = BRAND_NAME;

@@ -9,9 +9,11 @@
 #    جداول را به صورت ۱۰۰٪ خودکار (Auto-Migration) در اولین درخواست می‌سازد!
 # ============================================================================
 
-name = "mili-cfg"
+name = "mili-os-worker"
 main = "src/index.js"
 compatibility_date = "2024-09-23"
+# باندل از Buffer استفاده می‌کند؛ بدون این پرچم Worker در استارتاپ با خطای 500 متوقف می‌شود.
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 BRAND = "miliconfig"
@@ -22,4 +24,4 @@ BRAND = "miliconfig"
 [[d1_databases]]
 binding = "DB"
 database_name = "miliconfig-db"
-database_id = "7e900667-ca1d-4fd3-a127-793ca4fa08fa"
+database_id = "6fbba792-eaa6-455a-ae99-73cf2de10a37"

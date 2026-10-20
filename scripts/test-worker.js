@@ -165,7 +165,35 @@ async function runTests() {
     assert.strictEqual(rootResp.status, 200, 'صفحه اصلی بدون D1 باید با کد 200 باز شود');
     const rootHtml = await rootResp.text();
     assert.ok(rootHtml.includes('MILICONFIG'), 'برند MILICONFIG باید در صفحه ورود وجود داشته باشد');
-    assert.ok(rootHtml.includes('login-hint') && rootHtml.includes('مسیر ادمین'), 'صفحه ورود باید راهنمای «کلید ادمین یا UUID کاربر» را نشان دهد');
+    assert.ok(rootHtml.includes('Welcome to nginx!') && rootHtml.includes('name="password"') && rootHtml.includes('/admin/login'), 'صفحه ورود باید ابتدا نمای nginx و سپس فرم رمز عبور /admin را نشان دهد');
+
+    // تست ۱-ب: مسیر ثابت /admin + رمز عبور رندوم (همان u) + نشست کوکی
+    const adminLoginPage = await worker.fetch(new Request('https://mili.example.com/admin'), emptyEnv, {});
+    assert.strictEqual(adminLoginPage.status, 200, '/admin بدون نشست باید صفحه ورود را برگرداند');
+    const adminLoginHtml = await adminLoginPage.text();
+    assert.ok(adminLoginHtml.includes('name="password"') && !adminLoginHtml.includes('view-dashboard'), '/admin بدون نشست نباید پنل را لو بدهد');
+    const badLogin = await worker.fetch(new Request('https://mili.example.com/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'password=wrong-password'
+    }), emptyEnv, {});
+    assert.strictEqual(badLogin.status, 401, 'رمز اشتباه باید ۴۰۱ بدهد');
+    const goodLogin = await worker.fetch(new Request('https://mili.example.com/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'password=' + encodeURIComponent(adminUuid)
+    }), emptyEnv, {});
+    assert.strictEqual(goodLogin.status, 303, 'رمز درست باید ۳۰۳ به /admin بدهد');
+    const sessionCookie = String(goodLogin.headers.get('Set-Cookie') || '').split(';')[0];
+    assert.ok(sessionCookie.startsWith('mili_admin='), 'کوکی نشست باید ست شود');
+    const authedPanel = await worker.fetch(new Request('https://mili.example.com/admin', { headers: { Cookie: sessionCookie } }), emptyEnv, {});
+    assert.strictEqual(authedPanel.status, 200, 'با نشست معتبر /admin باید پنل را باز کند');
+    assert.ok((await authedPanel.text()).includes('مرکز کنترل زیرساخت پروکسی miliconfig'), 'پنل نشست‌دار باید کامل رندر شود');
+    const authedApi = await worker.fetch(new Request('https://mili.example.com/admin/api/users', { headers: { Cookie: sessionCookie } }), emptyEnv, {});
+    assert.strictEqual(authedApi.status, 200, 'API زیر /admin با نشست باید پاسخ دهد');
+    const anonymousApi = await worker.fetch(new Request('https://mili.example.com/admin/api/users'), emptyEnv, {});
+    assert.strictEqual(anonymousApi.status, 403, 'API زیر /admin بدون نشست باید ۴۰۳ بدهد');
+    console.log('  ✓ تست ۱-ب (/admin با رمز ادمین و نشست کوکی): موفق');
 
     // بدون u و بدون D1، کلید پیش‌فرض مستند باید پنل را باز کند (ضد قفل‌شدن استقرار بدون دیتابیس)
     const noDbAdminResp = await worker.fetch(new Request(`https://mili.example.com/${DEFAULT_ADMIN_UUID}`), {}, {});
@@ -334,10 +362,20 @@ async function runTests() {
     ];
     for (const [label, html] of pages) {
       for (const needle of fxNeedles) {
+        if (label === 'ورود') {
+          // صفحه ورود عامدانه سبک است: بدون Canvas و افکت سنگین، فقط CSS روان
+          if (needle === 'prefers-reduced-motion') {
+            assert.ok(html.includes(needle), 'صفحه ورود باید به کاهش حرکت احترام بگذارد');
+            continue;
+          }
+          assert.ok(!html.includes(needle), `صفحه ورود نباید افکت سنگین «${needle}» داشته باشد`);
+          continue;
+        }
         assert.ok(html.includes(needle), `صفحه ${label} باید شامل جلوه بصری «${needle}» باشد`);
       }
     }
-    assert.ok(rootHtml.includes('btn-support') && rootHtml.includes('modeAdmin'), 'صفحه ورود باید دکمه پشتیبانی و انتخاب حالت داشته باشد');
+    assert.ok(rootHtml.includes('nginxSplash') && rootHtml.includes('login-window'), 'صفحه ورود باید نمای nginx و پنجره ورود را داشته باشد');
+    assert.ok(rootHtml.includes('t.me/miliconfig') && rootHtml.includes('prefers-reduced-motion'), 'صفحه ورود باید دکمه پشتیبانی و احترام به کاهش حرکت داشته باشد');
     assert.ok(statusHtml.includes('usage-ring') && statusHtml.includes('nodeSearch'), 'صفحه وضعیت باید حلقه مصرف و جستجوی نود داشته باشد');
     assert.ok(statusHtml.includes('↑ آپلود') && statusHtml.includes('↓ دانلود'), 'صفحه وضعیت باید مصرف واقعی آپلود و دانلود را جداگانه نشان دهد');
     assert.ok(adminHtml.includes('donutRing') && adminHtml.includes('fx-ring'), 'داشبورد باید حلقه گرافیکی متحرک داشته باشد');

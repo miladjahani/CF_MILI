@@ -6,7 +6,7 @@
 
 import { BRAND_NAME, BRAND_UPPER, REGION_MAP, SUPPORT_CHANNEL_LABEL, SUPPORT_CHANNEL_URL } from '../config/defaults.js';
 import { LOCATIONS } from '../config/locations.js';
-import { SHIELD_LOGO_SVG, FAVICON_DATA_URI } from './icons.js';
+import { SHIELD_LOGO_SVG, FAVICON_DATA_URI, deEmoji } from './icons.js';
 import { escapeHtml, formatBytes, safeJsonForScript } from '../core/utils.js';
 import { BASE_UI_CSS, THEME_COLOR_META, VIEWPORT_META } from './baseCss.js';
 import { FX_CSS, FX_MARKUP, FX_RUNTIME_JS } from './fx.js';
@@ -110,7 +110,7 @@ export function renderUserStatusPageHtml(user, nodes = [], originUrl = '') {
           ${client.note ? `<div class="client-note">${escapeHtml(client.note)}</div>` : ''}
         </div>`;
 
-  return `<!DOCTYPE html>
+  return deEmoji(`<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -993,5 +993,5 @@ ${FX_RUNTIME_JS}
     });
   </script>
 </body>
-</html>`;
+</html>`);
 }

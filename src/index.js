@@ -55,6 +55,51 @@ function isAdminAuthorizedPath(prefixPath, adminUuid, customPath) {
   return cleanPrefix === cleanAdmin;
 }
 
+// ============================================================================
+// مسیر ثابت پنل ادمین + نشست کوکی (به‌جای مسیر مخفی u)
+// ============================================================================
+const ADMIN_ROUTE = 'admin';
+const ADMIN_COOKIE = 'mili_admin';
+const ADMIN_SESSION_PAYLOAD = 'miliconfig-admin-session-v1';
+
+async function adminSessionToken(secret) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(String(secret || 'miliconfig')),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(ADMIN_SESSION_PAYLOAD));
+  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function readCookie(request, name) {
+  const raw = request.headers.get('Cookie') || '';
+  for (const part of raw.split(';')) {
+    const idx = part.indexOf('=');
+    if (idx < 0) continue;
+    if (part.slice(0, idx).trim() === name) return part.slice(idx + 1).trim();
+  }
+  return '';
+}
+
+function safeEqual(a, b) {
+  const x = String(a || '');
+  const y = String(b || '');
+  if (!x.length || x.length !== y.length) return false;
+  let diff = 0;
+  for (let i = 0; i < x.length; i += 1) diff |= x.charCodeAt(i) ^ y.charCodeAt(i);
+  return diff === 0;
+}
+
+async function hasAdminSession(request, adminUuid) {
+  const token = readCookie(request, ADMIN_COOKIE);
+  if (!token) return false;
+  return safeEqual(token, await adminSessionToken(adminUuid));
+}
+
 export default {
   async fetch(request, env = {}, ctx = {}) {
     try {
@@ -76,6 +121,48 @@ export default {
       }
 
       const pathParts = url.pathname.split('/').filter(Boolean);
+      const cleanRequestPath = normalizeCleanPath(url.pathname);
+
+      // ۱-ب. ورود / خروج ادمین روی مسیر ثابت /admin
+      if (cleanRequestPath === `${ADMIN_ROUTE}/login` && request.method === 'POST') {
+        let password = '';
+        try {
+          const contentType = String(request.headers.get('Content-Type') || '');
+          if (contentType.includes('application/json')) {
+            const body = await request.json();
+            password = String(body?.password || '');
+          } else {
+            const form = await request.formData();
+            password = String(form.get('password') || '');
+          }
+        } catch (_e) {}
+        if (password && safeEqual(password.trim().toLowerCase(), adminUuid)) {
+          return new Response(null, {
+            status: 303,
+            headers: {
+              Location: `/${ADMIN_ROUTE}`,
+              'Set-Cookie': `${ADMIN_COOKIE}=${await adminSessionToken(adminUuid)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800`
+            }
+          });
+        }
+        return new Response(renderLoginGatewayHtml({
+          adminPath: `/${ADMIN_ROUTE}`,
+          error: 'رمز عبور نادرست است. رمز همان مقدار متغیر u در Cloudflare → Pages → Settings → Variables است.'
+        }), {
+          status: 401,
+          headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }
+        });
+      }
+
+      if (cleanRequestPath === `${ADMIN_ROUTE}/logout`) {
+        return new Response(null, {
+          status: 303,
+          headers: {
+            Location: `/${ADMIN_ROUTE}`,
+            'Set-Cookie': `${ADMIN_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`
+          }
+        });
+      }
 
       // ۲. هندل کردن APIهای مدیریتی و عمومی
       if (url.pathname.includes('/api/')) {
@@ -89,8 +176,12 @@ export default {
           return await handlePublicUserStatusApi(request, env, token);
         }
 
-        // بررسی دسترسی مدیر برای APIهای مدیریتی
-        if (!isAdminAuthorizedPath(prefix, adminUuid, globalCfg.d)) {
+        // بررسی دسترسی مدیر برای APIهای مدیریتی (مسیر مخفی قدیمی یا نشست /admin)
+        const apiPrefixIsAdminRoute = normalizeCleanPath(prefix) === ADMIN_ROUTE;
+        const apiAuthorized = apiPrefixIsAdminRoute
+          ? await hasAdminSession(request, adminUuid)
+          : isAdminAuthorizedPath(prefix, adminUuid, globalCfg.d);
+        if (!apiAuthorized) {
           return new Response(JSON.stringify({ error: 'دسترسی غیرمجاز (مسیر مدیریت نامعتبر است)' }), {
             status: 403,
             headers: { 'Content-Type': 'application/json; charset=utf-8' }
@@ -152,7 +243,7 @@ export default {
               }
             } catch (_e) {}
           }
-          return new Response(renderLoginGatewayHtml({ customPath: globalCfg.d }), {
+          return new Response(renderLoginGatewayHtml({ customPath: globalCfg.d, adminPath: `/${ADMIN_ROUTE}` }), {
             status: 200,
             headers: { 'Content-Type': 'text/html; charset=utf-8' }
           });
@@ -271,7 +362,15 @@ export default {
 
         // ۴-هـ: دسترسی به پنل مدیریت ادمین یا صفحه وضعیت کاربر با /{token}
         const fullCleanPath = normalizeCleanPath(url.pathname);
-        if (isAdminAuthorizedPath(fullCleanPath, adminUuid, globalCfg.d)) {
+        const isAdminRoute = fullCleanPath === ADMIN_ROUTE;
+        const adminSessionOk = isAdminRoute ? await hasAdminSession(request, adminUuid) : false;
+        if (isAdminRoute && !adminSessionOk) {
+          return new Response(renderLoginGatewayHtml({ adminPath: `/${ADMIN_ROUTE}` }), {
+            status: 200,
+            headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }
+          });
+        }
+        if (adminSessionOk || isAdminAuthorizedPath(fullCleanPath, adminUuid, globalCfg.d)) {
           if (url.searchParams.get('view') === 'status') {
             const adminUser = allUsers[0] || {
               id: 'mili-admin',

@@ -12,7 +12,7 @@ import {
   VERSION
 } from '../config/defaults.js';
 import { USER_PRESETS } from '../config/presets.js';
-import { SHIELD_LOGO_SVG, FAVICON_DATA_URI } from './icons.js';
+import { SHIELD_LOGO_SVG, FAVICON_DATA_URI, ICON, deEmoji } from './icons.js';
 import { escapeHtml, safeJsonForScript } from '../core/utils.js';
 import { BASE_UI_CSS, THEME_COLOR_META, VIEWPORT_META } from './baseCss.js';
 import { FX_CSS, FX_MARKUP, FX_RUNTIME_JS } from './fx.js';
@@ -30,7 +30,7 @@ export function renderAdminDashboardHtml(initialData = {}) {
     adminPath: initialData.adminPath || ''
   });
 
-  return `<!DOCTYPE html>
+  return deEmoji(`<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -1066,6 +1066,327 @@ export function renderAdminDashboardHtml(initialData = {}) {
     }
 ${FX_CSS}
 ${BASE_UI_CSS}
+    /* ================================================================
+       miliconfig OS shell v4 — لایه ظاهری «سیستم‌عامل»
+       پنجره شیشه‌ای، داک پایین، تایپوگرافی آرام و ترنزیشن‌های سبک
+       ================================================================ */
+    :root {
+      --os-bg: #05080a;
+      --os-panel: rgba(12, 18, 14, 0.72);
+      --os-panel-2: rgba(16, 24, 18, 0.86);
+      --os-line: rgba(181, 255, 77, 0.13);
+      --os-line-soft: rgba(255, 255, 255, 0.06);
+      --os-ink: #eaf3e4;
+      --os-ink-soft: #93a58e;
+      --os-accent: #b5ff4d;
+      --os-radius: 20px;
+      --os-ease: cubic-bezier(.22, .61, .36, 1);
+    }
+    html, body { height: 100%; }
+    body {
+      background:
+        radial-gradient(900px 520px at 78% -12%, rgba(163, 230, 53, 0.10), transparent 62%),
+        radial-gradient(700px 420px at 8% 108%, rgba(56, 189, 248, 0.05), transparent 60%),
+        var(--os-bg);
+      color: var(--os-ink);
+      font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+      line-height: 1.6;
+      overflow: hidden;
+    }
+    body::before {
+      background-image:
+        linear-gradient(rgba(181, 255, 77, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(181, 255, 77, 0.018) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 78%);
+      -webkit-mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 78%);
+    }
+    .ic { width: 18px; height: 18px; flex: 0 0 auto; display: inline-block; vertical-align: -3px; }
+
+    /* ---------- چیدمان اصلی ---------- */
+    .app-shell {
+      display: block;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      min-height: 100dvh;
+      height: 100dvh;
+      gap: 0;
+    }
+    .main-area {
+      height: 100dvh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      padding: 14px clamp(12px, 3vw, 34px) 132px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* ---------- نوار بالا ---------- */
+    .topbar {
+      position: sticky;
+      top: 10px;
+      z-index: 30;
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--os-line-soft);
+      background: rgba(9, 14, 11, 0.72);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+    }
+    .topbar-right, .topbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .tb-brand { display: flex; align-items: center; gap: 9px; }
+    .tb-logo { width: 30px; height: 30px; display: grid; place-items: center; }
+    .tb-logo svg { width: 30px; height: 30px; }
+    .tb-name { display: flex; flex-direction: column; line-height: 1.05; }
+    .tb-name b { font-size: 0.92rem; letter-spacing: 0.06em; }
+    .tb-name small { font-size: 0.56rem; letter-spacing: 0.2em; color: var(--os-accent); opacity: 0.85; direction: ltr; }
+    .page-title { font-size: 0.95rem; font-weight: 700; color: var(--os-ink); margin-inline-start: 2px; }
+    .topbar-brand { display: none; }
+    .top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 11px;
+      border: 1px solid var(--os-line-soft);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--os-ink-soft);
+      font: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color .18s var(--os-ease), border-color .18s var(--os-ease), background .18s var(--os-ease), transform .18s var(--os-ease);
+    }
+    .top-pill:hover { color: var(--os-ink); border-color: rgba(181, 255, 77, 0.34); background: rgba(181, 255, 77, 0.07); transform: translateY(-1px); }
+    .top-pill.accent { background: linear-gradient(180deg, #c8ff6b, #a3e635); color: #10160b; border-color: transparent; font-weight: 700; }
+    .top-pill.accent:hover { color: #10160b; background: linear-gradient(180deg, #d6ff8c, #b5ff4d); }
+    .menu-toggle { display: none; }
+    .clock-card { display: flex; flex-direction: row; align-items: baseline; gap: 7px; padding: 0 4px; }
+    .clock-time { font-size: 0.85rem; font-weight: 700; color: var(--os-ink); font-variant-numeric: tabular-nums; direction: ltr; }
+    .clock-date { font-size: 0.68rem; color: var(--os-ink-soft); }
+    .dot-online { width: 7px; height: 7px; border-radius: 50%; background: var(--os-accent); box-shadow: 0 0 0 3px rgba(181, 255, 77, 0.16); flex: 0 0 auto; }
+
+    /* ---------- داک پایین (ناوبری) ---------- */
+    .sidebar {
+      position: fixed;
+      z-index: 40;
+      inset-inline: 0;
+      bottom: 18px;
+      margin: 0 auto;
+      width: max-content;
+      max-width: calc(100vw - 20px);
+      height: auto;
+      top: auto;
+      padding: 7px;
+      border-radius: 20px;
+      border: 1px solid var(--os-line-soft);
+      background: rgba(10, 15, 12, 0.78);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+    .sidebar > div:first-child { display: flex; align-items: center; gap: 2px; }
+    .sb-brand, .sb-group-title, .sb-close, .sb-footer, .sb-status-pill { display: none; }
+    .sb-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      min-width: 68px;
+      padding: 8px 10px 7px;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      color: var(--os-ink-soft);
+      font: inherit;
+      font-size: 0.66rem;
+      cursor: pointer;
+      transition: color .18s var(--os-ease), background .18s var(--os-ease), transform .18s var(--os-ease);
+      position: relative;
+    }
+    .sb-item span { display: inline-flex; align-items: center; gap: 4px; }
+    .sb-item .ic { width: 21px; height: 21px; margin-bottom: 1px; }
+    .sb-item:hover { color: var(--os-ink); background: rgba(255, 255, 255, 0.05); }
+    .sb-item.active { color: #0f150a; background: linear-gradient(180deg, #c9ff74, #a8ea3f); box-shadow: 0 6px 18px rgba(163, 230, 53, 0.25); }
+    .sb-badge { position: absolute; top: 4px; inset-inline-end: 6px; font-size: 0.55rem; padding: 0 5px; border-radius: 999px; background: rgba(0, 0, 0, 0.28); color: inherit; }
+    .sb-item.active .sb-badge { background: rgba(0, 0, 0, 0.18); }
+
+    /* ---------- پنجره‌ها و کارت‌ها ---------- */
+    .view-section { display: none; flex-direction: column; gap: 12px; animation: osFade .26s var(--os-ease); }
+    .view-section.active { display: flex; }
+    @keyframes osFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .panel-card, .fx-card, .hero-card, .preset-card, .pool-picker, .check-grid {
+      background: var(--os-panel);
+      border: 1px solid var(--os-line-soft);
+      border-radius: var(--os-radius);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .panel-card { padding: 16px; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 0 12px; border-bottom: 1px solid var(--os-line-soft); margin-bottom: 14px; }
+    .panel-title { font-size: 0.94rem; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+    .panel-title .ic { width: 17px; height: 17px; color: var(--os-accent); }
+    .panel-sub { font-size: 0.72rem; color: var(--os-ink-soft); }
+
+    .hero-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; overflow: hidden; position: relative; }
+    .hero-card::after { content: ""; position: absolute; inset: auto -8% -60% 34%; height: 220px; background: radial-gradient(circle, rgba(181, 255, 77, 0.14), transparent 62%); pointer-events: none; }
+    .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; color: var(--os-accent); direction: ltr; opacity: 0.8; }
+    .hero-heading { font-size: 1.18rem; font-weight: 800; margin: 6px 0 6px; line-height: 1.5; }
+    .hero-sub { font-size: 0.8rem; color: var(--os-ink-soft); max-width: 62ch; }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; padding: 5px 9px; border-radius: 9px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--os-line-soft); color: var(--os-ink-soft); }
+    .hero-badge .ic { width: 14px; height: 14px; }
+    .hero-emblem {
+      width: 84px; height: 84px; border-radius: 26px; flex: 0 0 auto;
+      display: grid; place-items: center; font-weight: 900; font-size: 1.6rem; color: #0d130a;
+      background: linear-gradient(155deg, #d8ff90, #86d21c 72%);
+      box-shadow: 0 14px 40px rgba(163, 230, 53, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 10px; }
+    .metric-card { position: relative; padding: 13px 14px; border-radius: 16px; background: var(--os-panel); border: 1px solid var(--os-line-soft); transition: transform .2s var(--os-ease), border-color .2s var(--os-ease); }
+    .metric-card:hover { transform: translateY(-2px); border-color: rgba(181, 255, 77, 0.28); }
+    .metric-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .metric-label { font-size: 0.7rem; color: var(--os-ink-soft); }
+    .metric-icon { color: var(--os-accent); display: inline-flex; }
+    .metric-value { font-size: 1.24rem; font-weight: 800; margin-top: 5px; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+    .metric-foot { font-size: 0.66rem; color: var(--os-ink-soft); margin-top: 2px; }
+    .dash-row-2, .dash-row-3, .dash-row-bottom { display: grid; gap: 10px; }
+    .dash-row-2 { grid-template-columns: 1.25fr 1fr; }
+    .dash-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .dash-row-bottom { grid-template-columns: 1fr 1fr; }
+
+    /* ---------- کنترل‌ها ---------- */
+    .btn-neon, .btn-ghost, .btn-danger, .sb-btn, .copy-btn, .dl-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      padding: 9px 13px; border-radius: 11px; border: 1px solid transparent;
+      transition: transform .16s var(--os-ease), background .16s var(--os-ease), border-color .16s var(--os-ease), color .16s var(--os-ease);
+      text-decoration: none;
+    }
+    .btn-neon { background: linear-gradient(180deg, #c9ff74, #a3e635); color: #10160b; box-shadow: 0 8px 20px rgba(163, 230, 53, 0.2); }
+    .btn-neon:hover { transform: translateY(-1px); }
+    .btn-ghost { background: rgba(255, 255, 255, 0.04); border-color: var(--os-line-soft); color: var(--os-ink); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.07); border-color: rgba(181, 255, 77, 0.3); }
+    .btn-danger { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); color: #fca5a5; }
+    .btn-danger:hover { background: rgba(248, 113, 113, 0.2); }
+    .copy-btn, .dl-btn { padding: 6px 9px; font-size: 0.7rem; background: rgba(255, 255, 255, 0.04); border-color: var(--os-line-soft); color: var(--os-ink-soft); }
+    .copy-btn:hover, .dl-btn:hover { color: var(--os-ink); border-color: rgba(181, 255, 77, 0.3); }
+
+    .mili-input, .mili-select, .mili-textarea, input[type="text"], input[type="number"], input[type="search"], input[type="password"], select, textarea {
+      width: 100%; font: inherit; font-size: 0.82rem; color: var(--os-ink);
+      padding: 9px 11px; border-radius: 11px;
+      background: rgba(6, 10, 8, 0.86); border: 1px solid var(--os-line-soft);
+      transition: border-color .16s var(--os-ease), box-shadow .16s var(--os-ease);
+    }
+    .mili-input:focus, .mili-select:focus, .mili-textarea:focus, input:focus, select:focus, textarea:focus {
+      outline: none; border-color: rgba(181, 255, 77, 0.55); box-shadow: 0 0 0 3px rgba(181, 255, 77, 0.12);
+    }
+    .mili-select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--os-ink-soft) 50%), linear-gradient(135deg, var(--os-ink-soft) 50%, transparent 50%); background-position: calc(0% + 13px) 52%, calc(0% + 18px) 52%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-inline-start: 28px; }
+    .field-box { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+    .field-label { font-size: 0.72rem; color: var(--os-ink-soft); display: flex; align-items: center; gap: 5px; }
+    .field-hint { font-size: 0.64rem; color: rgba(147, 165, 142, 0.72); }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; padding: 10px; }
+    .check-label { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 11px; background: rgba(255, 255, 255, 0.03); font-size: 0.78rem; cursor: pointer; transition: background .16s var(--os-ease); }
+    .check-label:hover { background: rgba(181, 255, 77, 0.08); }
+    .check-label input[type="checkbox"] { appearance: none; width: 38px; height: 21px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--os-line-soft); position: relative; cursor: pointer; transition: background .18s var(--os-ease); }
+    .check-label input[type="checkbox"]::after { content: ""; position: absolute; top: 2px; inset-inline-start: 2px; width: 15px; height: 15px; border-radius: 50%; background: #cbd5c4; transition: transform .18s var(--os-ease), background .18s var(--os-ease); }
+    .check-label input[type="checkbox"]:checked { background: rgba(181, 255, 77, 0.3); }
+    .check-label input[type="checkbox"]:checked::after { transform: translateX(-16px); background: var(--os-accent); }
+
+    /* ---------- کاربران ---------- */
+    .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+    .user-card { padding: 14px; border-radius: 16px; background: var(--os-panel); border: 1px solid var(--os-line-soft); transition: transform .2s var(--os-ease), border-color .2s var(--os-ease); }
+    .user-card:hover { transform: translateY(-2px); border-color: rgba(181, 255, 77, 0.26); }
+    .uc-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .uc-name { font-size: 0.9rem; font-weight: 700; }
+    .uc-avatar { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: rgba(181, 255, 77, 0.12); color: var(--os-accent); font-weight: 800; }
+    .uc-uuid { font-size: 0.62rem; color: var(--os-ink-soft); direction: ltr; text-align: left; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .uc-id-box { display: flex; align-items: center; gap: 6px; margin: 8px 0; padding: 6px 8px; border-radius: 9px; background: rgba(0, 0, 0, 0.28); border: 1px solid var(--os-line-soft); }
+    .uc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
+    .uc-stat-line { display: flex; justify-content: space-between; gap: 6px; font-size: 0.7rem; color: var(--os-ink-soft); }
+    .uc-stats b, .uc-stat-line b { color: var(--os-ink); font-weight: 700; }
+    .uc-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .uc-gauge { height: 5px; border-radius: 999px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+    .uc-gauge span, .uc-gauge > div { display: block; height: 100%; background: linear-gradient(90deg, #86d21c, #d8ff90); }
+    .bad, .ok, .live, .wait, .ping-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.66rem; padding: 3px 8px; border-radius: 999px; border: 1px solid transparent; }
+    .ok, .live { background: rgba(181, 255, 77, 0.12); color: #cdf98a; border-color: rgba(181, 255, 77, 0.24); }
+    .bad { background: rgba(248, 113, 113, 0.12); color: #fca5a5; border-color: rgba(248, 113, 113, 0.26); }
+    .wait { background: rgba(251, 191, 36, 0.12); color: #fcd34d; border-color: rgba(251, 191, 36, 0.24); }
+    .preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 9px; }
+    .preset-card { padding: 12px; cursor: pointer; border-radius: 14px; transition: border-color .18s var(--os-ease), transform .18s var(--os-ease); }
+    .preset-card:hover { border-color: rgba(181, 255, 77, 0.3); transform: translateY(-1px); }
+    .preset-card.active, .preset-card.sel { border-color: rgba(181, 255, 77, 0.6); background: rgba(181, 255, 77, 0.07); }
+    .preset-title { font-size: 0.8rem; font-weight: 700; }
+    .preset-sub { font-size: 0.68rem; color: var(--os-ink-soft); margin-top: 3px; }
+    .preset-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .preset-tag { font-size: 0.62rem; padding: 2px 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.05); color: var(--os-ink-soft); }
+    .kv-list { display: flex; flex-direction: column; gap: 2px; }
+    .kv-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 2px; border-bottom: 1px dashed rgba(255, 255, 255, 0.06); font-size: 0.76rem; }
+    .kv-row:last-child { border-bottom: 0; }
+    .kv-key { color: var(--os-ink-soft); }
+    .kv-val { font-weight: 600; text-align: left; }
+    .empty-state { padding: 26px 14px; text-align: center; color: var(--os-ink-soft); font-size: 0.8rem; }
+    .quick-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .pool-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 11px; background: rgba(255, 255, 255, 0.03); margin-bottom: 5px; font-size: 0.75rem; }
+    .pool-row-actions { display: flex; gap: 5px; }
+    .pool-picker { padding: 14px; }
+    .pool-picker-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .pool-picker-meta { font-size: 0.7rem; color: var(--os-ink-soft); }
+
+    /* ---------- مودال ---------- */
+    .modal-backdrop { position: fixed; inset: 0; z-index: 90; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(3, 6, 4, 0.72); backdrop-filter: blur(10px); }
+    .modal-backdrop.open { display: flex; }
+    .modal-box { width: min(760px, 100%); max-height: 88dvh; overflow-y: auto; padding: 18px; border-radius: 22px; background: var(--os-panel-2); border: 1px solid var(--os-line); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); animation: osPop .22s var(--os-ease); }
+    @keyframes osPop { from { opacity: 0; transform: scale(.97) translateY(8px); } to { opacity: 1; transform: none; } }
+    .modal-sec-title { font-size: 0.78rem; font-weight: 700; color: var(--os-accent); margin: 14px 0 8px; display: flex; align-items: center; gap: 6px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+    /* ---------- واکنش‌گرا ---------- */
+    @media (max-width: 980px) {
+      .dash-row-2, .dash-row-3, .dash-row-bottom { grid-template-columns: 1fr; }
+      .hero-emblem { display: none; }
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+      .topbar { top: 6px; }
+      .clock-date { display: none; }
+    }
+    @media (max-width: 720px) {
+      .main-area { padding: 10px 12px 118px; }
+      .topbar { padding: 8px; }
+      .page-title { font-size: 0.86rem; }
+      .tb-name small { display: none; }
+      .menu-toggle { display: inline-flex; }
+      .sidebar { bottom: 10px; width: calc(100vw - 16px); padding: 6px; justify-content: flex-start; }
+      .sb-item { min-width: 60px; flex: 1 0 auto; font-size: 0.6rem; padding: 7px 6px; }
+      .sb-item .ic { width: 19px; height: 19px; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .uc-stats { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .view-section, .modal-box { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -1075,59 +1396,28 @@ ${BASE_UI_CSS}
     <!-- سایدبار سمت راست دسکتاپ -->
     <!-- پرده محو پشت منوی کشویی راست (فقط موبایل) -->
     <div class="sb-scrim" id="sbScrim" onclick="toggleSidebarDrawer(false)"></div>
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="ناوبری اصلی سیستم">
       <div>
-        <div class="sb-brand">
-          <div class="sb-brand-text">
-            <div class="sb-brand-title">${BRAND_UPPER}</div>
-            <div class="sb-brand-sub">CLOUDFLARE D1 CONTROL</div>
-          </div>
-          <div class="sb-logo">${SHIELD_LOGO_SVG}</div>
-          <button type="button" class="sb-close" onclick="closeSidebarDrawer()" aria-label="بستن منو">✕</button>
-        </div>
-
-        <div class="sb-group-title"><span>نمای کلی</span><span>۱</span></div>
         <button type="button" class="sb-item active" data-view="dashboard" onclick="switchView('dashboard')">
-          <span>⊞ داشبورد</span>
+          ${ICON('dashboard')}<span>داشبورد</span>
         </button>
-
-        <div class="sb-group-title"><span>کاربران و نودها</span><span>۲</span></div>
         <button type="button" class="sb-item" data-view="users" onclick="switchView('users')">
-          <span>👥 کاربران</span>
+          ${ICON('users')}<span>کاربران</span>
           <span class="sb-badge" id="sbUserCount">0</span>
         </button>
         <button type="button" class="sb-item" data-view="nodes" onclick="switchView('nodes')">
-          <span>⚡ نودها و تست تاخیر</span>
+          ${ICON('nodes')}<span>نودها</span>
           <span class="sb-badge" id="sbNodeCount">0</span>
         </button>
-
-        <div class="sb-group-title"><span>شبکه و لبه</span><span>۱</span></div>
         <button type="button" class="sb-item" data-view="network" onclick="switchView('network')">
-          <span>☁️ پروتکل‌ها و مسیریابی</span>
+          ${ICON('network')}<span>شبکه</span>
         </button>
-
-        <div class="sb-group-title"><span>پنل و ظاهر</span><span>۱</span></div>
         <button type="button" class="sb-item" data-view="panel" onclick="switchView('panel')">
-          <span>✎ مسیر و تبدیل اشتراک</span>
+          ${ICON('sliders')}<span>اشتراک</span>
         </button>
-
-        <div class="sb-group-title"><span>سیستم</span><span>۱</span></div>
         <button type="button" class="sb-item" data-view="system" onclick="switchView('system')">
-          <span>⚙️ تنظیمات و دیتابیس D1</span>
+          ${ICON('system')}<span>سیستم</span>
         </button>
-      </div>
-
-      <div class="sb-footer">
-        <div class="clock-card">
-          <div class="clock-time" id="liveClock">00:00:00</div>
-          <div class="clock-date" id="liveDate">در حال بارگذاری...</div>
-        </div>
-        <div class="sb-status-pill">
-          <span class="dot-online"></span>
-          <span id="sbD1StatusText">سیستم آنلاین است</span>
-        </div>
-        <a class="sb-btn" href="${SUPPORT_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">🔗 ${SUPPORT_CHANNEL_LABEL}</a>
-        <button type="button" class="sb-btn sb-btn-logout" onclick="window.location.href='/'">خروج از حساب</button>
       </div>
     </aside>
 
@@ -1136,15 +1426,24 @@ ${BASE_UI_CSS}
       <!-- نوار بالا -->
       <header class="topbar">
         <div class="topbar-right">
-          <button type="button" class="top-pill menu-toggle" onclick="toggleSidebarDrawer()" aria-expanded="false" aria-label="باز و بسته کردن منو">☰ منو</button>
+          <button type="button" class="top-pill menu-toggle" onclick="toggleSidebarDrawer()" aria-expanded="false" aria-label="منو">${ICON('menu')}</button>
+          <div class="tb-brand">
+            <span class="tb-logo">${SHIELD_LOGO_SVG}</span>
+            <span class="tb-name"><b>${BRAND_UPPER}</b><small>CONTROL CENTER</small></span>
+          </div>
           <h1 class="page-title" id="topPageTitle">داشبورد</h1>
         </div>
         <div class="topbar-left">
-          <span class="topbar-brand">${BRAND_UPPER} CONTROL CENTER</span>
-          <span class="top-pill live"><span class="dot-online"></span> زنده</span>
-          <button type="button" class="top-pill" onclick="switchView('users'); openUserModal(null);">+ کاربر جدید</button>
-          <button type="button" class="top-pill" onclick="initD1Database()">🛡️ بررسی D1</button>
-          <button type="button" class="top-pill" onclick="refreshAllData()" title="بروزرسانی">↻</button>
+          <div class="clock-card">
+            <span class="clock-time" id="liveClock">00:00:00</span>
+            <span class="clock-date" id="liveDate">در حال بارگذاری...</span>
+          </div>
+          <span class="top-pill live"><span class="dot-online"></span>زنده</span>
+          <button type="button" class="top-pill accent" onclick="switchView('users'); openUserModal(null);">${ICON('plus')} کاربر جدید</button>
+          <button type="button" class="top-pill" onclick="initD1Database()" title="بررسی دیتابیس D1">${ICON('shield')} D1</button>
+          <button type="button" class="top-pill" onclick="refreshAllData()" title="بروزرسانی">${ICON('refresh')}</button>
+          <a class="top-pill" href="${SUPPORT_CHANNEL_URL}" target="_blank" rel="noopener noreferrer" title="${SUPPORT_CHANNEL_LABEL}">${ICON('link')}</a>
+          <a class="top-pill" href="/admin/logout" title="خروج از حساب">${ICON('logout')}</a>
         </div>
       </header>
 
@@ -1946,7 +2245,7 @@ ${FX_RUNTIME_JS}
       document.body.classList.toggle('drawer-lock', willOpen && !!isPhone);
       if (toggle) {
         toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-        toggle.textContent = willOpen ? '✕ بستن منو' : '☰ منو';
+        toggle.innerHTML = willOpen ? '${ICON('x')} بستن' : '${ICON('menu')} منو';
       }
       if (willOpen) {
         var first = sidebar.querySelector('.sb-item, .sb-btn');
@@ -2019,7 +2318,7 @@ ${FX_RUNTIME_JS}
         var sel = p.id === SELECTED_PRESET ? 'selected' : '';
         var tags = (p.badges || []).map(function(t) { return '<span class="preset-tag">' + t + '</span>'; }).join('');
         html += '<div class="preset-card ' + sel + '" onclick="selectPreset(\\'' + p.id + '\\')">' +
-          '<div class="preset-title">✦ ' + p.title + '</div>' +
+          '<div class="preset-title">' + p.title + '</div>' +
           '<div class="preset-sub">' + p.subtitle + '</div>' +
           '<div class="preset-tags">' + tags + '</div>' +
           '</div>';
@@ -2093,7 +2392,7 @@ ${FX_RUNTIME_JS}
             '<div class="uc-gauge"><strong>' + gaugeText + '</strong></div>' +
           '</div>' +
           '<div class="uc-actions">' +
-            '<button type="button" class="btn-ghost" onclick="toggleUserEnabled(\\'' + u.id + '\\', ' + (!u.enabled) + ')">⏻ ' + (u.enabled ? 'فعال' : 'غیرفعال') + '</button>' +
+            '<button type="button" class="btn-ghost" onclick="toggleUserEnabled(\\'' + u.id + '\\', ' + (!u.enabled) + ')">' + (u.enabled ? 'فعال' : 'غیرفعال') + '</button>' +
             '<button type="button" class="btn-ghost" style="border-color:var(--border-hi);color:var(--neon);" onclick="window.open(\\'' + statusUrl + '\\', \\'_blank\\')">👁 پنجره وضعیت</button>' +
             '<button type="button" class="btn-ghost" onclick="copyText(\\'' + statusUrl + '\\', \\'لینک صفحه وضعیت کاربر کپی شد\\')">🔗 کپی وضعیت</button>' +
             '<button type="button" class="btn-ghost" onclick="copyText(\\'' + subUrl + '\\', \\'ساب‌لینک کاربر کپی شد\\')">📋 ساب‌لینک</button>' +
@@ -2155,13 +2454,13 @@ ${FX_RUNTIME_JS}
         MiliFx.countUp(document.getElementById('mTotalTraffic'), Number(diag.totalUsedBytes || 0), function (v) { return formatBytesJs(v); });
         MiliFx.countUp(document.getElementById('mLifetimeTraffic'), Number(diag.totalLifetimeBytes || 0), function (v) { return 'مجموع عمر: ' + formatBytesJs(v); });
         MiliFx.countUp(document.getElementById('mTotalReqs'), totalReqs, function (v) { return String(Math.round(v)); });
-        MiliFx.countUp(document.getElementById('hbReqs'), totalReqs, function (v) { return '⚡ ' + Math.round(v) + ' درخواست ثبت‌شده'; });
+        MiliFx.countUp(document.getElementById('hbReqs'), totalReqs, function (v) { return Math.round(v) + ' درخواست ثبت‌شده'; });
         MiliFx.ring(document.getElementById('donutRing'), nodeCount > 0 ? Math.min(100, Math.round((users.length / nodeCount) * 100)) : 100);
       }
 
       var upMin = Math.max(1, Math.floor((diag.uptimeMs || 60000) / 60000));
       document.getElementById('hbUsers').textContent = '👥 ' + users.length + ' کاربر · ' + activeCount + ' فعال';
-      document.getElementById('hbReqs').textContent = '⚡ ' + (diag.totalRequests || 0) + ' درخواست ثبت‌شده';
+      document.getElementById('hbReqs').textContent = (diag.totalRequests || 0) + ' درخواست ثبت‌شده';
       document.getElementById('hbUptime').textContent = '🕒 آپ‌تایم ' + upMin + ' دقیقه';
       document.getElementById('hbD1').textContent = diag.d1Enabled ? ('🛡️ دیتابیس D1 متصل (' + diag.d1BindingName + ')') : '🛡️ ذخیره‌ساز پشتیبان فعال (بدون خطای D1)';
 
@@ -2169,7 +2468,7 @@ ${FX_RUNTIME_JS}
       document.getElementById('cfWorkerHost').textContent = window.location.host;
       document.getElementById('cfD1Status').textContent = diag.d1Enabled ? ('D1 (' + diag.d1BindingName + ') متصل') : 'حالت هوشمند بدون خطا (آماده اتصال D1)';
       document.getElementById('cfOutboundProxy').textContent = cfg.s ? 'فعال' : 'اتصال مستقیم';
-      document.getElementById('sysD1State').textContent = diag.d1Enabled ? '✅ متصل و جداول آماده هستند' : '⚡ آماده اتصال (بدون خطای استقرار دستی)';
+      document.getElementById('sysD1State').textContent = diag.d1Enabled ? 'متصل و جداول آماده هستند' : 'آماده اتصال (بدون خطای استقرار دستی)';
       document.getElementById('sysKvState').textContent = diag.kvEnabled ? ('✅ متصل (' + diag.kvBindingName + ')') : 'اختیاری (غیرمتصل)';
 
       // پرمصرف‌ترین کاربران
@@ -2330,7 +2629,7 @@ ${FX_RUNTIME_JS}
         return;
       }
       if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(payload.uuid)) {
-        showToast('UUID معتبر نیست؛ با دکمه 🎲 یک UUID استاندارد بسازید');
+        showToast('UUID معتبر نیست؛ یک UUID استاندارد بسازید');
         return;
       }
 
@@ -2502,7 +2801,7 @@ ${FX_RUNTIME_JS}
         if (r.loc) parts.push(r.loc);
         if (r.latency !== undefined) parts.push(r.latency + 'ms');
         if (!r.ok) parts.push(esc(r.error || 'ناموفق'));
-        html += '<div class="kv-row"><span class="kv-key" style="direction:ltr;">' + (r.ok ? '✓' : '✕') + ' ' + esc(r.ip) + '</span><span class="kv-val">' + parts.join(' · ') + '</span></div>';
+        html += '<div class="kv-row"><span class="kv-key" style="direction:ltr;">' + (r.ok ? '${ICON('check')}' : '${ICON('x')}') + ' ' + esc(r.ip) + '</span><span class="kv-val">' + parts.join(' · ') + '</span></div>';
       });
       var healthy = list.filter(function(r) { return r.ok; }).map(function(r) { return r.ip + ':' + (r.port || 443) + '#CF-' + r.ip; });
       if (healthy.length) {
@@ -2793,30 +3092,55 @@ ${FX_RUNTIME_JS}
       });
     }
 
-    // مقداردهی اولیه
-    renderPresets();
-    applyConfigToForm(STATE.config);
-    renderUsersGrid();
-    updateDashboardWidgets();
-    renderProxyRows();
-    if (document.getElementById('proxyCountrySelect')) loadProxyPoolCountries();
-
-    // جلوه‌های نرم روی کارت‌های پنل
-    document.querySelectorAll('.metric-card, .panel-card, .hero-card, .stat-box, .kv-row').forEach(function (el, idx) {
-      el.classList.add('fx-card');
-      if (el.classList.contains('panel-card') || el.classList.contains('metric-card')) el.classList.add('fx-reveal');
-      if (!el.style.getPropertyValue('--fx-i')) el.style.setProperty('--fx-i', String(Math.min(idx, 8)));
-    });
-    if (window.MiliFx) MiliFx.reveal(document);
-
-    // بازیابی نمای انتخاب‌شده از آدرس
-    var hashView = String(window.location.hash || '').replace('#', '');
-    if (hashView && document.getElementById('view-' + hashView)) switchView(hashView, true);
-    window.addEventListener('hashchange', function () {
+    // ==========================================================================
+    // ناوبری بین بخش‌ها «اولین» کاری است که انجام می‌شود.
+    // قبلاً مقداردهی اولیه یک زنجیره خطی بود و اگر یکی از مراحل خطا می‌داد
+    // (مثلاً یک کاربر ناقص در D1)، بقیه مراحل — از جمله سیم‌کشی تب‌ها — اجرا
+    // نمی‌شد و در نتیجه «هیچ دکمه‌ای کار نمی‌کرد». حالا هر مرحله مستقل و امن است.
+    // ==========================================================================
+    function applyHashView() {
       var v = String(window.location.hash || '').replace('#', '');
       if (v && document.getElementById('view-' + v)) switchView(v, true);
+    }
+    window.addEventListener('hashchange', applyHashView);
+
+    function safeInit(label, fn) {
+      try {
+        fn();
+      } catch (err) {
+        if (window.console && console.error) console.error('[mili-init] ' + label, err);
+        showToast('خطا در ' + label + ': ' + (err && err.message ? err.message : err));
+      }
+    }
+
+    // نمایش خطاهای اجرایی بی‌صدا نمی‌مانند (به‌جای پنل مرده)
+    window.addEventListener('error', function (event) {
+      if (!event || !event.message) return;
+      if (window.console && console.error) console.error('[mili-runtime]', event.message, event.filename, event.lineno);
     });
+
+    safeInit('پریست‌ها', renderPresets);
+    safeInit('فرم تنظیمات', function () { applyConfigToForm(STATE.config); });
+    safeInit('کاربران', renderUsersGrid);
+    safeInit('داشبورد', updateDashboardWidgets);
+    safeInit('ردیف‌های پروکسی', renderProxyRows);
+    safeInit('لیست کشورها', function () {
+      if (document.getElementById('proxyCountrySelect')) loadProxyPoolCountries();
+    });
+
+    // جلوه‌های نرم روی کارت‌های پنل
+    safeInit('جلوه‌های بصری', function () {
+      document.querySelectorAll('.metric-card, .panel-card, .hero-card, .stat-box, .kv-row').forEach(function (el, idx) {
+        el.classList.add('fx-card');
+        if (el.classList.contains('panel-card') || el.classList.contains('metric-card')) el.classList.add('fx-reveal');
+        if (!el.style.getPropertyValue('--fx-i')) el.style.setProperty('--fx-i', String(Math.min(idx, 8)));
+      });
+      if (window.MiliFx) MiliFx.reveal(document);
+    });
+
+    // بازیابی نمای انتخاب‌شده از آدرس
+    safeInit('نمای اولیه', applyHashView);
   </script>
 </body>
-</html>`;
+</html>`);
 }
