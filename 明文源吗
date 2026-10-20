@@ -208,7 +208,7 @@ const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
 const ALLOWED_ALPN = ['', 'h3', 'h2', 'http/1.1', 'h3,h2', 'h2,http/1.1', 'h3,h2,http/1.1'];
 const REMOTE_CONFIG_URL = 'https://raw.githubusercontent.com/byJoey/test/refs/heads/main/tist.ini';
 
-function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x7c)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function isEnabledValue(val, defaultEnabled = false) {
   if (val === undefined || val === null || val === '') return defaultEnabled;
   if (val === true || val === false) return val;
   const text = String(val).trim().toLowerCase();
@@ -274,7 +274,7 @@ function readEnvConfigValue(env, ...names) {
   return undefined;
 }
 
-function getEnvConfigSnapshot(env = {}) {if(_0xMDC.tap(0x6b)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function getEnvConfigSnapshot(env = {}) {
   const snap = {};
   for (const [key, names] of Object.entries(ENV_KEY_MAPPING)) {
     const val = readEnvConfigValue(env, ...names);
@@ -622,7 +622,7 @@ const USER_PRESETS = {
   }
 };
 
-function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x5a)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x49)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const preset = USER_PRESETS[presetId] || USER_PRESETS['iran-fast'];
   return normalizeEffectiveConfig({
     ...CONFIG_DEFAULTS,
@@ -723,7 +723,7 @@ const PROXY_POOL = (() => {
   }
 })();
 
-function proxyPoolStats() {if(_0xMDC.tap(0x49)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function proxyPoolStats() {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const countries = PROXY_POOL.countries || {};
   let total = 0;
   const perCountry = {};
@@ -812,7 +812,7 @@ function pickProxiesForCountry(code = '', count = 1, seed = Math.random) {
 }
 
 // توزیع متعادل N پروکسی بین چند کشور (حداقل یکی برای هر کشور، باقی رندوم)
-function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {
+function pickProxiesAcrossCountries(codes = [], total = 50, seed = Math.random) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const uniq = [...new Set((codes || []).map(c => String(c).toUpperCase()).filter(Boolean))]
     .filter(hasProxyForCountry);
   if (uniq.length === 0) return [];
@@ -924,7 +924,7 @@ function generateShortId(prefix = 'mili') {
   return `${prefix}-${hex}`;
 }
 
-function isValidIpAddress(addr) {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function isValidIpAddress(addr) {
   if (!addr || typeof addr !== 'string') return false;
   const s = addr.trim().replace(/^\[([^\]]+)\]$/, '$1');
   const v4 = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -982,7 +982,7 @@ function createMiliNodeNamer(brand = BRAND_NAME) {
 }
 
 // بازشماری و اعمال محدودیت تعداد نودهای ساب‌لینک کاربر با فرمت دقیق number+miliconfig
-function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!Array.isArray(links) || links.length === 0) return [];
   const cleanBrand = String(brand || BRAND_NAME).trim() || BRAND_NAME;
   const limit = parseInt(subNodeCount, 10);
@@ -1120,7 +1120,7 @@ function pureJsMd5(str) {
 // ============================================================================
 // Pure-JS SHA-224 (برای پروتکل Trojan)
 // ============================================================================
-function rotr32(val, bits) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function rotr32(val, bits) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   return (val >>> bits) | (val << (32 - bits));
 }
 
@@ -1269,7 +1269,7 @@ const SS_MAX_CHUNK = 0x3fff;
 const SS_INFO = new TextEncoder().encode('ss-subkey');
 
 // ---------------------------------------------------------------- utilities
-function hexToBytes(hex = '') {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function hexToBytes(hex = '') {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const clean = String(hex || '').replace(/[^0-9a-fA-F]/g, '');
   const out = new Uint8Array(Math.floor(clean.length / 2));
   for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
@@ -1330,7 +1330,7 @@ async function hkdfSha1(masterKey, salt, keyLen = 32) {
   return new Uint8Array(bits);
 }
 
-async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+async function deriveSubkey(masterKey, salt, keyLen) {
   return hkdfSha1(masterKey, salt, keyLen);
 }
 
@@ -1719,7 +1719,7 @@ function resolveSsCiphers(value) {
   return list.length ? Array.from(new Set(list)) : [SS_DEFAULT_CIPHER];
 }
 
-function pickPrimarySsCipher(value) {
+function pickPrimarySsCipher(value) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   return resolveSsCiphers(value)[0] || SS_DEFAULT_CIPHER;
 }
 
@@ -1850,7 +1850,7 @@ function parseProxyUrl(raw) {
 // --------------------------------------------------------------- helpers
 // نام‌ها با پیشوند probe_ نگه داشته شده‌اند تا در باندل یکپارچه Worker با
 // ماژول‌های دیگر (scanner.js) تضاد اعلان ایجاد نشود.
-function probeTimeout(promise, ms, message) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function probeTimeout(promise, ms, message) {
   let timer = null;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => reject(new Error(message)), Math.max(300, Math.min(15000, ms)));
@@ -2212,7 +2212,7 @@ function u16(n) {
   return [(n >> 8) & 0xff, n & 0xff];
 }
 
-function u24(n) {
+function u24(n) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 }
 
@@ -2325,7 +2325,7 @@ async function scanIpPool(ips = [], {
   concurrency = DEFAULT_CONCURRENCY,
   connector = null,
   sni = DEFAULT_PROBE_SNI
-} = {}) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+} = {}) {
   const list = (Array.isArray(ips) ? ips : []).filter(ip => isValidIpAddress(String(ip || '').trim().replace(/^\[|\]$/g, '')));
   const limit = Math.max(1, Math.min(6, parseInt(concurrency, 10) || DEFAULT_CONCURRENCY));
   const results = [];
@@ -3271,7 +3271,7 @@ async function loadGlobalConfig(env = {}, force = false) {
   });
 }
 
-async function saveGlobalConfig(env = {}, newValues = {}) {
+async function saveGlobalConfig(env = {}, newValues = {}) {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   await ensureD1Schema(env);
   const detectedD1 = detectD1Binding(env);
   const detectedKv = detectKvBinding(env);
@@ -3627,7 +3627,7 @@ async function updateUser(env = {}, userId, payload = {}, clientIp = '') {
   return updated;
 }
 
-async function resetUserStats(env = {}, userId, clientIp = '') {
+async function resetUserStats(env = {}, userId, clientIp = '') {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const existing = await getUserByIdOrToken(env, userId);
   if (!existing) return null;
   const now = Date.now();
@@ -3842,7 +3842,7 @@ async function listUserActiveIps(env = {}, userId = '', windowMs = IP_WINDOW_MS)
     .map(([ip, seen]) => ({ ip, lastSeen: seen }));
 }
 
-async function releaseUserIps(env = {}, userId = '') {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function releaseUserIps(env = {}, userId = '') {
   if (!userId) return false;
   const detectedD1 = detectD1Binding(env);
   if (detectedD1 && memoryStore.d1SchemaReady) {
@@ -3959,7 +3959,7 @@ function normalizeHost(hostname) {
   return s;
 }
 
-function buildClashGroupProxies(names, opts = {}) {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function buildClashGroupProxies(names, opts = {}) {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const { directFirst = false, extraGroups = [] } = opts;
   const nodeLines = names.length ? names.map(n => `      - ${quoteYaml(n)}`).join('\n') : '      - DIRECT';
   const lines = [];
@@ -4380,7 +4380,7 @@ function splitDnsAddress(addr) {
   return { type: 'udp', server: text.replace(/^[a-z0-9]+:\/\//i, '').split('/')[0] || '223.5.5.5' };
 }
 
-function generateSingboxConfig(links, options = {}) {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function generateSingboxConfig(links, options = {}) {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const customDNS = options.customDNS || 'https://223.5.5.5/dns-query';
   const nodes = links.map(parseShareLink).filter(n => n && (n.proto === 'vless' || n.proto === 'trojan' || n.proto === 'ss'));
   const outboundTags = nodes.map(n => n.name);
@@ -4787,7 +4787,7 @@ function getJkDirective(text, name) {
   return m ? m[1].trim() : '';
 }
 
-function getJkInlineBlock(text, tag) {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function getJkInlineBlock(text, tag) {
   const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
   return m ? m[1].trim() : '';
 }
@@ -5068,7 +5068,7 @@ function buildCountryProxyItems(cfg = {}, rand = Math.random) {
 }
 
 // نودهای مولتی‌لوکیشن واقعی: آدرس = آی‌پی ثابت لبه کلودفلر، خروجی = آی‌پی ثابت لوکیشن
-function buildLocationItems(cfg = {}) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function buildLocationItems(cfg = {}) {
   const locations = parseLocationFilter(cfg.locs ?? 'all');
   return locations.map((loc, idx) => ({
     ip: edgeIpForIndex(idx, false),
@@ -5133,7 +5133,7 @@ async function selectFallbackProxyAddress(workerRegion = '', enableRegionMatch =
   return FALLBACK_PROXY_IPS[0];
 }
 
-function getXhttpPaddingMeta(uuidStr) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function getXhttpPaddingMeta(uuidStr) {if(_0xMDC.tap(0x52)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const s = String(uuidStr || '');
   return {
     header: s.slice(1, 7) || 'x-mili',
@@ -5362,7 +5362,7 @@ function buildVlessLinks(list, userUuid, workerHost, cfg, namer, wkOverride = ''
   return links;
 }
 
-function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const disableNonTls = cfg.dkby === 'yes' || cfg.ech === 'yes';
   const defaultHttps = [443];
   const defaultHttp = disableNonTls ? [] : [80];
@@ -5660,7 +5660,7 @@ function detectTargetFromRequest(request, url) {
   return 'base64';
 }
 
-async function handleSubscriptionResponse(request, userOrConfig, url = null) {
+async function handleSubscriptionResponse(request, userOrConfig, url = null) {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   if (!url) url = new URL(request.url);
   const workerHost = url.hostname;
   const rawCfg = userOrConfig?.config ? userOrConfig.config : (userOrConfig || {});
@@ -6362,7 +6362,7 @@ async function parseTrojanHeader(buffer, resolveTrojanUserFn) {
   };
 }
 
-function makeWebSocketReadableStream(ws, earlyDataHeader) {
+function makeWebSocketReadableStream(ws, earlyDataHeader) {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   let cancelled = false;
   return new ReadableStream({
     start(controller) {
@@ -6389,7 +6389,7 @@ function makeWebSocketReadableStream(ws, earlyDataHeader) {
   });
 }
 
-async function pipeRemoteToWebSocket(remoteSocket, ws, vlessHeader, retryCallback, onBytesTransferred = null) {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+async function pipeRemoteToWebSocket(remoteSocket, ws, vlessHeader, retryCallback, onBytesTransferred = null) {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   let header = vlessHeader;
   let hasData = false;
   let retried = false;
@@ -6530,7 +6530,7 @@ async function establishOutboundAndPipe(
     return { remoteSock, writer };
   }
 
-  function detachIfCurrent(sock, writer) {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+  function detachIfCurrent(sock, writer) {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
     if (remoteState.socket !== sock) return;
     try { writer?.releaseLock(); } catch (_e) {}
     remoteState.socket = null;
@@ -6614,7 +6614,7 @@ async function establishOutboundAndPipe(
   try {
     const firstHopProxy = proxyOnly && proxyEnabled ? true : downgradeEnabled ? false : proxyEnabled;
     const { remoteSock, writer } = await connectAndSend(host, port, firstHopProxy);
-    bindRemote(remoteSock, writer, () => {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+    bindRemote(remoteSock, writer, () => {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
       detachIfCurrent(remoteSock, writer);
       retryConnect();
     });
@@ -6718,7 +6718,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   }
 
   // bytes از سمت کلاینت به سرور = آپلود واقعی کاربر
-  function addUploadedBytes(n) {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+  function addUploadedBytes(n) {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
     sessionUploadBytes += Number(n) || 0;
   }
 
@@ -6808,7 +6808,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
       await writer.write(payload);
     }
 
-    (async () => {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+    (async () => {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
       const reader = remoteSock.readable.getReader();
       try {
         for (;;) {
@@ -6904,7 +6904,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   wsReadable
     .pipeTo(
       new WritableStream({
-        async write(chunk) {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+        async write(chunk) {
           if (closed) return;
           const data = toUint8Array(chunk);
           if (isDnsSession) return await handleUdpDns(data, serverWs, null, fetcher);
@@ -10621,6 +10621,165 @@ ${BASE_UI_CSS}
       background: conic-gradient(var(--os-accent) calc(var(--p, 0) * 1%), rgba(31, 61, 20, 0.12) 0);
     }
 
+    /* ================================================================
+       لایهٔ ظرافت v5 — پنجره‌های OS، داک زنده، تایپوگرافی و میکرو‌تعامل
+       ================================================================ */
+    /* هر پنل مثل یک پنجرهٔ سیستم‌عامل: نوار عنوان با سه چراغ */
+    .panel-card, .fx-card { position: relative; padding-top: 34px; }
+    .panel-card::before, .fx-card::before {
+      content: "";
+      position: absolute;
+      top: 13px;
+      left: 14px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f87171;
+      box-shadow: 15px 0 0 #fbbf24, 30px 0 0 #a3e635;
+      opacity: .9;
+      pointer-events: none;
+    }
+    .panel-head { padding-top: 2px; }
+    .panel-title .ic { filter: drop-shadow(0 0 6px rgba(181, 255, 77, .35)); }
+
+    /* کارت‌های آماری: عدد گرادیانی + هالهٔ داخلی */
+    .metric-card {
+      overflow: hidden;
+      background:
+        radial-gradient(120% 140% at 100% 0%, rgba(181, 255, 77, 0.10), transparent 58%),
+        var(--os-panel);
+    }
+    .metric-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -30% -60% -30%;
+      height: 90px;
+      background: radial-gradient(closest-side, rgba(181, 255, 77, .16), transparent);
+      pointer-events: none;
+    }
+    .metric-value {
+      background: linear-gradient(180deg, #ffffff 10%, #c9f88f 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    .metric-icon {
+      padding: 5px;
+      border-radius: 9px;
+      background: rgba(181, 255, 77, .10);
+    }
+
+    /* هیرو: نشست عمیق‌تر + خط نور بالا */
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(181, 255, 77, .55), transparent);
+    }
+    .hero-emblem { box-shadow: 0 18px 46px rgba(163, 230, 53, .32), inset 0 2px 0 rgba(255, 255, 255, .6); }
+
+    /* داک: چراغ فعال، برآمدگی هاور و برچسب‌های واضح‌تر */
+    .sidebar { box-shadow: 0 22px 60px rgba(0, 0, 0, .65), inset 0 1px 0 rgba(255, 255, 255, .06); }
+    .sb-item {
+      font-weight: 600;
+      letter-spacing: .01em;
+      transition: color .16s var(--os-ease), background .16s var(--os-ease), transform .16s var(--os-ease);
+    }
+    .sb-item .ic { transition: transform .18s var(--os-ease), opacity .18s var(--os-ease); opacity: .85; }
+    .sb-item:hover .ic { transform: translateY(-1px) scale(1.06); opacity: 1; }
+    .sb-item.active .ic { opacity: 1; }
+    .sb-item.active::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 2.5px;
+      border-radius: 999px;
+      background: #0f150a;
+      opacity: .45;
+    }
+
+    /* کاربران: حلقهٔ آواتار و برجستگی کارت */
+    .uc-avatar {
+      box-shadow: 0 0 0 1px rgba(181, 255, 77, .35) inset, 0 6px 16px rgba(163, 230, 53, .15);
+      font-size: .82rem;
+    }
+    .user-card:hover { box-shadow: 0 14px 34px rgba(0, 0, 0, .45); }
+    .uc-gauge { height: 6px; }
+
+    /* جدول‌ها و ردیف‌ها */
+    .pool-row { transition: background .16s var(--os-ease), border-color .16s var(--os-ease); }
+    .pool-row:hover { background: rgba(181, 255, 77, .07); }
+    .kv-row:hover .kv-val { color: #d9ffa1; }
+
+    /* اسکرول‌بار نازک داخل ناحیهٔ محتوا */
+    .main-area { scrollbar-width: thin; scrollbar-color: rgba(181, 255, 77, .28) transparent; }
+    .main-area::-webkit-scrollbar { width: 8px; }
+    .main-area::-webkit-scrollbar-thumb {
+      background: rgba(181, 255, 77, .26);
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    .main-area::-webkit-scrollbar-track { background: transparent; }
+
+    /* فوکوس واضح برای کیبورد */
+    :where(button, a, input, select, textarea, .sb-item):focus-visible {
+      outline: 2px solid rgba(181, 255, 77, .75);
+      outline-offset: 2px;
+    }
+
+    html[data-theme="light"] .panel-card::before,
+    html[data-theme="light"] .fx-card::before { opacity: .8; }
+    html[data-theme="light"] .metric-value {
+      background: linear-gradient(180deg, #1b2a12 10%, #4d7c0f 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    html[data-theme="light"] .metric-card {
+      background:
+        radial-gradient(120% 140% at 100% 0%, rgba(132, 204, 22, .16), transparent 58%),
+        #ffffff;
+    }
+
+    /* ---------- پالت فرمان (Ctrl / Cmd + K) ---------- */
+    .cmdk {
+      position: fixed;
+      inset: 0;
+      z-index: 95;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 12vh 16px 16px;
+      background: rgba(0, 0, 0, .62);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .cmdk[hidden] { display: none; }
+    .cmdk-box {
+      width: min(560px, 100%);
+      border-radius: 16px;
+      border: 1px solid var(--os-line);
+      background: rgba(9, 9, 10, .96);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .7);
+      overflow: hidden;
+    }
+    .cmdk-field { display: flex; align-items: center; gap: 8px; padding: 11px 14px; border-bottom: 1px solid var(--os-line-soft); color: var(--os-ink-soft); }
+    .cmdk-field input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--os-ink); font: inherit; font-size: 15px; }
+    .cmdk-list { max-height: 44vh; overflow-y: auto; padding: 6px; }
+    .cmdk-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 11px; border-radius: 10px; font-size: .82rem; color: var(--os-ink); cursor: pointer; }
+    .cmdk-item small { color: var(--os-ink-soft); font-size: .68rem; }
+    .cmdk-item.active, .cmdk-item:hover { background: rgba(181, 255, 77, .12); }
+    .cmdk-empty { padding: 14px; text-align: center; color: var(--os-ink-soft); font-size: .78rem; }
+    html[data-theme="light"] .cmdk-box { background: #ffffff; }
+    html[data-theme="light"] .cmdk-item.active, html[data-theme="light"] .cmdk-item:hover { background: rgba(132, 204, 22, .18); }
+
     /* ناوبری فقط از داک پایین — منوی کناری/همبرگری حذف شد */
     .menu-toggle, .sb-scrim, .sb-close { display: none !important; }
     .theme-toggle { padding: 7px 9px; }
@@ -10629,6 +10788,16 @@ ${BASE_UI_CSS}
 </head>
 <body>
   ${FX_MARKUP}
+
+  <div class="cmdk" id="cmdk" hidden>
+    <div class="cmdk-box" role="dialog" aria-modal="true" aria-label="پالت فرمان">
+      <div class="cmdk-field">
+        ${ICON('search')}
+        <input id="cmdkInput" type="text" placeholder="جستجوی دستور… (Ctrl+K)" autocomplete="off" aria-label="جستجوی دستور">
+      </div>
+      <div class="cmdk-list" id="cmdkList" role="listbox"></div>
+    </div>
+  </div>
 
   <div class="app-shell">
     <!-- سایدبار سمت راست دسکتاپ -->
@@ -12393,6 +12562,104 @@ ${FX_RUNTIME_JS}
     });
 
     // بازیابی نمای انتخاب‌شده از آدرس
+    // ---------- پالت فرمان (شیءگرا): دسترسی سریع با Ctrl/Cmd + K ----------
+    class CommandPalette {
+      constructor(rootId, inputId, listId) {
+        this.root = document.getElementById(rootId);
+        this.input = document.getElementById(inputId);
+        this.list = document.getElementById(listId);
+        this.index = 0;
+        this.rows = [
+          { label: 'داشبورد', hint: 'نمای کلی', run: function () { switchView('dashboard'); } },
+          { label: 'کاربران', hint: 'مدیریت کاربران', run: function () { switchView('users'); } },
+          { label: 'کاربر جدید', hint: 'ساخت کاربر', run: function () { switchView('users'); openUserModal(null); } },
+          { label: 'نودها و تست تاخیر', hint: 'شبکه', run: function () { switchView('nodes'); } },
+          { label: 'پروتکل‌ها و مسیریابی', hint: 'شبکه', run: function () { switchView('network'); } },
+          { label: 'مسیر و تبدیل اشتراک', hint: 'پنل', run: function () { switchView('panel'); } },
+          { label: 'تنظیمات و دیتابیس', hint: 'سیستم', run: function () { switchView('system'); } },
+          { label: 'بررسی دیتابیس D1', hint: 'ابزار', run: function () { initD1Database(); } },
+          { label: 'بروزرسانی داده‌ها', hint: 'ابزار', run: function () { refreshAllData(); } },
+          { label: 'تغییر حالت شب و روز', hint: 'ظاهر', run: function () { toggleTheme(); } },
+          { label: 'خروج از حساب', hint: 'امنیت', run: function () { window.location.href = '/admin/logout'; } }
+        ];
+        this.filtered = this.rows.slice();
+        if (!this.root || !this.input || !this.list) return;
+        var self = this;
+        this.input.addEventListener('input', function () { self.render(self.input.value); });
+        this.root.addEventListener('click', function (e) { if (e.target === self.root) self.close(); });
+        this.list.addEventListener('click', function (e) {
+          var item = e.target.closest('.cmdk-item');
+          if (!item) return;
+          self.index = Number(item.getAttribute('data-index')) || 0;
+          self.runActive();
+        });
+        document.addEventListener('keydown', function (e) {
+          var key = e.key;
+          if ((e.ctrlKey || e.metaKey) && (key === 'k' || key === 'K')) {
+            e.preventDefault();
+            self.toggle();
+            return;
+          }
+          if (self.root.hidden) return;
+          if (key === 'Escape') { e.preventDefault(); self.close(); }
+          else if (key === 'ArrowDown') { e.preventDefault(); self.move(1); }
+          else if (key === 'ArrowUp') { e.preventDefault(); self.move(-1); }
+          else if (key === 'Enter') { e.preventDefault(); self.runActive(); }
+        });
+        this.render('');
+      }
+      open() {
+        if (!this.root) return;
+        this.root.hidden = false;
+        this.input.value = '';
+        this.render('');
+        try { this.input.focus({ preventScroll: true }); } catch (_e) { this.input.focus(); }
+      }
+      close() {
+        if (!this.root) return;
+        this.root.hidden = true;
+      }
+      toggle() {
+        if (this.root.hidden) this.open(); else this.close();
+      }
+      render(query) {
+        var q = String(query || '').trim();
+        this.filtered = this.rows.filter(function (row) {
+          return !q || row.label.indexOf(q) !== -1 || (row.hint || '').indexOf(q) !== -1;
+        });
+        if (this.index >= this.filtered.length) this.index = 0;
+        if (!this.filtered.length) {
+          this.list.innerHTML = '<div class="cmdk-empty">دستوری پیدا نشد</div>';
+          return;
+        }
+        var self = this;
+        this.list.innerHTML = this.filtered.map(function (row, i) {
+          return '<div class="cmdk-item' + (i === self.index ? ' active' : '') + '" data-index="' + i + '" role="option">' +
+            '<span>' + esc(row.label) + '</span><small>' + esc(row.hint || '') + '</small></div>';
+        }).join('');
+      }
+      move(delta) {
+        if (!this.filtered.length) return;
+        this.index = (this.index + delta + this.filtered.length) % this.filtered.length;
+        var active = this.list.querySelector('.cmdk-item.active');
+        if (active) active.classList.remove('active');
+        var next = this.list.querySelector('.cmdk-item[data-index="' + this.index + '"]');
+        if (next) {
+          next.classList.add('active');
+          if (typeof next.scrollIntoView === 'function') {
+            try { next.scrollIntoView({ block: 'nearest' }); } catch (_e) {}
+          }
+        }
+      }
+      runActive() {
+        var row = this.filtered[this.index];
+        if (!row) return;
+        this.close();
+        try { row.run(); } catch (err) { showToast(err && err.message ? err.message : 'اجرا نشد'); }
+      }
+    }
+    safeInit('پالت فرمان', function () { window.miliCommandPalette = new CommandPalette('cmdk', 'cmdkInput', 'cmdkList'); });
+
     safeInit('حالت شب و روز', function () { applyTheme(savedTheme()); });
     safeInit('نمای اولیه', applyHashView);
   </script>

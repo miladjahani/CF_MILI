@@ -1,7 +1,7 @@
 {
   "brand": "miliconfig",
   "version": "3.3.0",
-  "builtAt": "2026-10-20T06:35:23.446Z",
+  "builtAt": "2026-10-20T06:47:29.613Z",
   "targets": [
     "cloudflare-pages-advanced-mode",
     "cloudflare-worker"
@@ -11,33 +11,33 @@
   "workerEntry": "src/index.js",
   "obfuscation": {
     "deadCode": true,
-    "deadCodeBlocks": 45,
+    "deadCodeBlocks": 42,
     "deadCodeMarker": "__milicfg_deadcode_v3_1__",
     "obfuscator": "javascript-obfuscator",
     "stringVaultEntries": 0
   },
-  "obfuscatedBytes": 1038855,
+  "obfuscatedBytes": 1076761,
   "readableBundle": {
     "path": "dist/worker.readable.js",
-    "bytes": 762987,
+    "bytes": 774668,
     "deadCodeMarker": "__milicfg_deadcode_v3_1__",
     "deadCodeOccurrences": 1
   },
   "artifacts": [
     {
       "path": "dist/_worker.js",
-      "bytes": 1038855,
-      "sha256": "c6a32d2dc3975dfeb0ce8b63ceece449913dd5082ff673ef2c8796a324ce3e3d"
+      "bytes": 1076761,
+      "sha256": "9532058e1be2f5f583c21946555c3d2c8b66e5d8b950d73015f2d5be7ec0bae5"
     },
     {
       "path": "public/_worker.js",
-      "bytes": 1038855,
-      "sha256": "c6a32d2dc3975dfeb0ce8b63ceece449913dd5082ff673ef2c8796a324ce3e3d"
+      "bytes": 1076761,
+      "sha256": "9532058e1be2f5f583c21946555c3d2c8b66e5d8b950d73015f2d5be7ec0bae5"
     },
     {
       "path": "_worker.js",
-      "bytes": 1038855,
-      "sha256": "c6a32d2dc3975dfeb0ce8b63ceece449913dd5082ff673ef2c8796a324ce3e3d"
+      "bytes": 1076761,
+      "sha256": "9532058e1be2f5f583c21946555c3d2c8b66e5d8b950d73015f2d5be7ec0bae5"
     }
   ]
 }

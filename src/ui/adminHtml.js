@@ -1468,6 +1468,165 @@ ${BASE_UI_CSS}
       background: conic-gradient(var(--os-accent) calc(var(--p, 0) * 1%), rgba(31, 61, 20, 0.12) 0);
     }
 
+    /* ================================================================
+       لایهٔ ظرافت v5 — پنجره‌های OS، داک زنده، تایپوگرافی و میکرو‌تعامل
+       ================================================================ */
+    /* هر پنل مثل یک پنجرهٔ سیستم‌عامل: نوار عنوان با سه چراغ */
+    .panel-card, .fx-card { position: relative; padding-top: 34px; }
+    .panel-card::before, .fx-card::before {
+      content: "";
+      position: absolute;
+      top: 13px;
+      left: 14px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f87171;
+      box-shadow: 15px 0 0 #fbbf24, 30px 0 0 #a3e635;
+      opacity: .9;
+      pointer-events: none;
+    }
+    .panel-head { padding-top: 2px; }
+    .panel-title .ic { filter: drop-shadow(0 0 6px rgba(181, 255, 77, .35)); }
+
+    /* کارت‌های آماری: عدد گرادیانی + هالهٔ داخلی */
+    .metric-card {
+      overflow: hidden;
+      background:
+        radial-gradient(120% 140% at 100% 0%, rgba(181, 255, 77, 0.10), transparent 58%),
+        var(--os-panel);
+    }
+    .metric-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -30% -60% -30%;
+      height: 90px;
+      background: radial-gradient(closest-side, rgba(181, 255, 77, .16), transparent);
+      pointer-events: none;
+    }
+    .metric-value {
+      background: linear-gradient(180deg, #ffffff 10%, #c9f88f 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    .metric-icon {
+      padding: 5px;
+      border-radius: 9px;
+      background: rgba(181, 255, 77, .10);
+    }
+
+    /* هیرو: نشست عمیق‌تر + خط نور بالا */
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(181, 255, 77, .55), transparent);
+    }
+    .hero-emblem { box-shadow: 0 18px 46px rgba(163, 230, 53, .32), inset 0 2px 0 rgba(255, 255, 255, .6); }
+
+    /* داک: چراغ فعال، برآمدگی هاور و برچسب‌های واضح‌تر */
+    .sidebar { box-shadow: 0 22px 60px rgba(0, 0, 0, .65), inset 0 1px 0 rgba(255, 255, 255, .06); }
+    .sb-item {
+      font-weight: 600;
+      letter-spacing: .01em;
+      transition: color .16s var(--os-ease), background .16s var(--os-ease), transform .16s var(--os-ease);
+    }
+    .sb-item .ic { transition: transform .18s var(--os-ease), opacity .18s var(--os-ease); opacity: .85; }
+    .sb-item:hover .ic { transform: translateY(-1px) scale(1.06); opacity: 1; }
+    .sb-item.active .ic { opacity: 1; }
+    .sb-item.active::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 2.5px;
+      border-radius: 999px;
+      background: #0f150a;
+      opacity: .45;
+    }
+
+    /* کاربران: حلقهٔ آواتار و برجستگی کارت */
+    .uc-avatar {
+      box-shadow: 0 0 0 1px rgba(181, 255, 77, .35) inset, 0 6px 16px rgba(163, 230, 53, .15);
+      font-size: .82rem;
+    }
+    .user-card:hover { box-shadow: 0 14px 34px rgba(0, 0, 0, .45); }
+    .uc-gauge { height: 6px; }
+
+    /* جدول‌ها و ردیف‌ها */
+    .pool-row { transition: background .16s var(--os-ease), border-color .16s var(--os-ease); }
+    .pool-row:hover { background: rgba(181, 255, 77, .07); }
+    .kv-row:hover .kv-val { color: #d9ffa1; }
+
+    /* اسکرول‌بار نازک داخل ناحیهٔ محتوا */
+    .main-area { scrollbar-width: thin; scrollbar-color: rgba(181, 255, 77, .28) transparent; }
+    .main-area::-webkit-scrollbar { width: 8px; }
+    .main-area::-webkit-scrollbar-thumb {
+      background: rgba(181, 255, 77, .26);
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    .main-area::-webkit-scrollbar-track { background: transparent; }
+
+    /* فوکوس واضح برای کیبورد */
+    :where(button, a, input, select, textarea, .sb-item):focus-visible {
+      outline: 2px solid rgba(181, 255, 77, .75);
+      outline-offset: 2px;
+    }
+
+    html[data-theme="light"] .panel-card::before,
+    html[data-theme="light"] .fx-card::before { opacity: .8; }
+    html[data-theme="light"] .metric-value {
+      background: linear-gradient(180deg, #1b2a12 10%, #4d7c0f 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    html[data-theme="light"] .metric-card {
+      background:
+        radial-gradient(120% 140% at 100% 0%, rgba(132, 204, 22, .16), transparent 58%),
+        #ffffff;
+    }
+
+    /* ---------- پالت فرمان (Ctrl / Cmd + K) ---------- */
+    .cmdk {
+      position: fixed;
+      inset: 0;
+      z-index: 95;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 12vh 16px 16px;
+      background: rgba(0, 0, 0, .62);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .cmdk[hidden] { display: none; }
+    .cmdk-box {
+      width: min(560px, 100%);
+      border-radius: 16px;
+      border: 1px solid var(--os-line);
+      background: rgba(9, 9, 10, .96);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .7);
+      overflow: hidden;
+    }
+    .cmdk-field { display: flex; align-items: center; gap: 8px; padding: 11px 14px; border-bottom: 1px solid var(--os-line-soft); color: var(--os-ink-soft); }
+    .cmdk-field input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--os-ink); font: inherit; font-size: 15px; }
+    .cmdk-list { max-height: 44vh; overflow-y: auto; padding: 6px; }
+    .cmdk-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 11px; border-radius: 10px; font-size: .82rem; color: var(--os-ink); cursor: pointer; }
+    .cmdk-item small { color: var(--os-ink-soft); font-size: .68rem; }
+    .cmdk-item.active, .cmdk-item:hover { background: rgba(181, 255, 77, .12); }
+    .cmdk-empty { padding: 14px; text-align: center; color: var(--os-ink-soft); font-size: .78rem; }
+    html[data-theme="light"] .cmdk-box { background: #ffffff; }
+    html[data-theme="light"] .cmdk-item.active, html[data-theme="light"] .cmdk-item:hover { background: rgba(132, 204, 22, .18); }
+
     /* ناوبری فقط از داک پایین — منوی کناری/همبرگری حذف شد */
     .menu-toggle, .sb-scrim, .sb-close { display: none !important; }
     .theme-toggle { padding: 7px 9px; }
@@ -1476,6 +1635,16 @@ ${BASE_UI_CSS}
 </head>
 <body>
   ${FX_MARKUP}
+
+  <div class="cmdk" id="cmdk" hidden>
+    <div class="cmdk-box" role="dialog" aria-modal="true" aria-label="پالت فرمان">
+      <div class="cmdk-field">
+        ${ICON('search')}
+        <input id="cmdkInput" type="text" placeholder="جستجوی دستور… (Ctrl+K)" autocomplete="off" aria-label="جستجوی دستور">
+      </div>
+      <div class="cmdk-list" id="cmdkList" role="listbox"></div>
+    </div>
+  </div>
 
   <div class="app-shell">
     <!-- سایدبار سمت راست دسکتاپ -->
@@ -3240,6 +3409,104 @@ ${FX_RUNTIME_JS}
     });
 
     // بازیابی نمای انتخاب‌شده از آدرس
+    // ---------- پالت فرمان (شیءگرا): دسترسی سریع با Ctrl/Cmd + K ----------
+    class CommandPalette {
+      constructor(rootId, inputId, listId) {
+        this.root = document.getElementById(rootId);
+        this.input = document.getElementById(inputId);
+        this.list = document.getElementById(listId);
+        this.index = 0;
+        this.rows = [
+          { label: 'داشبورد', hint: 'نمای کلی', run: function () { switchView('dashboard'); } },
+          { label: 'کاربران', hint: 'مدیریت کاربران', run: function () { switchView('users'); } },
+          { label: 'کاربر جدید', hint: 'ساخت کاربر', run: function () { switchView('users'); openUserModal(null); } },
+          { label: 'نودها و تست تاخیر', hint: 'شبکه', run: function () { switchView('nodes'); } },
+          { label: 'پروتکل‌ها و مسیریابی', hint: 'شبکه', run: function () { switchView('network'); } },
+          { label: 'مسیر و تبدیل اشتراک', hint: 'پنل', run: function () { switchView('panel'); } },
+          { label: 'تنظیمات و دیتابیس', hint: 'سیستم', run: function () { switchView('system'); } },
+          { label: 'بررسی دیتابیس D1', hint: 'ابزار', run: function () { initD1Database(); } },
+          { label: 'بروزرسانی داده‌ها', hint: 'ابزار', run: function () { refreshAllData(); } },
+          { label: 'تغییر حالت شب و روز', hint: 'ظاهر', run: function () { toggleTheme(); } },
+          { label: 'خروج از حساب', hint: 'امنیت', run: function () { window.location.href = '/admin/logout'; } }
+        ];
+        this.filtered = this.rows.slice();
+        if (!this.root || !this.input || !this.list) return;
+        var self = this;
+        this.input.addEventListener('input', function () { self.render(self.input.value); });
+        this.root.addEventListener('click', function (e) { if (e.target === self.root) self.close(); });
+        this.list.addEventListener('click', function (e) {
+          var item = e.target.closest('.cmdk-item');
+          if (!item) return;
+          self.index = Number(item.getAttribute('data-index')) || 0;
+          self.runActive();
+        });
+        document.addEventListener('keydown', function (e) {
+          var key = e.key;
+          if ((e.ctrlKey || e.metaKey) && (key === 'k' || key === 'K')) {
+            e.preventDefault();
+            self.toggle();
+            return;
+          }
+          if (self.root.hidden) return;
+          if (key === 'Escape') { e.preventDefault(); self.close(); }
+          else if (key === 'ArrowDown') { e.preventDefault(); self.move(1); }
+          else if (key === 'ArrowUp') { e.preventDefault(); self.move(-1); }
+          else if (key === 'Enter') { e.preventDefault(); self.runActive(); }
+        });
+        this.render('');
+      }
+      open() {
+        if (!this.root) return;
+        this.root.hidden = false;
+        this.input.value = '';
+        this.render('');
+        try { this.input.focus({ preventScroll: true }); } catch (_e) { this.input.focus(); }
+      }
+      close() {
+        if (!this.root) return;
+        this.root.hidden = true;
+      }
+      toggle() {
+        if (this.root.hidden) this.open(); else this.close();
+      }
+      render(query) {
+        var q = String(query || '').trim();
+        this.filtered = this.rows.filter(function (row) {
+          return !q || row.label.indexOf(q) !== -1 || (row.hint || '').indexOf(q) !== -1;
+        });
+        if (this.index >= this.filtered.length) this.index = 0;
+        if (!this.filtered.length) {
+          this.list.innerHTML = '<div class="cmdk-empty">دستوری پیدا نشد</div>';
+          return;
+        }
+        var self = this;
+        this.list.innerHTML = this.filtered.map(function (row, i) {
+          return '<div class="cmdk-item' + (i === self.index ? ' active' : '') + '" data-index="' + i + '" role="option">' +
+            '<span>' + esc(row.label) + '</span><small>' + esc(row.hint || '') + '</small></div>';
+        }).join('');
+      }
+      move(delta) {
+        if (!this.filtered.length) return;
+        this.index = (this.index + delta + this.filtered.length) % this.filtered.length;
+        var active = this.list.querySelector('.cmdk-item.active');
+        if (active) active.classList.remove('active');
+        var next = this.list.querySelector('.cmdk-item[data-index="' + this.index + '"]');
+        if (next) {
+          next.classList.add('active');
+          if (typeof next.scrollIntoView === 'function') {
+            try { next.scrollIntoView({ block: 'nearest' }); } catch (_e) {}
+          }
+        }
+      }
+      runActive() {
+        var row = this.filtered[this.index];
+        if (!row) return;
+        this.close();
+        try { row.run(); } catch (err) { showToast(err && err.message ? err.message : 'اجرا نشد'); }
+      }
+    }
+    safeInit('پالت فرمان', function () { window.miliCommandPalette = new CommandPalette('cmdk', 'cmdkInput', 'cmdkList'); });
+
     safeInit('حالت شب و روز', function () { applyTheme(savedTheme()); });
     safeInit('نمای اولیه', applyHashView);
   </script>
