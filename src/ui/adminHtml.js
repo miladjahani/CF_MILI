@@ -1070,23 +1070,24 @@ ${BASE_UI_CSS}
        miliconfig OS shell v4 — لایه ظاهری «سیستم‌عامل»
        پنجره شیشه‌ای، داک پایین، تایپوگرافی آرام و ترنزیشن‌های سبک
        ================================================================ */
+    /* AMOLED: پس‌زمینه کاملاً مشکی، پنل‌های نزدیک به مشکی، کنتراست بالا */
     :root {
-      --os-bg: #05080a;
-      --os-panel: rgba(12, 18, 14, 0.72);
-      --os-panel-2: rgba(16, 24, 18, 0.86);
-      --os-line: rgba(181, 255, 77, 0.13);
-      --os-line-soft: rgba(255, 255, 255, 0.06);
-      --os-ink: #eaf3e4;
-      --os-ink-soft: #93a58e;
+      --os-bg: #000000;
+      --os-panel: rgba(10, 10, 11, 0.92);
+      --os-panel-2: rgba(16, 16, 17, 0.97);
+      --os-line: rgba(181, 255, 77, 0.16);
+      --os-line-soft: rgba(255, 255, 255, 0.07);
+      --os-ink: #f4f7f2;
+      --os-ink-soft: #98a397;
       --os-accent: #b5ff4d;
-      --os-radius: 20px;
+      --os-radius: 18px;
       --os-ease: cubic-bezier(.22, .61, .36, 1);
+      --os-glow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 18px 40px rgba(0, 0, 0, 0.85);
     }
     html, body { height: 100%; }
     body {
       background:
-        radial-gradient(900px 520px at 78% -12%, rgba(163, 230, 53, 0.10), transparent 62%),
-        radial-gradient(700px 420px at 8% 108%, rgba(56, 189, 248, 0.05), transparent 60%),
+        radial-gradient(760px 420px at 82% -18%, rgba(163, 230, 53, 0.07), transparent 60%),
         var(--os-bg);
       color: var(--os-ink);
       font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
