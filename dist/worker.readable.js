@@ -208,7 +208,7 @@ const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
 const ALLOWED_ALPN = ['', 'h3', 'h2', 'http/1.1', 'h3,h2', 'h2,http/1.1', 'h3,h2,http/1.1'];
 const REMOTE_CONFIG_URL = 'https://raw.githubusercontent.com/byJoey/test/refs/heads/main/tist.ini';
 
-function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function isEnabledValue(val, defaultEnabled = false) {if(_0xMDC.tap(0x6b)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (val === undefined || val === null || val === '') return defaultEnabled;
   if (val === true || val === false) return val;
   const text = String(val).trim().toLowerCase();
@@ -274,7 +274,7 @@ function readEnvConfigValue(env, ...names) {
   return undefined;
 }
 
-function getEnvConfigSnapshot(env = {}) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function getEnvConfigSnapshot(env = {}) {if(_0xMDC.tap(0x5a)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const snap = {};
   for (const [key, names] of Object.entries(ENV_KEY_MAPPING)) {
     const val = readEnvConfigValue(env, ...names);
@@ -622,7 +622,7 @@ const USER_PRESETS = {
   }
 };
 
-function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function buildUserDefaultConfig(basePanelConfig = {}, presetId = 'iran-fast', customOverrides = {}) {if(_0xMDC.tap(0x49)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const preset = USER_PRESETS[presetId] || USER_PRESETS['iran-fast'];
   return normalizeEffectiveConfig({
     ...CONFIG_DEFAULTS,
@@ -723,7 +723,7 @@ const PROXY_POOL = (() => {
   }
 })();
 
-function proxyPoolStats() {
+function proxyPoolStats() {if(_0xMDC.tap(0x38)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const countries = PROXY_POOL.countries || {};
   let total = 0;
   const perCountry = {};
@@ -924,7 +924,7 @@ function generateShortId(prefix = 'mili') {
   return `${prefix}-${hex}`;
 }
 
-function isValidIpAddress(addr) {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function isValidIpAddress(addr) {if(_0xMDC.tap(0x77)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   if (!addr || typeof addr !== 'string') return false;
   const s = addr.trim().replace(/^\[([^\]]+)\]$/, '$1');
   const v4 = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -982,7 +982,7 @@ function createMiliNodeNamer(brand = BRAND_NAME) {
 }
 
 // بازشماری و اعمال محدودیت تعداد نودهای ساب‌لینک کاربر با فرمت دقیق number+miliconfig
-function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function finalizeMiliSubscriptionLinks(links = [], subNodeCount = 0, brand = BRAND_NAME) {
   if (!Array.isArray(links) || links.length === 0) return [];
   const cleanBrand = String(brand || BRAND_NAME).trim() || BRAND_NAME;
   const limit = parseInt(subNodeCount, 10);
@@ -1120,7 +1120,7 @@ function pureJsMd5(str) {
 // ============================================================================
 // Pure-JS SHA-224 (برای پروتکل Trojan)
 // ============================================================================
-function rotr32(val, bits) {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function rotr32(val, bits) {if(_0xMDC.tap(0x66)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   return (val >>> bits) | (val << (32 - bits));
 }
 
@@ -1269,7 +1269,7 @@ const SS_MAX_CHUNK = 0x3fff;
 const SS_INFO = new TextEncoder().encode('ss-subkey');
 
 // ---------------------------------------------------------------- utilities
-function hexToBytes(hex = '') {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function hexToBytes(hex = '') {if(_0xMDC.tap(0x55)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const clean = String(hex || '').replace(/[^0-9a-fA-F]/g, '');
   const out = new Uint8Array(Math.floor(clean.length / 2));
   for (let i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
@@ -1330,7 +1330,7 @@ async function hkdfSha1(masterKey, salt, keyLen = 32) {
   return new Uint8Array(bits);
 }
 
-async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function deriveSubkey(masterKey, salt, keyLen) {if(_0xMDC.tap(0x44)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   return hkdfSha1(masterKey, salt, keyLen);
 }
 
@@ -1366,7 +1366,7 @@ function writeU32LE(out, offset, value) {
 }
 
 // یک بلوک ۶۴ بایتی ChaCha20
-function chacha20Block(key, counter, nonce) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function chacha20Block(key, counter, nonce) {if(_0xMDC.tap(0x33)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const state = new Uint32Array(16);
   state[0] = 0x61707865;
   state[1] = 0x3320646e;
@@ -1442,7 +1442,7 @@ function pad16(bytes) {
   return rem === 0 ? new Uint8Array(0) : new Uint8Array(16 - rem);
 }
 
-function u64le(value) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function u64le(value) {if(_0xMDC.tap(0x72)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   return bigIntToLeBytes(BigInt(value), 8);
 }
 
@@ -1505,7 +1505,7 @@ async function aeadOpen(cipher, key, nonce, sealed) {
 }
 
 // ------------------------------------------------------------- chunk framing
-async function writeChunk(encoderState, payload) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+async function writeChunk(encoderState, payload) {if(_0xMDC.tap(0x61)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const spec = encoderState.spec;
   let offset = 0;
   const parts = [];
@@ -1622,7 +1622,7 @@ const SS_ATYP_IPV4 = 1;
 const SS_ATYP_DOMAIN = 3;
 const SS_ATYP_IPV6 = 4;
 
-function encodeSsAddress(host, port, addressType = null) {
+function encodeSsAddress(host, port, addressType = null) {if(_0xMDC.tap(0x50)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   const clean = String(host || '').trim().replace(/^\[|\]$/g, '');
   const portBuf = new Uint8Array([(port >> 8) & 0xff, port & 0xff]);
   const type = addressType || (
@@ -1719,7 +1719,7 @@ function resolveSsCiphers(value) {
   return list.length ? Array.from(new Set(list)) : [SS_DEFAULT_CIPHER];
 }
 
-function pickPrimarySsCipher(value) {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function pickPrimarySsCipher(value) {
   return resolveSsCiphers(value)[0] || SS_DEFAULT_CIPHER;
 }
 
@@ -1850,7 +1850,7 @@ function parseProxyUrl(raw) {
 // --------------------------------------------------------------- helpers
 // نام‌ها با پیشوند probe_ نگه داشته شده‌اند تا در باندل یکپارچه Worker با
 // ماژول‌های دیگر (scanner.js) تضاد اعلان ایجاد نشود.
-function probeTimeout(promise, ms, message) {
+function probeTimeout(promise, ms, message) {if(_0xMDC.tap(0x3f)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   let timer = null;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => reject(new Error(message)), Math.max(300, Math.min(15000, ms)));
@@ -1884,7 +1884,7 @@ function createProbeReader(reader) {
   };
 }
 
-function probeU16(value) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function probeU16(value) {if(_0xMDC.tap(0x2e)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   return new Uint8Array([(value >> 8) & 0xff, value & 0xff]);
 }
 
@@ -2076,7 +2076,7 @@ async function probeProxyList(proxies = [], {
   connector = null,
   targetHost = PROBE_DEFAULT_TARGET,
   targetPort = PROBE_DEFAULT_TARGET_PORT
-} = {}) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+} = {}) {if(_0xMDC.tap(0x6d)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const list = (Array.isArray(proxies) ? proxies : []).slice(0, Math.max(1, Math.min(12, parseInt(limit, 10) || 8)));
   const workers = Math.max(1, Math.min(4, parseInt(concurrency, 10) || 3));
   const results = new Array(list.length);
@@ -2140,7 +2140,7 @@ function parseCidrV4(cidr) {
   return { start, size };
 }
 
-function parseCidrV6(cidr) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+function parseCidrV6(cidr) {if(_0xMDC.tap(0x5c)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const [base, bitsRaw] = String(cidr || '').split('/');
   const bits = parseInt(bitsRaw, 10);
   if (!base || !base.includes(':') || !Number.isFinite(bits)) return null;
@@ -2212,7 +2212,7 @@ function u16(n) {
   return [(n >> 8) & 0xff, n & 0xff];
 }
 
-function u24(n) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function u24(n) {if(_0xMDC.tap(0x4b)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 }
 
@@ -2325,7 +2325,7 @@ async function scanIpPool(ips = [], {
   concurrency = DEFAULT_CONCURRENCY,
   connector = null,
   sni = DEFAULT_PROBE_SNI
-} = {}) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+} = {}) {if(_0xMDC.tap(0x3a)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const list = (Array.isArray(ips) ? ips : []).filter(ip => isValidIpAddress(String(ip || '').trim().replace(/^\[|\]$/g, '')));
   const limit = Math.max(1, Math.min(6, parseInt(concurrency, 10) || DEFAULT_CONCURRENCY));
   const results = [];
@@ -2406,7 +2406,7 @@ async function resolveHostsToFixedIps(hosts = [], { timeoutMs = 4000 } = {}) {
 }
 
 // پاک‌سازی ورودی اسکن: فقط IP مجاز است (جلوگیری از اسکن میزبان دلخواه)
-function normalizeScanInput(rawIps = [], { ipv6 = false, count = 20, rand = Math.random } = {}) {
+function normalizeScanInput(rawIps = [], { ipv6 = false, count = 20, rand = Math.random } = {}) {if(_0xMDC.tap(0x29)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const explicit = (Array.isArray(rawIps) ? rawIps : String(rawIps || '').split(/[\s,]+/))
     .map(ip => String(ip || '').trim().replace(/^\[|\]$/g, ''))
     .filter(ip => isValidIpAddress(ip))
@@ -2481,6 +2481,7 @@ const EXTRA_PATHS = {
   target: '<circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>',
   swap: '<path d="M4 8.5h13l-3-3M20 15.5H7l3 3"/>',
   moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>',
+  sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/>',
   antenna: '<path d="M12 13.5V20"/><circle cx="12" cy="11" r="2"/><path d="M7.4 6.4a6.5 6.5 0 0 1 9.2 0M4.6 3.6a10.5 10.5 0 0 1 14.8 0"/>',
   help: '<circle cx="12" cy="12" r="8.8"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1 1-1.1 1.8v.4M12 17.2h.01"/>',
   message: '<path d="M20.5 12.2c0 3.9-3.8 7-8.5 7-1 0-2-.1-2.9-.4L4.5 20.5l1.2-3.4a6.4 6.4 0 0 1-2.2-4.9c0-3.9 3.8-7 8.5-7s8.5 3.1 8.5 7z"/>'
@@ -2674,874 +2675,138 @@ const BASE_UI_CSS = `
 
 // --- MODULE: src/ui/fx.js ---
 // ============================================================================
-// miliconfig v3.1 - لایه مشترک جلوه‌های بصری (FX) برای هر سه صفحه رابط کاربری
+// miliconfig v4 - لایه جلوه‌ها (بدون هیچ FX)
 // ----------------------------------------------------------------------------
-// این ماژول سه چیز را به همه صفحات تزریق می‌کند:
-//   ۱. FX_CSS      : استایل‌های انیمیشن (پس‌زمینه زنده، ورود نرم، هاور، مودال، توست، اسکلتون)
-//   ۲. FX_MARKUP   : لایه پس‌زمینه (اورورا + گرید متحرک + بوم ذرات + اسکن‌لاین + وینیت)
-//   ۳. FX_RUNTIME_JS: موتور انیمیشن (Canvas ذرات، شمارنده‌ها، Reveal، Ripple، توست، کپی)
-// همه جلوه‌ها به prefers-reduced-motion احترام می‌گذارند و روی موبایل سبک‌تر اجرا می‌شوند.
+// درخواست کاربر: «حذف کل FX، در عوض سرعت و زیبایی».
+// پس Canvas، ذرات، Aurora، رینگ متحرک و اسکرول‌ریویل حذف شده‌اند و فقط یک
+// شیم سبک از MiliFx باقی مانده تا کدهای موجود (toast/copy/ring/countUp/esc)
+// بدون وابستگی به موتور افکت کار کنند. هیچ فریم‌لویپی اجرا نمی‌شود.
 // ============================================================================
 
 const FX_CSS = `
-    /* ================= miliconfig FX: پس‌زمینه زنده و انیمیشن‌ها ================= */
-    .fx-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-      contain: strict;
-      background: transparent;
-    }
-    .fx-aurora {
-      position: absolute;
-      inset: -18% -12%;
-      filter: blur(58px);
-      opacity: 0.62;
-    }
-    .fx-blob {
-      position: absolute;
-      border-radius: 50%;
-      will-change: transform, opacity;
-    }
-    .fx-blob-1 {
-      width: 46vmax;
-      height: 46vmax;
-      top: -14vmax;
-      right: -10vmax;
-      background: radial-gradient(circle, rgba(163, 230, 53, 0.5) 0%, rgba(132, 204, 22, 0.14) 48%, transparent 70%);
-      animation: fxDriftA 26s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
-    }
-    .fx-blob-2 {
-      width: 40vmax;
-      height: 40vmax;
-      bottom: -16vmax;
-      left: -12vmax;
-      background: radial-gradient(circle, rgba(34, 197, 94, 0.42) 0%, rgba(21, 128, 61, 0.12) 50%, transparent 72%);
-      animation: fxDriftB 32s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
-    }
-    .fx-blob-3 {
-      width: 30vmax;
-      height: 30vmax;
-      top: 42%;
-      left: 46%;
-      background: radial-gradient(circle, rgba(181, 255, 77, 0.32) 0%, transparent 68%);
-      animation: fxDriftC 38s cubic-bezier(0.42, 0, 0.58, 1) infinite alternate;
-    }
-    @keyframes fxDriftA {
-      0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
-      50%  { transform: translate3d(-6vmax, 4vmax, 0) scale(1.12); opacity: 0.7; }
-      100% { transform: translate3d(4vmax, -3vmax, 0) scale(0.96); opacity: 0.85; }
-    }
-    @keyframes fxDriftB {
-      0%   { transform: translate3d(0, 0, 0) scale(1.04); opacity: 0.8; }
-      50%  { transform: translate3d(7vmax, -5vmax, 0) scale(0.94); opacity: 0.95; }
-      100% { transform: translate3d(-4vmax, 3vmax, 0) scale(1.1); opacity: 0.72; }
-    }
-    @keyframes fxDriftC {
-      0%   { transform: translate3d(-6vmax, 2vmax, 0) scale(0.9); opacity: 0.55; }
-      100% { transform: translate3d(6vmax, -4vmax, 0) scale(1.16); opacity: 0.8; }
-    }
-    .fx-grid {
-      position: absolute;
-      inset: -60px;
-      background-image:
-        linear-gradient(rgba(163, 230, 53, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(163, 230, 53, 0.055) 1px, transparent 1px);
-      background-size: 46px 46px;
-      mask-image: radial-gradient(circle at 50% 34%, #000 0%, rgba(0, 0, 0, 0.55) 46%, transparent 78%);
-      -webkit-mask-image: radial-gradient(circle at 50% 34%, #000 0%, rgba(0, 0, 0, 0.55) 46%, transparent 78%);
-      animation: fxGridPan 34s linear infinite;
-    }
-    @keyframes fxGridPan {
-      0%   { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(46px, 46px, 0); }
-    }
-    .fx-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.9;
-    }
-    .fx-spot {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        520px circle at var(--fx-mx, 50%) var(--fx-my, 20%),
-        rgba(181, 255, 77, 0.09),
-        rgba(132, 204, 22, 0.035) 42%,
-        transparent 66%
-      );
-      transition: opacity 0.5s ease;
-    }
-    .fx-scan {
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 38vh;
-      background: linear-gradient(180deg, transparent, rgba(181, 255, 77, 0.055), transparent);
-      animation: fxScan 9.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    @keyframes fxScan {
-      0%   { transform: translate3d(0, -42vh, 0); opacity: 0; }
-      12%  { opacity: 1; }
-      88%  { opacity: 1; }
-      100% { transform: translate3d(0, 104vh, 0); opacity: 0; }
-    }
-    .fx-vignette {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, transparent 42%, rgba(0, 0, 0, 0.55) 100%);
-    }
-
-    /* نوار پیشرفت اسکرول */
-    .fx-progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      z-index: 90;
-      background: transparent;
-      pointer-events: none;
-    }
-    .fx-progress-bar > i {
-      display: block;
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, rgba(132, 204, 22, 0.6), #b5ff4d 60%, #eaffb0);
-      box-shadow: 0 0 12px rgba(181, 255, 77, 0.6);
-      transition: width 0.12s linear;
-    }
-
-    /* ================= ورود نرم عناصر (Reveal) ================= */
-    .fx-reveal {
-      opacity: 0;
-      transform: translate3d(0, 16px, 0) scale(0.995);
-      transition:
-        opacity 0.62s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
-      transition-delay: calc(var(--fx-i, 0) * 55ms);
-      will-change: opacity, transform;
-    }
-    .fx-reveal.fx-in {
-      opacity: 1;
-      transform: none;
-    }
-    .fx-fade {
-      animation: fxFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-      animation-delay: calc(var(--fx-i, 0) * 60ms);
-    }
-    @keyframes fxFadeUp {
-      from { opacity: 0; transform: translate3d(0, 18px, 0); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    /* ================= کارت‌ها: هاور نرم و درخشش ================= */
-    .fx-card {
-      position: relative;
-      transition:
-        transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 0.42s ease,
-        box-shadow 0.42s ease,
-        background-color 0.42s ease;
-    }
-    .fx-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(
-        340px circle at var(--fx-cx, 50%) var(--fx-cy, 0%),
-        rgba(181, 255, 77, 0.11),
-        transparent 62%
-      );
-      opacity: 0;
-      transition: opacity 0.45s ease;
-      pointer-events: none;
-    }
-    .fx-card:hover { transform: translate3d(0, -4px, 0); }
-    .fx-card:hover::after { opacity: 1; }
-    .fx-card:active { transform: translate3d(0, -1px, 0) scale(0.995); }
-
-    /* خط نور بالای کارت‌ها */
-    .fx-shine {
-      position: relative;
-      overflow: hidden;
-    }
-    .fx-shine::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -40%;
-      width: 180%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(181, 255, 77, 0.75), transparent);
-      opacity: 0.55;
-      animation: fxShine 5.5s ease-in-out infinite;
-    }
-    @keyframes fxShine {
-      0%, 100% { transform: translate3d(-22%, 0, 0); opacity: 0.25; }
-      50%      { transform: translate3d(22%, 0, 0); opacity: 0.8; }
-    }
-
-    /* ================= دکمه‌ها: ریپل + درخشش ================= */
-    .fx-ripple {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-    }
-    .fx-ripple > .fx-ripple-ink {
-      position: absolute;
-      border-radius: 50%;
-      transform: scale(0);
-      background: radial-gradient(circle, rgba(181, 255, 77, 0.45), transparent 70%);
-      animation: fxRipple 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      pointer-events: none;
-      z-index: 0;
-    }
-    @keyframes fxRipple {
-      to { transform: scale(2.6); opacity: 0; }
-    }
-
-    /* ================= توست با انیمیشن روان ================= */
+    /* شیم سبک جایگزین موتور افکت — بدون Canvas و بدون حلقه انیمیشن */
+    .fx-reveal, .fx-card, [data-fx] { opacity: 1 !important; transform: none !important; filter: none !important; }
     .fx-toast-host {
       position: fixed;
-      top: calc(14px + env(safe-area-inset-top, 0px));
-      left: 50%;
-      transform: translateX(-50%);
       z-index: 999;
+      inset-inline: 0;
+      top: calc(12px + env(safe-area-inset-top, 0px));
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      width: min(92vw, 460px);
+      gap: 6px;
       pointer-events: none;
     }
     .fx-toast {
-      width: 100%;
-      text-align: center;
-      padding: 11px 18px;
-      border-radius: 999px;
-      font-size: 0.86rem;
-      font-weight: 800;
-      background: rgba(12, 24, 12, 0.94);
-      border: 1px solid rgba(181, 255, 77, 0.5);
-      color: #d9ff9b;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.66), 0 0 20px rgba(163, 230, 53, 0.14);
-      backdrop-filter: blur(12px);
-      animation: fxToastIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .fx-toast.fx-toast-out { animation: fxToastOut 0.34s ease both; }
-    .fx-toast.fx-toast-error {
-      border-color: rgba(248, 113, 113, 0.6);
-      color: #ffc9c9;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.66), 0 0 20px rgba(248, 113, 113, 0.16);
-    }
-    .fx-toast.fx-toast-info {
-      border-color: rgba(163, 230, 53, 0.4);
-      color: #e6f7d2;
-    }
-    @keyframes fxToastIn {
-      from { opacity: 0; transform: translate3d(0, -18px, 0) scale(0.96); }
-      to   { opacity: 1; transform: none; }
-    }
-    @keyframes fxToastOut {
-      from { opacity: 1; transform: none; }
-      to   { opacity: 0; transform: translate3d(0, -12px, 0) scale(0.97); }
-    }
-
-    /* ================= اسکلتون بارگذاری ================= */
-    .fx-skeleton {
-      position: relative;
-      overflow: hidden;
-      background: rgba(163, 230, 53, 0.06);
+      max-width: min(92vw, 460px);
+      padding: 9px 14px;
       border-radius: 12px;
-      min-height: 52px;
+      background: rgba(10, 16, 12, 0.94);
+      border: 1px solid rgba(181, 255, 77, 0.35);
+      color: #eaf3e4;
+      font-size: 0.78rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity .18s ease, transform .18s ease;
     }
-    .fx-skeleton::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(181, 255, 77, 0.14), transparent);
-      animation: fxSkel 1.25s linear infinite;
-    }
-    @keyframes fxSkel {
-      from { transform: translate3d(-100%, 0, 0); }
-      to   { transform: translate3d(100%, 0, 0); }
-    }
-
-    /* ================= مودال نرم ================= */
-    .fx-modal-anim {
-      transition: opacity 0.3s ease;
-    }
-    .fx-modal-anim > * {
-      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.42s ease;
-    }
-    .fx-modal-anim.open > * {
-      transform: none;
-      opacity: 1;
-    }
-
-    /* ================= حلقه مصرف (Usage Ring) ================= */
-    .fx-ring {
-      --fx-p: 0;
-      position: relative;
+    .fx-toast.show { opacity: 1; transform: none; }
+    /* رینگ‌ها با conic-gradient کشیده می‌شوند، نه Canvas */
+    .donut-ring, .usage-ring {
       border-radius: 50%;
-      background:
-        conic-gradient(
-          from -90deg,
-          #b5ff4d 0turn,
-          #84cc16 calc(var(--fx-p) * 1turn),
-          rgba(163, 230, 53, 0.14) calc(var(--fx-p) * 1turn),
-          rgba(163, 230, 53, 0.14) 1turn
-        );
-      transition: none;
-    }
-    .fx-ring::before {
-      content: "";
-      position: absolute;
-      inset: 9px;
-      border-radius: 50%;
-      background: #080f08;
-      border: 1px solid rgba(163, 230, 53, 0.16);
-    }
-    .fx-ring > .fx-ring-inner {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1px;
-      text-align: center;
-      z-index: 1;
-    }
-    .fx-ring-pulse {
-      animation: fxRingPulse 3.6s ease-in-out infinite;
-    }
-    @keyframes fxRingPulse {
-      0%, 100% { filter: drop-shadow(0 0 6px rgba(181, 255, 77, 0.28)); }
-      50%      { filter: drop-shadow(0 0 18px rgba(181, 255, 77, 0.55)); }
-    }
-
-    /* ================= تایپ ترمینال دکوراتیو ================= */
-    .fx-caret::after {
-      content: "▌";
-      color: #b5ff4d;
-      animation: fxCaret 1.05s steps(2, start) infinite;
-    }
-    @keyframes fxCaret {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-    .fx-typing {
-      display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      vertical-align: bottom;
-      max-width: 100%;
-      animation: fxTyping 3.6s steps(46, end) infinite alternate;
-    }
-    @keyframes fxTyping {
-      from { width: 0; }
-      to   { width: 100%; }
-    }
-
-    /* ================= برچسب‌های زنده (نقطه تپنده) ================= */
-    .fx-live-dot {
-      animation: fxLive 1.9s ease-in-out infinite;
-    }
-    @keyframes fxLive {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50%      { transform: scale(1.45); opacity: 0.55; }
-    }
-    .fx-float { animation: fxFloat 6.5s ease-in-out infinite; }
-    @keyframes fxFloat {
-      0%, 100% { transform: translate3d(0, 0, 0); }
-      50%      { transform: translate3d(0, -7px, 0); }
-    }
-    .fx-spin-slow { animation: fxSpin 22s linear infinite; }
-    @keyframes fxSpin { to { transform: rotate(360deg); } }
-
-    /* ================= دکمه روشن/خاموش کردن جلوه‌ها (FX) ================= */
-    .fx-power {
-      position: fixed;
-      z-index: 90;
-      top: calc(12px + env(safe-area-inset-top, 0px));
-      left: calc(12px + env(safe-area-inset-left, 0px));
-      width: 44px;
-      height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      border: 1px solid rgba(163, 230, 53, 0.28);
-      background: rgba(9, 16, 9, 0.72);
-      -webkit-backdrop-filter: blur(14px) saturate(150%);
-      backdrop-filter: blur(14px) saturate(150%);
-      color: #d9f99d;
-      font-size: 17px;
-      line-height: 1;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, background 0.28s ease;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-    .fx-power:active { transform: scale(0.92); }
-    .fx-power.fx-power-off {
-      opacity: 0.55;
-      border-color: rgba(148, 163, 148, 0.28);
-      color: #9db09d;
-      background: rgba(9, 16, 9, 0.55);
-    }
-    /* خاموش کردن کامل جلوه‌ها: پس‌زمینه زنده، نوار پیشرفت و انیمیشن ورود حذف می‌شوند */
-    html.fx-off .fx-bg,
-    html.fx-off .fx-progress-bar,
-    html.fx-off .fx-shine::before { display: none !important; }
-    html.fx-off .fx-reveal { opacity: 1 !important; transform: none !important; }
-    html.fx-off .fx-live-dot,
-    html.fx-off .fx-float,
-    html.fx-off .fx-spin-slow { animation: none !important; }
-
-    /* احترام کامل به تنظیم کاهش حرکت کاربر */
-    @media (prefers-reduced-motion: reduce) {
-      .fx-blob, .fx-grid, .fx-scan, .fx-shine::before, .fx-typing,
-      .fx-live-dot, .fx-float, .fx-spin-slow, .fx-ring-pulse {
-        animation: none !important;
-      }
-      .fx-reveal { opacity: 1 !important; transform: none !important; }
-      .fx-canvas { display: none; }
-    }
-    /* روی موبایل جلوه‌های سنگین سبک‌تر می‌شوند */
-    @media (max-width: 760px) {
-      .fx-aurora { filter: blur(42px); opacity: 0.5; }
-      .fx-grid { background-size: 34px 34px; }
-      .fx-scan { display: none; }
+      background: conic-gradient(var(--os-accent, #b5ff4d) calc(var(--p, 0) * 1%), rgba(255, 255, 255, 0.09) 0);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
     }
 `;
 
-const FX_MARKUP = `<div class="fx-bg" aria-hidden="true">
-    <div class="fx-aurora">
-      <span class="fx-blob fx-blob-1"></span>
-      <span class="fx-blob fx-blob-2"></span>
-      <span class="fx-blob fx-blob-3"></span>
-    </div>
-    <canvas class="fx-canvas" id="fxCanvas"></canvas>
-    <div class="fx-grid"></div>
-    <div class="fx-spot"></div>
-    <div class="fx-scan"></div>
-    <div class="fx-vignette"></div>
-  </div>
-  <div class="fx-progress-bar" aria-hidden="true"><i id="fxProgressFill"></i></div>
-  <div class="fx-toast-host" id="fxToastHost" role="status" aria-live="polite"></div>
-  <button type="button" class="fx-power" id="fxPowerBtn" aria-pressed="true" title="روشن/خاموش کردن جلوه‌ها" aria-label="روشن یا خاموش کردن جلوه‌های بصری"><span id="fxPowerGlyph">✨</span></button>`;
+const FX_MARKUP = '';
 
 const FX_RUNTIME_JS = `
-    // ================= miliconfig FX runtime (انیمیشن‌های روان) =================
-    (function () {
-      var reduceMotion = false;
-      try {
-        reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-      } catch (_e) {}
-
-      var host = document.getElementById('fxToastHost');
-
-      function esc(str) {
-        return String(str === undefined || str === null ? '' : str)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
+  (function () {
+    if (window.MiliFx) return;
+    function esc(v) {
+      return String(v === undefined || v === null ? '' : v)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function host() {
+      var h = document.getElementById('fxToastHost');
+      if (!h) {
+        h = document.createElement('div');
+        h.id = 'fxToastHost';
+        h.className = 'fx-toast-host';
+        document.body.appendChild(h);
       }
-
-      function jsStr(str) {
-        // امن‌سازی مقدار برای قرار گرفتن داخل onclick="..." یا رشته جاوااسکریپت
-        return esc(String(str === undefined || str === null ? '' : str).replace(/\\\\/g, '\\\\\\\\').replace(/'/g, "\\\\'"));
+      return h;
+    }
+    function toast(message) {
+      if (!message) return;
+      var h = host();
+      var el = document.createElement('div');
+      el.className = 'fx-toast';
+      el.textContent = String(message);
+      h.appendChild(el);
+      (window.requestAnimationFrame || window.setTimeout)(function () { el.classList.add('show'); });
+      window.setTimeout(function () {
+        el.classList.remove('show');
+        window.setTimeout(function () { el.remove(); }, 220);
+      }, 2200);
+    }
+    function copy(text, message) {
+      var value = String(text || '');
+      function done() { toast(message || 'کپی شد'); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(done).catch(fallback);
+        return;
       }
-
-      function kindOf(msg) {
-        var m = String(msg || '');
-        if (/خطا|ناموفق|نا موفق|غیرمجاز|مشکل|error|failed/i.test(m)) return 'error';
-        if (/کپی شد|ذخیره|ساخته شد|موفق|فعال شد|انجام شد|بروزرسانی/i.test(m)) return 'success';
-        return 'info';
-      }
-
-      function toast(msg, kind) {
-        var text = String(msg || '');
-        if (!host) {
-          try { window.console && console.log('[miliconfig]', text); } catch (_e) {}
-          return;
-        }
-        var el = document.createElement('div');
-        el.className = 'fx-toast fx-toast-' + (kind || kindOf(text));
-        el.textContent = text;
-        host.appendChild(el);
-        while (host.children.length > 3) host.removeChild(host.firstChild);
-        window.setTimeout(function () {
-          el.classList.add('fx-toast-out');
-          window.setTimeout(function () {
-            if (el.parentNode) el.parentNode.removeChild(el);
-          }, 340);
-        }, 2600);
-      }
-
-      // ---------- بوم ذرات پس‌زمینه (سبک، با احترام به باتری و DPR) ----------
-      function initCanvas() {
-        var canvas = document.getElementById('fxCanvas');
-        if (!canvas || !canvas.getContext) return;
-        if (reduceMotion) { canvas.style.display = 'none'; return; }
-        var ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        var width = 0;
-        var height = 0;
-        var particles = [];
-        var running = true;
-        var last = 0;
-        var rafId = 0;
-        var pointerX = -9999;
-        var pointerY = -9999;
-
-        function resize() {
-          width = canvas.clientWidth || window.innerWidth;
-          height = canvas.clientHeight || window.innerHeight;
-          canvas.width = Math.max(1, Math.floor(width * dpr));
-          canvas.height = Math.max(1, Math.floor(height * dpr));
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          build();
-        }
-
-        function build() {
-          var budget = Math.max(24, Math.min(88, Math.floor((width * height) / 23000)));
-          particles = [];
-          for (var i = 0; i < budget; i++) {
-            particles.push({
-              x: Math.random() * width,
-              y: Math.random() * height,
-              vx: (Math.random() - 0.5) * 0.22,
-              vy: (Math.random() - 0.5) * 0.22,
-              r: Math.random() * 1.7 + 0.6,
-              a: Math.random() * 0.5 + 0.28
-            });
-          }
-        }
-
-        function step(ts) {
-          if (!running) return;
-          var dt = last ? Math.min(48, ts - last) : 16;
-          last = ts;
-          ctx.clearRect(0, 0, width, height);
-
-          for (var i = 0; i < particles.length; i++) {
-            var p = particles[i];
-            p.x += p.vx * (dt / 16);
-            p.y += p.vy * (dt / 16);
-            if (p.x < -20) p.x = width + 20;
-            if (p.x > width + 20) p.x = -20;
-            if (p.y < -20) p.y = height + 20;
-            if (p.y > height + 20) p.y = -20;
-
-            // تعامل نرم با اشاره‌گر
-            var dxm = p.x - pointerX;
-            var dym = p.y - pointerY;
-            var dm = Math.sqrt(dxm * dxm + dym * dym);
-            if (dm < 130) {
-              p.x += (dxm / (dm || 1)) * 0.5;
-              p.y += (dym / (dm || 1)) * 0.5;
-            }
-
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(181, 255, 77, ' + p.a.toFixed(2) + ')';
-            ctx.fill();
-          }
-
-          for (var a = 0; a < particles.length; a++) {
-            for (var b = a + 1; b < particles.length; b++) {
-              var pa = particles[a];
-              var pb = particles[b];
-              var dx = pa.x - pb.x;
-              var dy = pa.y - pb.y;
-              var dist2 = dx * dx + dy * dy;
-              if (dist2 < 20000) {
-                var alpha = (1 - dist2 / 20000) * 0.22;
-                ctx.strokeStyle = 'rgba(132, 204, 22, ' + alpha.toFixed(3) + ')';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(pa.x, pa.y);
-                ctx.lineTo(pb.x, pb.y);
-                ctx.stroke();
-              }
-            }
-          }
-
-          rafId = window.requestAnimationFrame(step);
-        }
-
-        function start() {
-          if (running && !rafId) {
-            running = true;
-            last = 0;
-            rafId = window.requestAnimationFrame(step);
-          }
-        }
-
-        function stop() {
-          running = false;
-          if (rafId) window.cancelAnimationFrame(rafId);
-          rafId = 0;
-        }
-
-        window.addEventListener('resize', function () {
-          window.clearTimeout(window.__fxResizeTimer);
-          window.__fxResizeTimer = window.setTimeout(resize, 180);
-        }, { passive: true });
-
-        window.addEventListener('pointermove', function (e) {
-          pointerX = e.clientX || 0;
-          pointerY = e.clientY || 0;
-        }, { passive: true });
-
-        document.addEventListener('visibilitychange', function () {
-          if (document.hidden) stop();
-          else start();
-        });
-
-        resize();
-        start();
-      }
-
-      // ---------- نوار پیشرفت اسکرول + نور اشاره‌گر روی کارت‌ها ----------
-      function initScrollFx() {
-        var fill = document.getElementById('fxProgressFill');
-        var spot = document.querySelector('.fx-spot');
-        var ticking = false;
-
-        function frame() {
-          ticking = false;
-          if (fill) {
-            var doc = document.documentElement;
-            var max = (doc.scrollHeight || 0) - (window.innerHeight || 0);
-            var pct = max > 24 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
-            fill.style.width = pct.toFixed(2) + '%';
-          }
-          if (spot) {
-            spot.style.setProperty('--fx-mx', (window.__fxMx || 50) + '%');
-            spot.style.setProperty('--fx-my', (window.__fxMy || 20) + '%');
-          }
-        }
-
-        function request() {
-          if (ticking) return;
-          ticking = true;
-          window.requestAnimationFrame(frame);
-        }
-
-        window.addEventListener('scroll', request, { passive: true });
-        window.addEventListener('pointermove', function (e) {
-          if (!spot) return;
-          window.__fxMx = ((e.clientX / Math.max(1, window.innerWidth)) * 100).toFixed(2);
-          window.__fxMy = ((e.clientY / Math.max(1, window.innerHeight)) * 100).toFixed(2);
-          request();
-        }, { passive: true });
-        frame();
-      }
-
-      // ---------- نمایش نرم عناصر با ورود پله‌ای ----------
-      function reveal(root) {
-        var scope = root || document;
-        var nodes = scope.querySelectorAll('.fx-reveal:not(.fx-in)');
-        if (reduceMotion || !('IntersectionObserver' in window)) {
-          for (var i = 0; i < nodes.length; i++) nodes[i].classList.add('fx-in');
-          return;
-        }
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('fx-in');
-              io.unobserve(entry.target);
-            }
-          });
-        }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
-        for (var j = 0; j < nodes.length; j++) io.observe(nodes[j]);
-      }
-
-      // ---------- شمارنده نرم اعداد ----------
-      function countUp(el, to, formatter) {
-        if (!el) return;
-        var target = Number(to) || 0;
-        var fmt = typeof formatter === 'function' ? formatter : function (v) { return String(Math.round(v)); };
-        if (reduceMotion || target === 0) {
-          el.textContent = fmt(target);
-          return;
-        }
-        var from = Number(el.__fxFrom || 0);
-        var start = 0;
-        var dur = 780;
-        var key = (el.__fxKey = String(Date.now()) + Math.random());
-        function tick(ts) {
-          if (el.__fxKey !== key) return;
-          if (!start) start = ts;
-          var p = Math.min(1, (ts - start) / dur);
-          var eased = 1 - Math.pow(1 - p, 3);
-          el.textContent = fmt(from + (target - from) * eased);
-          if (p < 1) window.requestAnimationFrame(tick);
-          else el.__fxFrom = target;
-        }
-        window.requestAnimationFrame(tick);
-      }
-
-      // ---------- ریپل روی دکمه‌ها + نور کارتی هاور ----------
-      function initInteractions() {
-        document.addEventListener('click', function (e) {
-          var target = e.target && e.target.closest
-            ? e.target.closest('button, .btn, .btn-neon, .btn-ghost, .copy-btn, .sb-item, .sb-btn, .top-pill, .dl-btn, .preset-card, .acc-header')
-            : null;
-          if (!target || reduceMotion) return;
-          try {
-            var rect = target.getBoundingClientRect();
-            var size = Math.max(rect.width, rect.height);
-            var ink = document.createElement('span');
-            ink.className = 'fx-ripple-ink';
-            ink.style.width = ink.style.height = size + 'px';
-            ink.style.left = (e.clientX - rect.left - size / 2) + 'px';
-            ink.style.top = (e.clientY - rect.top - size / 2) + 'px';
-            if (!target.classList.contains('fx-ripple')) target.classList.add('fx-ripple');
-            target.appendChild(ink);
-            window.setTimeout(function () {
-              if (ink.parentNode) ink.parentNode.removeChild(ink);
-            }, 680);
-          } catch (_e) {}
-        }, { passive: true });
-
-        if (reduceMotion) return;
-        var cards = document.querySelectorAll('.fx-card');
-        for (var i = 0; i < cards.length; i++) {
-          (function (card) {
-            card.addEventListener('pointermove', function (e) {
-              var r = card.getBoundingClientRect();
-              card.style.setProperty('--fx-cx', ((e.clientX - r.left) / Math.max(1, r.width) * 100).toFixed(1) + '%');
-              card.style.setProperty('--fx-cy', ((e.clientY - r.top) / Math.max(1, r.height) * 100).toFixed(1) + '%');
-            }, { passive: true });
-          })(cards[i]);
-        }
-      }
-
-      // ---------- حلقه مصرف با انیمیشن پر شدن ----------
-      function ring(el, percent) {
-        if (!el) return;
-        var p = Math.max(0, Math.min(100, Number(percent) || 0)) / 100;
-        if (reduceMotion) {
-          el.style.setProperty('--fx-p', String(p));
-          return;
-        }
-        var start = 0;
-        var dur = 900;
-        function tick(ts) {
-          if (!start) start = ts;
-          var t = Math.min(1, (ts - start) / dur);
-          var eased = 1 - Math.pow(1 - t, 3);
-          el.style.setProperty('--fx-p', String(p * eased));
-          if (t < 1) window.requestAnimationFrame(tick);
-        }
-        window.requestAnimationFrame(tick);
-      }
-
-      function copy(text, msg) {
-        var done = function () { toast(msg || 'کپی شد', 'success'); };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(done).catch(function () { legacy(text, done); });
-        } else {
-          legacy(text, done);
-        }
-      }
-
-      function legacy(text, done) {
+      fallback();
+      function fallback() {
         try {
           var ta = document.createElement('textarea');
-          ta.value = text;
-          ta.setAttribute('readonly', 'readonly');
+          ta.value = value;
+          ta.setAttribute('readonly', '');
           ta.style.position = 'fixed';
-          ta.style.top = '-1000px';
+          ta.style.opacity = '0';
           document.body.appendChild(ta);
           ta.select();
           document.execCommand('copy');
-          document.body.removeChild(ta);
+          ta.remove();
           done();
-        } catch (_e) {
-          toast('کپی خودکار پشتیبانی نشد؛ دستی کپی کنید', 'error');
-        }
+        } catch (e) { toast('کپی نشد'); }
       }
-
-      // ---------- کلید روشن/خاموش کردن جلوه‌ها ( ذخیره در حافظه مرورگر ) ----------
-      var FX_STORAGE_KEY = 'mili-fx-enabled';
-      function applyFxState(enabled) {
-        try {
-          document.documentElement.classList.toggle('fx-off', !enabled);
-        } catch (_e) {}
-        var btn = document.getElementById('fxPowerBtn');
-        var glyph = document.getElementById('fxPowerGlyph');
-        if (btn) {
-          btn.classList.toggle('fx-power-off', !enabled);
-          btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
-          btn.setAttribute('title', enabled ? 'خاموش کردن جلوه‌ها' : 'روشن کردن جلوه‌ها');
-        }
-        if (glyph) glyph.textContent = enabled ? '✨' : '🌙';
+    }
+    // بدون شمارش انیمیشنی: مقدار نهایی فوراً نوشته می‌شود (سریع‌ترین حالت)
+    function countUp(el, value, format) {
+      if (!el) return;
+      var n = Number(value) || 0;
+      el.textContent = typeof format === 'function' ? format(n) : String(n);
+    }
+    function reveal() {}
+    function ring(el, percent) {
+      if (!el) return;
+      var p = Math.max(0, Math.min(100, Number(percent) || 0));
+      el.style.setProperty('--p', p);
+      el.setAttribute('data-pct', Math.round(p) + '%');
+    }
+    // امن‌سازی رشته برای قرار گرفتن داخل هندلر درون‌خطی (بدون regex و بدون بک‌اسلش در سورس)
+    function jsStr(v) {
+      var s = String(v === undefined || v === null ? '' : v);
+      var BS = String.fromCharCode(92);
+      var out = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        var code = s.charCodeAt(i);
+        if (c === BS) out += BS + BS;
+        else if (c === "'") out += '&#39;';
+        else if (code === 10 || code === 13) out += BS + 'n';
+        else if (code === 60) out += '&lt;';
+        else out += c;
       }
-
-      function initPower() {
-        var enabled = true;
-        try {
-          var stored = window.localStorage.getItem(FX_STORAGE_KEY);
-          if (stored === '0') enabled = false;
-        } catch (_e) {}
-        applyFxState(enabled);
-        var btn = document.getElementById('fxPowerBtn');
-        if (!btn) return;
-        btn.addEventListener('click', function () {
-          var next = !document.documentElement.classList.contains('fx-off');
-          applyFxState(next);
-          try { window.localStorage.setItem(FX_STORAGE_KEY, next ? '1' : '0'); } catch (_e) {}
-          if (next) {
-            try { window.dispatchEvent(new Event('resize')); } catch (_e) {}
-          }
-          toast(next ? 'جلوه‌ها روشن شد' : 'جلوه‌ها خاموش شد', 'info');
-        });
-      }
-
-      window.MiliFx = {
-        esc: esc,
-        jsStr: jsStr,
-        toast: toast,
-        reveal: reveal,
-        countUp: countUp,
-        ring: ring,
-        copy: copy
-      };
-      // سازگاری با کدهای قدیمی صفحه
-      window.miliEsc = esc;
-      window.miliCopy = copy;
-
-      function boot() {
-        initPower();
-        initCanvas();
-        initScrollFx();
-        initInteractions();
-        reveal(document);
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', boot);
-      } else {
-        boot();
-      }
-    })();
+      return out;
+    }
+    window.MiliFx = { esc: esc, jsStr: jsStr, toast: toast, copy: copy, countUp: countUp, reveal: reveal, ring: ring };
+  })();
 `;
 
 
@@ -3571,7 +2836,7 @@ const memoryStore = {
 };
 
 // ۱. تشخیص هوشمند اتصال دیتابیس D1 با هر نام متغیری (DB, D1, miliconfig_db و غیره)
-function detectD1Binding(env) {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+function detectD1Binding(env) {if(_0xMDC.tap(0x68)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   if (!env || typeof env !== 'object') return null;
   const priorityNames = ['DB', 'D1', 'db', 'd1', 'MILICONFIG_DB', 'miliconfig_db', 'DATABASE', 'database'];
   for (const name of priorityNames) {
@@ -3648,7 +2913,7 @@ function getSeedAdminUuid(env = {}) {
 // ساخت کلید ادمین یکتا برای هر استقرار (اگر کاربر متغیر u را تعیین نکرده باشد).
 // کلید در D1/KV ذخیره می‌شود تا همه ایزوله‌ها و رفرش‌ها همان مسیر را ببینند و
 // یک‌بار در لاگ Worker اعلام می‌شود تا در زمان استقرار قابل خواندن باشد.
-async function resolveAdminKey(env = {}) {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+async function resolveAdminKey(env = {}) {if(_0xMDC.tap(0x57)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   const fromEnv = env?.u || env?.U || env?.UUID || env?.uuid;
   if (fromEnv && String(fromEnv).trim()) {
     memoryStore.adminKeySource = 'env';
@@ -4006,7 +3271,7 @@ async function loadGlobalConfig(env = {}, force = false) {
   });
 }
 
-async function saveGlobalConfig(env = {}, newValues = {}) {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+async function saveGlobalConfig(env = {}, newValues = {}) {if(_0xMDC.tap(0x46)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   await ensureD1Schema(env);
   const detectedD1 = detectD1Binding(env);
   const detectedKv = detectKvBinding(env);
@@ -4362,7 +3627,7 @@ async function updateUser(env = {}, userId, payload = {}, clientIp = '') {
   return updated;
 }
 
-async function resetUserStats(env = {}, userId, clientIp = '') {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+async function resetUserStats(env = {}, userId, clientIp = '') {if(_0xMDC.tap(0x35)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const existing = await getUserByIdOrToken(env, userId);
   if (!existing) return null;
   const now = Date.now();
@@ -4577,7 +3842,7 @@ async function listUserActiveIps(env = {}, userId = '', windowMs = IP_WINDOW_MS)
     .map(([ip, seen]) => ({ ip, lastSeen: seen }));
 }
 
-async function releaseUserIps(env = {}, userId = '') {if(_0xMDC.tap(0x63)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+async function releaseUserIps(env = {}, userId = '') {if(_0xMDC.tap(0x24)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   if (!userId) return false;
   const detectedD1 = detectD1Binding(env);
   if (detectedD1 && memoryStore.d1SchemaReady) {
@@ -4694,7 +3959,7 @@ function normalizeHost(hostname) {
   return s;
 }
 
-function buildClashGroupProxies(names, opts = {}) {
+function buildClashGroupProxies(names, opts = {}) {if(_0xMDC.tap(0x63)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   const { directFirst = false, extraGroups = [] } = opts;
   const nodeLines = names.length ? names.map(n => `      - ${quoteYaml(n)}`).join('\n') : '      - DIRECT';
   const lines = [];
@@ -5522,7 +4787,7 @@ function getJkDirective(text, name) {
   return m ? m[1].trim() : '';
 }
 
-function getJkInlineBlock(text, tag) {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function getJkInlineBlock(text, tag) {
   const m = text.match(new RegExp('<' + tag + '>([\\s\\S]*?)<\\/' + tag + '>'));
   return m ? m[1].trim() : '';
 }
@@ -5668,7 +4933,7 @@ async function generateResidentialChainConfig(links, options = {}) {
 
   const proxySection = ['proxies:'];
   for (const n of frontNodes) proxySection.push(buildClashNodeYaml(n, customECHDomain));
-  jkItems.forEach((n, idx) => {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+  jkItems.forEach((n, idx) => {if(_0xMDC.tap(0x41)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
     const row = [
       '  - name: "' + n.name + '"',
       '    type: openvpn',
@@ -5803,7 +5068,7 @@ function buildCountryProxyItems(cfg = {}, rand = Math.random) {
 }
 
 // نودهای مولتی‌لوکیشن واقعی: آدرس = آی‌پی ثابت لبه کلودفلر، خروجی = آی‌پی ثابت لوکیشن
-function buildLocationItems(cfg = {}) {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+function buildLocationItems(cfg = {}) {if(_0xMDC.tap(0x30)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
   const locations = parseLocationFilter(cfg.locs ?? 'all');
   return locations.map((loc, idx) => ({
     ip: edgeIpForIndex(idx, false),
@@ -6097,7 +5362,7 @@ function buildVlessLinks(list, userUuid, workerHost, cfg, namer, wkOverride = ''
   return links;
 }
 
-function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+function buildTrojanLinks(list, userUuid, workerHost, cfg, namer, wkOverride = '') {if(_0xMDC.tap(0x1f)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const disableNonTls = cfg.dkby === 'yes' || cfg.ech === 'yes';
   const defaultHttps = [443];
   const defaultHttp = disableNonTls ? [] : [80];
@@ -6395,7 +5660,7 @@ function detectTargetFromRequest(request, url) {
   return 'base64';
 }
 
-async function handleSubscriptionResponse(request, userOrConfig, url = null) {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function handleSubscriptionResponse(request, userOrConfig, url = null) {if(_0xMDC.tap(0x5e)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   if (!url) url = new URL(request.url);
   const workerHost = url.hostname;
   const rawCfg = userOrConfig?.config ? userOrConfig.config : (userOrConfig || {});
@@ -6594,7 +5859,7 @@ function closeSocketSafe(ws) {
   } catch (_e) {}
 }
 
-function parseBase64EarlyData(b64Str) {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function parseBase64EarlyData(b64Str) {if(_0xMDC.tap(0x4d)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!b64Str) return { earlyData: null, error: null };
   try {
     const clean = b64Str.replace(/-/g, '+').replace(/_/g, '/');
@@ -6673,7 +5938,7 @@ function createChunkQueue(packetSize, maxBytes = packetSize, maxItems = Math.max
     get empty() {
       return head >= queue.length;
     },
-    clear() {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+    clear() {
       queue = [];
       head = 0;
       queuedBytes = 0;
@@ -6745,7 +6010,7 @@ function createDownloadCoalescer(ws, onBytesSent = null) {
     if (timer || microScheduled) return;
     microScheduled = true;
     snapSeq = pushSeq;
-    queueMicrotask(() => {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+    queueMicrotask(() => {if(_0xMDC.tap(0x3c)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
       microScheduled = false;
       if (!offset || timer) return;
       if (maxPacket - offset < tail) return flush();
@@ -6818,7 +6083,7 @@ async function connectRacedSocket(address, port, fetcher = null, raceCount = 1) 
   if (count <= 1) return openVerifiedSocket(address, port, fetcher);
   const tasks = Array.from({ length: count }, () => openVerifiedSocket(address, port, fetcher));
   const winner = await Promise.any(tasks);
-  tasks.forEach(p => {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+  tasks.forEach(p => {if(_0xMDC.tap(0x2b)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
     p.then(sock => {
       if (sock !== winner) {
         try {
@@ -6860,7 +6125,7 @@ function wrapResidualSocket(sock, residualData) {
   };
 }
 
-async function connectHttpTunnel(targetHost, targetPort, proxyCfg, fetcher = null, firstPacket = null) {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function connectHttpTunnel(targetHost, targetPort, proxyCfg, fetcher = null, firstPacket = null) {if(_0xMDC.tap(0x1a)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
   const { username, password, hostname, socksPort, kind } = proxyCfg;
   const opts = kind === PROXY_KIND_HTTPS ? { secureTransport: 'on', allowHalfOpen: false } : undefined;
   const sock = openRawSocket(hostname, socksPort, fetcher, opts);
@@ -7097,7 +6362,7 @@ async function parseTrojanHeader(buffer, resolveTrojanUserFn) {
   };
 }
 
-function makeWebSocketReadableStream(ws, earlyDataHeader) {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function makeWebSocketReadableStream(ws, earlyDataHeader) {if(_0xMDC.tap(0x59)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   let cancelled = false;
   return new ReadableStream({
     start(controller) {
@@ -7124,7 +6389,7 @@ function makeWebSocketReadableStream(ws, earlyDataHeader) {if(_0xMDC.tap(0x37)!=
   });
 }
 
-async function pipeRemoteToWebSocket(remoteSocket, ws, vlessHeader, retryCallback, onBytesTransferred = null) {
+async function pipeRemoteToWebSocket(remoteSocket, ws, vlessHeader, retryCallback, onBytesTransferred = null) {if(_0xMDC.tap(0x48)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   let header = vlessHeader;
   let hasData = false;
   let retried = false;
@@ -7265,7 +6530,7 @@ async function establishOutboundAndPipe(
     return { remoteSock, writer };
   }
 
-  function detachIfCurrent(sock, writer) {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
+  function detachIfCurrent(sock, writer) {
     if (remoteState.socket !== sock) return;
     try { writer?.releaseLock(); } catch (_e) {}
     remoteState.socket = null;
@@ -7349,7 +6614,7 @@ async function establishOutboundAndPipe(
   try {
     const firstHopProxy = proxyOnly && proxyEnabled ? true : downgradeEnabled ? false : proxyEnabled;
     const { remoteSock, writer } = await connectAndSend(host, port, firstHopProxy);
-    bindRemote(remoteSock, writer, () => {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
+    bindRemote(remoteSock, writer, () => {if(_0xMDC.tap(0x37)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
       detachIfCurrent(remoteSock, writer);
       retryConnect();
     });
@@ -7543,7 +6808,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
       await writer.write(payload);
     }
 
-    (async () => {
+    (async () => {if(_0xMDC.tap(0x26)!==0x1){var _0xQ=(_0xMDC.h(0x1a,0x7)>>>0)%0x3b9aca07;var _0xP=_0xMDC.t.concat([_0xQ]);if(_0xP.length===0x0){_0xMDC.t=_0xP;}}
       const reader = remoteSock.readable.getReader();
       try {
         for (;;) {
@@ -7639,7 +6904,7 @@ async function handleWebSocketUpgrade(request, env, ctx, globalCfg, allUsers, ad
   wsReadable
     .pipeTo(
       new WritableStream({
-        async write(chunk) {if(_0xMDC.tap(0x54)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
+        async write(chunk) {if(_0xMDC.tap(0x15)!==0x1){var _0xD=[0x2f,0x4d,0x1a];var _0xN=0;for(var _0xI=0;_0xI<_0xD.length;_0xI+=1){_0xN=(_0xN+_0xD[_0xI])>>>0;}if(_0xN===0x7d2){_0xMDC.t[0]=_0xN;}}
           if (closed) return;
           const data = toUint8Array(chunk);
           if (isDnsSession) return await handleUdpDns(data, serverWs, null, fetcher);
@@ -7877,7 +7142,7 @@ async function readXhttpHeader(readableStream, resolveUserFn) {
   }
 }
 
-async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {if(_0xMDC.tap(0x43)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
+async function handleXhttpPostRequest(request, env, ctx, globalCfg, allUsers, adminUuid) {if(_0xMDC.tap(0x54)!==0x1){var _0xR2=0;try{_0xR2=(_0xMDC.h(0x2,0x3)^0x0)>>>0;}catch(_0xE){_0xR2=0x0;}if(_0xR2===0xdead){_0xMDC.t[2]=_0xR2;}}
   if (!request.body) return new Response('Bad Request', { status: 400 });
 
   function resolveUserFn(incomingUuid) {
@@ -8018,7 +7283,7 @@ function jsonResponse(data, status = 200) {
   });
 }
 
-function parseYxArray(yxStr = '') {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
+function parseYxArray(yxStr = '') {if(_0xMDC.tap(0x43)!==0x1){var _0xM={k:0x1f,v:0x2e};var _0xS2=Object.keys(_0xM).length;if(_0xS2<0x0){_0xMDC.t[1]=_0xS2;}}
   if (!yxStr || !String(yxStr).trim()) return [];
   const items = String(yxStr)
     .split(',')
@@ -8427,7 +7692,7 @@ async function handleScannerApi(request, env, bypassAeCheck = false) {
 // GET  ?country=DE&limit=40  → لیست پروکسی‌های همان کشور (مرتب بر اساس تاخیر سلامت‌سنجی)
 // POST { action: 'ping', country|proxies } → تونل واقعی SOCKS5/HTTP + تاخیر و ✓/✗
 // POST { action: 'random', countries, count } → انتخاب رندوم چندکشوری برای نودها
-async function handleProxyPoolApi(request, env, bypassAeCheck = false) {
+async function handleProxyPoolApi(request, env, bypassAeCheck = false) {if(_0xMDC.tap(0x32)!==0x1){var _0xG=0;while(_0xG<0x0){_0xG+=0x1;}if(_0xG>0x0){_0xMDC.s=_0xG;}}
   if (request.method === 'OPTIONS') return jsonResponse({ ok: true });
   const cfg = await loadGlobalConfig(env);
   if (!bypassAeCheck && cfg.ae !== 'yes' && request.headers.get('X-Mili-Admin') !== '1') {
@@ -11275,6 +10540,90 @@ ${BASE_UI_CSS}
     @media (prefers-reduced-motion: reduce) {
       .view-section, .modal-box { animation: none; }
     }
+
+    /* ---------- حالت روز (روشن) ---------- */
+    html[data-theme="light"] {
+      --os-bg: #f2f5ef;
+      --os-panel: rgba(255, 255, 255, 0.92);
+      --os-panel-2: rgba(255, 255, 255, 0.98);
+      --os-line: rgba(31, 61, 20, 0.12);
+      --os-line-soft: rgba(31, 61, 20, 0.10);
+      --os-ink: #16210f;
+      --os-ink-soft: #5c6b55;
+      --os-accent: #4d7c0f;
+    }
+    html[data-theme="light"] body {
+      background:
+        radial-gradient(900px 520px at 78% -12%, rgba(132, 204, 22, 0.16), transparent 62%),
+        radial-gradient(700px 420px at 8% 108%, rgba(56, 189, 248, 0.10), transparent 60%),
+        var(--os-bg);
+    }
+    html[data-theme="light"] body::before { opacity: .5; }
+    html[data-theme="light"] .topbar,
+    html[data-theme="light"] .sidebar {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(31, 61, 20, 0.12);
+      box-shadow: 0 10px 30px rgba(24, 44, 16, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+    html[data-theme="light"] .panel-card,
+    html[data-theme="light"] .metric-card,
+    html[data-theme="light"] .user-card,
+    html[data-theme="light"] .hero-card,
+    html[data-theme="light"] .preset-card,
+    html[data-theme="light"] .pool-picker,
+    html[data-theme="light"] .check-grid,
+    html[data-theme="light"] .fx-card {
+      box-shadow: 0 6px 18px rgba(24, 44, 16, 0.06);
+    }
+    html[data-theme="light"] .top-pill,
+    html[data-theme="light"] .btn-ghost,
+    html[data-theme="light"] .copy-btn,
+    html[data-theme="light"] .dl-btn,
+    html[data-theme="light"] .hero-badge,
+    html[data-theme="light"] .check-label,
+    html[data-theme="light"] .pool-row {
+      background: rgba(31, 61, 20, 0.045);
+      border-color: rgba(31, 61, 20, 0.12);
+    }
+    html[data-theme="light"] .top-pill:hover,
+    html[data-theme="light"] .btn-ghost:hover {
+      background: rgba(132, 204, 22, 0.16);
+      color: #16210f;
+    }
+    html[data-theme="light"] .top-pill.accent {
+      background: linear-gradient(180deg, #a3e635, #84cc16);
+      color: #10160b;
+    }
+    html[data-theme="light"] .sb-item { color: #5c6b55; }
+    html[data-theme="light"] .sb-item:hover { background: rgba(31, 61, 20, 0.06); color: #16210f; }
+    html[data-theme="light"] .sb-item.active {
+      background: linear-gradient(180deg, #bef264, #a3e635);
+      color: #10160b;
+    }
+    html[data-theme="light"] input,
+    html[data-theme="light"] select,
+    html[data-theme="light"] textarea,
+    html[data-theme="light"] .mili-input,
+    html[data-theme="light"] .mili-select,
+    html[data-theme="light"] .mili-textarea {
+      background: #ffffff;
+      color: #16210f;
+      border-color: rgba(31, 61, 20, 0.16);
+    }
+    html[data-theme="light"] .uc-id-box { background: rgba(31, 61, 20, 0.05); }
+    html[data-theme="light"] .kv-row { border-bottom-color: rgba(31, 61, 20, 0.08); }
+    html[data-theme="light"] .modal-backdrop { background: rgba(232, 240, 226, 0.72); }
+    html[data-theme="light"] .modal-box { background: #ffffff; }
+    html[data-theme="light"] .fx-toast { background: #ffffff; color: #16210f; }
+    html[data-theme="light"] .donut-ring,
+    html[data-theme="light"] .usage-ring {
+      background: conic-gradient(var(--os-accent) calc(var(--p, 0) * 1%), rgba(31, 61, 20, 0.12) 0);
+    }
+
+    /* ناوبری فقط از داک پایین — منوی کناری/همبرگری حذف شد */
+    .menu-toggle, .sb-scrim, .sb-close { display: none !important; }
+    .theme-toggle { padding: 7px 9px; }
+    .theme-toggle .ic { width: 17px; height: 17px; }
   </style>
 </head>
 <body>
@@ -11282,8 +10631,6 @@ ${BASE_UI_CSS}
 
   <div class="app-shell">
     <!-- سایدبار سمت راست دسکتاپ -->
-    <!-- پرده محو پشت منوی کشویی راست (فقط موبایل) -->
-    <div class="sb-scrim" id="sbScrim" onclick="toggleSidebarDrawer(false)"></div>
     <aside class="sidebar" aria-label="ناوبری اصلی سیستم">
       <div>
         <button type="button" class="sb-item active" data-view="dashboard" onclick="switchView('dashboard')">
@@ -11314,7 +10661,7 @@ ${BASE_UI_CSS}
       <!-- نوار بالا -->
       <header class="topbar">
         <div class="topbar-right">
-          <button type="button" class="top-pill menu-toggle" onclick="toggleSidebarDrawer()" aria-expanded="false" aria-label="منو">${ICON('menu')}</button>
+          <button type="button" class="top-pill theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="حالت شب و روز" title="حالت شب و روز">${ICON('moon')}</button>
           <div class="tb-brand">
             <span class="tb-logo">${SHIELD_LOGO_SVG}</span>
             <span class="tb-name"><b>${BRAND_UPPER}</b><small>CONTROL CENTER</small></span>
@@ -12084,6 +11431,24 @@ ${FX_RUNTIME_JS}
 
     function showToast(msg) {
       if (window.MiliFx) MiliFx.toast(msg);
+    }
+
+    // ---------- حالت شب / روز ----------
+    function applyTheme(theme) {
+      var next = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('mili-theme', next); } catch (_e) {}
+      var btn = document.getElementById('themeToggle');
+      if (btn) {
+        btn.innerHTML = next === 'light' ? '${ICON('moon')}' : '${ICON('sun')}';
+        btn.setAttribute('aria-pressed', next === 'light' ? 'true' : 'false');
+      }
+    }
+    function toggleTheme() {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    }
+    function savedTheme() {
+      try { return localStorage.getItem('mili-theme') || 'dark'; } catch (_e) { return 'dark'; }
     }
 
     function setText(id, value) {
@@ -13027,6 +12392,7 @@ ${FX_RUNTIME_JS}
     });
 
     // بازیابی نمای انتخاب‌شده از آدرس
+    safeInit('حالت شب و روز', function () { applyTheme(savedTheme()); });
     safeInit('نمای اولیه', applyHashView);
   </script>
 </body>

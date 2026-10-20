@@ -1387,6 +1387,90 @@ ${BASE_UI_CSS}
     @media (prefers-reduced-motion: reduce) {
       .view-section, .modal-box { animation: none; }
     }
+
+    /* ---------- حالت روز (روشن) ---------- */
+    html[data-theme="light"] {
+      --os-bg: #f2f5ef;
+      --os-panel: rgba(255, 255, 255, 0.92);
+      --os-panel-2: rgba(255, 255, 255, 0.98);
+      --os-line: rgba(31, 61, 20, 0.12);
+      --os-line-soft: rgba(31, 61, 20, 0.10);
+      --os-ink: #16210f;
+      --os-ink-soft: #5c6b55;
+      --os-accent: #4d7c0f;
+    }
+    html[data-theme="light"] body {
+      background:
+        radial-gradient(900px 520px at 78% -12%, rgba(132, 204, 22, 0.16), transparent 62%),
+        radial-gradient(700px 420px at 8% 108%, rgba(56, 189, 248, 0.10), transparent 60%),
+        var(--os-bg);
+    }
+    html[data-theme="light"] body::before { opacity: .5; }
+    html[data-theme="light"] .topbar,
+    html[data-theme="light"] .sidebar {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(31, 61, 20, 0.12);
+      box-shadow: 0 10px 30px rgba(24, 44, 16, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+    html[data-theme="light"] .panel-card,
+    html[data-theme="light"] .metric-card,
+    html[data-theme="light"] .user-card,
+    html[data-theme="light"] .hero-card,
+    html[data-theme="light"] .preset-card,
+    html[data-theme="light"] .pool-picker,
+    html[data-theme="light"] .check-grid,
+    html[data-theme="light"] .fx-card {
+      box-shadow: 0 6px 18px rgba(24, 44, 16, 0.06);
+    }
+    html[data-theme="light"] .top-pill,
+    html[data-theme="light"] .btn-ghost,
+    html[data-theme="light"] .copy-btn,
+    html[data-theme="light"] .dl-btn,
+    html[data-theme="light"] .hero-badge,
+    html[data-theme="light"] .check-label,
+    html[data-theme="light"] .pool-row {
+      background: rgba(31, 61, 20, 0.045);
+      border-color: rgba(31, 61, 20, 0.12);
+    }
+    html[data-theme="light"] .top-pill:hover,
+    html[data-theme="light"] .btn-ghost:hover {
+      background: rgba(132, 204, 22, 0.16);
+      color: #16210f;
+    }
+    html[data-theme="light"] .top-pill.accent {
+      background: linear-gradient(180deg, #a3e635, #84cc16);
+      color: #10160b;
+    }
+    html[data-theme="light"] .sb-item { color: #5c6b55; }
+    html[data-theme="light"] .sb-item:hover { background: rgba(31, 61, 20, 0.06); color: #16210f; }
+    html[data-theme="light"] .sb-item.active {
+      background: linear-gradient(180deg, #bef264, #a3e635);
+      color: #10160b;
+    }
+    html[data-theme="light"] input,
+    html[data-theme="light"] select,
+    html[data-theme="light"] textarea,
+    html[data-theme="light"] .mili-input,
+    html[data-theme="light"] .mili-select,
+    html[data-theme="light"] .mili-textarea {
+      background: #ffffff;
+      color: #16210f;
+      border-color: rgba(31, 61, 20, 0.16);
+    }
+    html[data-theme="light"] .uc-id-box { background: rgba(31, 61, 20, 0.05); }
+    html[data-theme="light"] .kv-row { border-bottom-color: rgba(31, 61, 20, 0.08); }
+    html[data-theme="light"] .modal-backdrop { background: rgba(232, 240, 226, 0.72); }
+    html[data-theme="light"] .modal-box { background: #ffffff; }
+    html[data-theme="light"] .fx-toast { background: #ffffff; color: #16210f; }
+    html[data-theme="light"] .donut-ring,
+    html[data-theme="light"] .usage-ring {
+      background: conic-gradient(var(--os-accent) calc(var(--p, 0) * 1%), rgba(31, 61, 20, 0.12) 0);
+    }
+
+    /* ناوبری فقط از داک پایین — منوی کناری/همبرگری حذف شد */
+    .menu-toggle, .sb-scrim, .sb-close { display: none !important; }
+    .theme-toggle { padding: 7px 9px; }
+    .theme-toggle .ic { width: 17px; height: 17px; }
   </style>
 </head>
 <body>
@@ -1394,8 +1478,6 @@ ${BASE_UI_CSS}
 
   <div class="app-shell">
     <!-- سایدبار سمت راست دسکتاپ -->
-    <!-- پرده محو پشت منوی کشویی راست (فقط موبایل) -->
-    <div class="sb-scrim" id="sbScrim" onclick="toggleSidebarDrawer(false)"></div>
     <aside class="sidebar" aria-label="ناوبری اصلی سیستم">
       <div>
         <button type="button" class="sb-item active" data-view="dashboard" onclick="switchView('dashboard')">
@@ -1426,7 +1508,7 @@ ${BASE_UI_CSS}
       <!-- نوار بالا -->
       <header class="topbar">
         <div class="topbar-right">
-          <button type="button" class="top-pill menu-toggle" onclick="toggleSidebarDrawer()" aria-expanded="false" aria-label="منو">${ICON('menu')}</button>
+          <button type="button" class="top-pill theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="حالت شب و روز" title="حالت شب و روز">${ICON('moon')}</button>
           <div class="tb-brand">
             <span class="tb-logo">${SHIELD_LOGO_SVG}</span>
             <span class="tb-name"><b>${BRAND_UPPER}</b><small>CONTROL CENTER</small></span>
@@ -2196,6 +2278,24 @@ ${FX_RUNTIME_JS}
 
     function showToast(msg) {
       if (window.MiliFx) MiliFx.toast(msg);
+    }
+
+    // ---------- حالت شب / روز ----------
+    function applyTheme(theme) {
+      var next = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('mili-theme', next); } catch (_e) {}
+      var btn = document.getElementById('themeToggle');
+      if (btn) {
+        btn.innerHTML = next === 'light' ? '${ICON('moon')}' : '${ICON('sun')}';
+        btn.setAttribute('aria-pressed', next === 'light' ? 'true' : 'false');
+      }
+    }
+    function toggleTheme() {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    }
+    function savedTheme() {
+      try { return localStorage.getItem('mili-theme') || 'dark'; } catch (_e) { return 'dark'; }
     }
 
     function setText(id, value) {
@@ -3139,6 +3239,7 @@ ${FX_RUNTIME_JS}
     });
 
     // بازیابی نمای انتخاب‌شده از آدرس
+    safeInit('حالت شب و روز', function () { applyTheme(savedTheme()); });
     safeInit('نمای اولیه', applyHashView);
   </script>
 </body>

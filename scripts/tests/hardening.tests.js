@@ -4,14 +4,14 @@
 //   ۲۴) مصرف واقعی (upload/download) در هدر Subscription-Userinfo
 //   ۲۵) قفل سخت‌افزاری ipLimit (پذیرش تا سقف و رد دستگاه اضافه)
 //   ۲۶) کلید ادمین یکتا برای هر استقرار
-//   ۲۷) UI موبایل: drawer راست + پرده محو + دکمه روشن/خاموش جلوه‌ها
+//   ۲۷) ناوبری فقط با داک پایین + حذف کامل FX + حالت شب/روز
 // ============================================================================
 import { generateUserNodesList, handleSubscriptionResponse } from '../../src/subscription/generator.js';
 import { checkUserIpLimit, releaseUserIps, resolveAdminKey } from '../../src/db/d1.js';
 import { DEFAULT_ADMIN_UUID } from '../../src/config/defaults.js';
 import { getSeedAdminUuid } from '../../src/db/d1.js';
 import { INFO_NODE_LABELS, prependInfoNodes } from '../../src/core/utils.js';
-import { FX_MARKUP } from '../../src/ui/fx.js';
+import { FX_CSS, FX_MARKUP } from '../../src/ui/fx.js';
 
 export async function runHardeningTests({ assert, adminHtml }) {
   // ========================================================================
@@ -113,13 +113,17 @@ export async function runHardeningTests({ assert, adminHtml }) {
   // ========================================================================
   // تست ۲۷: UI موبایل (drawer راست + پرده محو) و دکمه روشن/خاموش FX
   // ========================================================================
-  assert.ok(adminHtml.includes('sb-scrim'), 'پنل باید پرده محو پشت منوی کشویی داشته باشد');
-  assert.ok(adminHtml.includes("classList.toggle('drawer-open'"), 'کلاس drawer باید در پنل مدیریت شود');
-  assert.ok(adminHtml.includes('drawer-lock'), 'قفل اسکرول بدنه هنگام باز بودن منو لازم است');
-  assert.ok(/\.sidebar[\s\S]{0,2000}translate3d\(104%/.test(adminHtml), 'منوی موبایل باید از سمت راست سُر بخورد');
-  assert.ok(adminHtml.includes('backdrop-filter: blur(24px)'), 'منوی موبایل باید حس شیشه‌ای iOS داشته باشد');
+  // منوی کناری/کشویی حذف شده؛ ناوبری فقط داک پایین است
+  assert.ok(!adminHtml.includes('id="sbScrim"'), 'پرده محو منوی کناری باید حذف شده باشد');
+  assert.ok(!adminHtml.includes('class="top-pill menu-toggle"'), 'دکمه همبرگری منو نباید وجود داشته باشد');
+  assert.ok(adminHtml.includes('class="sidebar"') && adminHtml.includes('data-view="dashboard"'), 'ناوبری باید فقط از داک پایین باشد');
   assert.ok(adminHtml.includes('آپلود ↑') && adminHtml.includes('دانلود ↓'), 'پنل باید مصرف واقعی آپلود/دانلود را جداگانه نشان دهد');
-  assert.ok(FX_MARKUP.includes('fxPowerBtn'), 'دکمه روشن/خاموش جلوه‌ها باید در همه صفحات باشد');
-  assert.ok(FX_MARKUP.includes('aria-pressed'), 'دکمه FX باید وضعیت دسترس‌پذیری داشته باشد');
-  console.log('  ✓ تست ۲۷ (منوی کشویی راست + حس iOS + دکمه روشن/خاموش FX): موفق');
+  // حالت شب/روز
+  assert.ok(adminHtml.includes('id="themeToggle"') && adminHtml.includes('toggleTheme()'), 'دکمه تغییر حالت شب/روز باید وجود داشته باشد');
+  assert.ok(adminHtml.includes('html[data-theme="light"]'), 'تم روشن باید در CSS تعریف شده باشد');
+  assert.ok(adminHtml.includes("localStorage.setItem('mili-theme'"), 'انتخاب تم باید ماندگار باشد');
+  // حذف کامل FX
+  assert.strictEqual(FX_MARKUP, '', 'مارک‌آپ FX باید حذف شده باشد');
+  assert.ok(!FX_CSS.includes('canvas'), 'CSS جلوه‌ها نباید Canvas داشته باشد');
+  console.log('  ✓ تست ۲۷ (داک پایین بدون منوی کناری + حذف کامل FX + حالت شب/روز): موفق');
 }

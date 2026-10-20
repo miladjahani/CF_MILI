@@ -349,37 +349,31 @@ async function runTests() {
       ['وضعیت کاربر', statusHtml]
     ];
 
-    // تست ۷: لایه جلوه‌های بصری (پس‌زمینه زنده + انیمیشن‌های روان) در هر سه صفحه
+    // تست ۷: حذف کامل FX (بدون Canvas/Aurora) و سبک بودن هر سه صفحه
     const fxNeedles = [
       'fxCanvas',
       'fx-aurora',
       'fx-grid',
-      'fx-toast-host',
-      'fx-reveal',
-      'fx-ring',
-      'prefers-reduced-motion',
       'window.MiliFx'
     ];
     for (const [label, html] of pages) {
       for (const needle of fxNeedles) {
-        if (label === 'ورود') {
-          // صفحه ورود عامدانه سبک است: بدون Canvas و افکت سنگین، فقط CSS روان
-          if (needle === 'prefers-reduced-motion') {
-            assert.ok(html.includes(needle), 'صفحه ورود باید به کاهش حرکت احترام بگذارد');
-            continue;
-          }
-          assert.ok(!html.includes(needle), `صفحه ورود نباید افکت سنگین «${needle}» داشته باشد`);
+        if (needle === 'window.MiliFx') {
+          // صفحه ورود عامدانه هیچ اسکریپت جلوه‌ای ندارد
+          if (label !== 'ورود') assert.ok(html.includes(needle), `صفحه ${label} باید شیم سبک MiliFx را داشته باشد`);
           continue;
         }
-        assert.ok(html.includes(needle), `صفحه ${label} باید شامل جلوه بصری «${needle}» باشد`);
+        // هیچ صفحه‌ای نباید Canvas/Aurora/رینگ متحرک داشته باشد (درخواست حذف کامل FX)
+        assert.ok(!html.includes(needle), `صفحه ${label} نباید افکت «${needle}» داشته باشد`);
       }
+      assert.ok(html.includes('prefers-reduced-motion'), `صفحه ${label} باید به کاهش حرکت احترام بگذارد`);
     }
     assert.ok(rootHtml.includes('nginxSplash') && rootHtml.includes('login-window'), 'صفحه ورود باید نمای nginx و پنجره ورود را داشته باشد');
     assert.ok(rootHtml.includes('t.me/miliconfig') && rootHtml.includes('prefers-reduced-motion'), 'صفحه ورود باید دکمه پشتیبانی و احترام به کاهش حرکت داشته باشد');
     assert.ok(statusHtml.includes('usage-ring') && statusHtml.includes('nodeSearch'), 'صفحه وضعیت باید حلقه مصرف و جستجوی نود داشته باشد');
     assert.ok(statusHtml.includes('↑ آپلود') && statusHtml.includes('↓ دانلود'), 'صفحه وضعیت باید مصرف واقعی آپلود و دانلود را جداگانه نشان دهد');
     assert.ok(adminHtml.includes('donutRing') && adminHtml.includes('fx-ring'), 'داشبورد باید حلقه گرافیکی متحرک داشته باشد');
-    assert.ok(adminHtml.includes('id="fxProgressFill"'), 'داشبورد باید نوار پیشرفت اسکرول داشته باشد');
+    assert.ok(!adminHtml.includes('fxProgressFill'), 'نوار پیشرفت اسکرول FX باید حذف شده باشد (حذف کامل FX)');
     console.log('  ✓ تست ۷ (پس‌زمینه زنده و انیمیشن‌های روان در هر سه صفحه UI): موفق');
 
     // تست ۸: تمام اسکریپت‌های درون‌صفحه‌ای باید از نظر نحوی معتبر باشند
